@@ -26,7 +26,7 @@ var ver = "v1"
 func decode(yn *yaml.Node) (itf.ModFile, error) {
 	var mf ModFile
 	if err := yn.Decode(&mf); err != nil {
-		return mf, err
+		return nil, err
 	}
 	return &mf, nil
 }
