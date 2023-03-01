@@ -33,3 +33,14 @@ func TestGetDecoder(t *testing.T) {
 		t.Errorf("%s != %s", reflect.TypeOf(f).Elem(), reflect.TypeOf(ModFile{}))
 	}
 }
+
+func TestDecode(t *testing.T) {
+	if f, err := decode(&yaml.Node{}); err != nil {
+		t.Error("err != nil")
+	} else if reflect.TypeOf(f).Elem() != reflect.TypeOf(ModFile{}) {
+		t.Errorf("%s != %s", reflect.TypeOf(f).Elem(), reflect.TypeOf(ModFile{}))
+	}
+	if _, err := decode(&yaml.Node{Value: "1"}); err == nil {
+		t.Error("err == nil")
+	}
+}
