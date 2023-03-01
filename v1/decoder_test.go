@@ -27,11 +27,9 @@ func TestGetDecoder(t *testing.T) {
 	if v != ver {
 		t.Errorf("\"%s\" != \"%s\"", v, ver)
 	}
-	f, err := d(&yaml.Node{})
-	if err != nil {
+	if f, err := d(&yaml.Node{}); err != nil {
 		t.Error(err)
-	}
-	if reflect.TypeOf(f).Elem() != reflect.TypeOf(ModFile{}) {
+	} else if reflect.TypeOf(f).Elem() != reflect.TypeOf(ModFile{}) {
 		t.Errorf("%s != %s", reflect.TypeOf(f).Elem(), reflect.TypeOf(ModFile{}))
 	}
 }
