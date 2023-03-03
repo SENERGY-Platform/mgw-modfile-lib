@@ -17,9 +17,13 @@
 package base
 
 import (
-	"github.com/SENERGY-Platform/mgw-modfile-lib/itf"
+	"github.com/SENERGY-Platform/mgw-module-lib/module"
 	"gopkg.in/yaml.v3"
 )
+
+type ModFile interface {
+	GenModule() (*module.Module, error)
+}
 
 type vInfo struct {
 	Version string `yaml:"modfileVersion"`
@@ -28,7 +32,7 @@ type vInfo struct {
 type MFBase struct {
 	Version  string
 	decoders Decoders
-	modFile  itf.ModFile
+	modFile  ModFile
 }
 
-type Decoders map[string]func(*yaml.Node) (itf.ModFile, error)
+type Decoders map[string]func(*yaml.Node) (ModFile, error)

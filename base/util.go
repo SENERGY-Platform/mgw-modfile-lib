@@ -19,7 +19,6 @@ package base
 import (
 	"errors"
 	"fmt"
-	"github.com/SENERGY-Platform/mgw-modfile-lib/itf"
 	"github.com/SENERGY-Platform/mgw-module-lib/module"
 	"gopkg.in/yaml.v3"
 )
@@ -56,7 +55,7 @@ func (mfb *MFBase) GetModule() (*module.Module, error) {
 	return mfb.modFile.GenModule()
 }
 
-func (d Decoders) Add(gf func() (string, func(*yaml.Node) (itf.ModFile, error))) {
+func (d Decoders) Add(gf func() (string, func(*yaml.Node) (ModFile, error))) {
 	key, decoder := gf()
 	d[key] = decoder
 }

@@ -19,7 +19,6 @@ package base
 import (
 	"errors"
 	"fmt"
-	"github.com/SENERGY-Platform/mgw-modfile-lib/itf"
 	"github.com/SENERGY-Platform/mgw-module-lib/module"
 	"gopkg.in/yaml.v3"
 	"reflect"
@@ -34,7 +33,7 @@ func (f *testFile) GenModule() (*module.Module, error) {
 	return &module.Module{Name: f.Field}, nil
 }
 
-func testDecode(yn *yaml.Node) (itf.ModFile, error) {
+func testDecode(yn *yaml.Node) (ModFile, error) {
 	var f testFile
 	if err := yn.Decode(&f); err != nil {
 		return nil, err
@@ -42,7 +41,7 @@ func testDecode(yn *yaml.Node) (itf.ModFile, error) {
 	return &f, nil
 }
 
-func testErrDecode(_ *yaml.Node) (itf.ModFile, error) {
+func testErrDecode(_ *yaml.Node) (ModFile, error) {
 	return nil, errors.New("test")
 }
 
@@ -144,7 +143,7 @@ func TestModFile_GetModule(t *testing.T) {
 func TestDecoders_Add(t *testing.T) {
 	d := make(Decoders)
 	ver := "vTest"
-	d.Add(func() (string, func(*yaml.Node) (itf.ModFile, error)) {
+	d.Add(func() (string, func(*yaml.Node) (ModFile, error)) {
 		return ver, testErrDecode
 	})
 	if dc, ok := d[ver]; !ok {
