@@ -32,22 +32,22 @@ func (mf *ModFile) UnmarshalYAML(yn *yaml.Node) error {
 	if len(mf.decoders) == 0 {
 		return errors.New("no decoders")
 	}
-	var b base
-	if err := yn.Decode(&b); err != nil {
+	var vi vInfo
+	if err := yn.Decode(&vi); err != nil {
 		return err
 	}
-	if b.Version == "" {
+	if vi.Version == "" {
 		return errors.New("no version")
 	}
-	d, ok := mf.decoders[b.Version]
+	d, ok := mf.decoders[vi.Version]
 	if !ok {
-		return fmt.Errorf("no decoder for version '%s'", b.Version)
+		return fmt.Errorf("no decoder for version '%s'", vi.Version)
 	}
 	modFile, err := d(yn)
 	if err != nil {
 		return err
 	}
-	mf.base = b
+	mf.vInfo = vi
 	mf.modFile = modFile
 	return nil
 }

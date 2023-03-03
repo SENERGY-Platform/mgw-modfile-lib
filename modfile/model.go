@@ -21,12 +21,12 @@ import (
 	"gopkg.in/yaml.v3"
 )
 
-type base struct {
+type vInfo struct {
 	Version string `yaml:"modfileVersion"`
 }
 
 type ModFile struct {
-	base     `yaml:",inline"`
+	vInfo    `yaml:",inline"`
 	decoders Decoders
 	modFile  itf.ModFile
 }
