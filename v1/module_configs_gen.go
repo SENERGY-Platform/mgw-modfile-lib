@@ -96,12 +96,12 @@ func parseConfig[T any](val any, opt []any, ctOpt map[string]any, valParser func
 		}
 		d = &v
 	}
-	if opt != nil && len(opt) > 0 {
+	if len(opt) > 0 {
 		if o, err = parseConfigOptions(opt, valParser); err != nil {
 			return
 		}
 	}
-	if ctOpt != nil && len(ctOpt) > 0 {
+	if len(ctOpt) > 0 {
 		co, err = parseConfigTypeOptions(ctOpt)
 	}
 	return
@@ -123,12 +123,12 @@ func parseConfigSlice[T any](val any, opt []any, ctOpt map[string]any, valParser
 			d = append(d, pi)
 		}
 	}
-	if opt != nil && len(opt) > 0 {
+	if len(opt) > 0 {
 		if o, err = parseConfigOptions(opt, valParser); err != nil {
 			return
 		}
 	}
-	if ctOpt != nil && len(ctOpt) > 0 {
+	if len(ctOpt) > 0 {
 		co, err = parseConfigTypeOptions(ctOpt)
 	}
 	return
