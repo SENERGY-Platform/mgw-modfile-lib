@@ -85,22 +85,6 @@ func configsSetSlice(ref string, mfCV ConfigValue, mCs module.Configs) error {
 	return nil
 }
 
-func GenConfigs(mfCVs map[string]ConfigValue) (module.Configs, error) {
-	mCs := make(module.Configs)
-	for ref, mfCV := range mfCVs {
-		if mfCV.IsList {
-			if err := configsSet(ref, mfCV, mCs); err != nil {
-				return nil, err
-			}
-		} else {
-			if err := configsSetSlice(ref, mfCV, mCs); err != nil {
-				return nil, err
-			}
-		}
-	}
-	return mCs, nil
-}
-
 func parseConfig[T any](val any, opt []any, ctOpt map[string]any, valParser func(any) (T, error)) (d *T, o []T, co module.ConfigTypeOptions, err error) {
 	if val != nil {
 		v, er := valParser(val)
