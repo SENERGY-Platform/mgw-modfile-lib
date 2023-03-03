@@ -52,8 +52,8 @@ func (mf *ModFile) UnmarshalYAML(yn *yaml.Node) error {
 	return nil
 }
 
-func (mf *ModFile) GetModule() (module.Module, error) {
-	return mf.modFile.Parse()
+func (mf *ModFile) GetModule() (*module.Module, error) {
+	return mf.modFile.GenModule()
 }
 
 func (d Decoders) Add(gf func() (string, func(*yaml.Node) (itf.ModFile, error))) {

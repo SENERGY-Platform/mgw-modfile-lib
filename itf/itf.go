@@ -21,5 +21,5 @@ import (
 )
 
 type ModFile interface {
-	Parse() (module.Module, error)
+	GenModule() (*module.Module, error)
 }

@@ -30,8 +30,8 @@ type testFile struct {
 	Field string `yaml:"field"`
 }
 
-func (f *testFile) Parse() (module.Module, error) {
-	return module.Module{Name: f.Field}, nil
+func (f *testFile) GenModule() (*module.Module, error) {
+	return &module.Module{Name: f.Field}, nil
 }
 
 func testDecode(yn *yaml.Node) (itf.ModFile, error) {
