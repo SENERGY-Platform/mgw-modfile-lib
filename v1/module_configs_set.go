@@ -21,7 +21,7 @@ import (
 	"github.com/SENERGY-Platform/mgw-module-lib/module"
 )
 
-func configsSet(ref string, mfCV ConfigValue, mCs module.Configs) error {
+func SetSlice(ref string, mfCV ConfigValue, mCs module.Configs) error {
 	switch mfCV.DataType {
 	case StringType:
 		d, o, co, err := parseConfigSlice(mfCV.Value, mfCV.Options, mfCV.TypeOptions, parseConfigValueString)
@@ -53,7 +53,7 @@ func configsSet(ref string, mfCV ConfigValue, mCs module.Configs) error {
 	return nil
 }
 
-func configsSetSlice(ref string, mfCV ConfigValue, mCs module.Configs) error {
+func SetValue(ref string, mfCV ConfigValue, mCs module.Configs) error {
 	switch mfCV.DataType {
 	case StringType:
 		d, o, co, err := parseConfig(mfCV.Value, mfCV.Options, mfCV.TypeOptions, parseConfigValueString)

@@ -147,11 +147,11 @@ func GenConfigs(mfCVs map[string]ConfigValue) (module.Configs, error) {
 	mCs := make(module.Configs)
 	for ref, mfCV := range mfCVs {
 		if mfCV.IsList {
-			if err := configsSet(ref, mfCV, mCs); err != nil {
+			if err := SetSlice(ref, mfCV, mCs); err != nil {
 				return nil, err
 			}
 		} else {
-			if err := configsSetSlice(ref, mfCV, mCs); err != nil {
+			if err := SetValue(ref, mfCV, mCs); err != nil {
 				return nil, err
 			}
 		}
