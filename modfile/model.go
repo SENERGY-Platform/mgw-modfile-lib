@@ -25,7 +25,7 @@ type vInfo struct {
 	Version string `yaml:"modfileVersion"`
 }
 
-type ModFile struct {
+type MFBase struct {
 	Version  string
 	decoders Decoders
 	modFile  itf.ModFile

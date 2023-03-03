@@ -24,12 +24,12 @@ import (
 	"gopkg.in/yaml.v3"
 )
 
-func NewModFile(decoders Decoders) *ModFile {
-	return &ModFile{decoders: decoders}
+func NewModFile(decoders Decoders) *MFBase {
+	return &MFBase{decoders: decoders}
 }
 
-func (mf *ModFile) UnmarshalYAML(yn *yaml.Node) error {
-	if len(mf.decoders) == 0 {
+func (mfb *MFBase) UnmarshalYAML(yn *yaml.Node) error {
+	if len(mfb.decoders) == 0 {
 		return errors.New("no decoders")
 	}
 	var vi vInfo
@@ -39,7 +39,7 @@ func (mf *ModFile) UnmarshalYAML(yn *yaml.Node) error {
 	if vi.Version == "" {
 		return errors.New("no version")
 	}
-	d, ok := mf.decoders[vi.Version]
+	d, ok := mfb.decoders[vi.Version]
 	if !ok {
 		return fmt.Errorf("no decoder for version '%s'", vi.Version)
 	}
@@ -47,13 +47,13 @@ func (mf *ModFile) UnmarshalYAML(yn *yaml.Node) error {
 	if err != nil {
 		return err
 	}
-	mf.Version = vi.Version
-	mf.modFile = modFile
+	mfb.Version = vi.Version
+	mfb.modFile = modFile
 	return nil
 }
 
-func (mf *ModFile) GetModule() (*module.Module, error) {
-	return mf.modFile.GenModule()
+func (mfb *MFBase) GetModule() (*module.Module, error) {
+	return mfb.modFile.GenModule()
 }
 
 func (d Decoders) Add(gf func() (string, func(*yaml.Node) (itf.ModFile, error))) {
