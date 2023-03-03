@@ -47,7 +47,7 @@ func (mf *ModFile) UnmarshalYAML(yn *yaml.Node) error {
 	if err != nil {
 		return err
 	}
-	mf.vInfo = vi
+	mf.Version = vi.Version
 	mf.modFile = modFile
 	return nil
 }

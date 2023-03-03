@@ -26,7 +26,7 @@ type vInfo struct {
 }
 
 type ModFile struct {
-	vInfo    `yaml:",inline"`
+	Version  string
 	decoders Decoders
 	modFile  itf.ModFile
 }
