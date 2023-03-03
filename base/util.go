@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package modfile
+package base
 
 import (
 	"errors"
