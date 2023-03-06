@@ -17,6 +17,7 @@
 package generator
 
 import (
+	"errors"
 	"github.com/SENERGY-Platform/mgw-modfile-lib/v1/generator/configs"
 	"github.com/SENERGY-Platform/mgw-modfile-lib/v1/generator/generic"
 	"github.com/SENERGY-Platform/mgw-modfile-lib/v1/generator/inputs"
@@ -26,7 +27,11 @@ import (
 	"github.com/SENERGY-Platform/mgw-module-lib/module"
 )
 
-func GenModule(mf *model.ModFile) (*module.Module, error) {
+func GenModule(f any) (*module.Module, error) {
+	mf, ok := f.(*model.ModFile)
+	if !ok {
+		return nil, errors.New("invalid type")
+	}
 	mCs, err := configs.GenConfigs(mf.Configs)
 	if err != nil {
 		return nil, err
