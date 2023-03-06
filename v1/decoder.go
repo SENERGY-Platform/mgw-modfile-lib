@@ -17,13 +17,12 @@
 package v1
 
 import (
-	"github.com/SENERGY-Platform/mgw-modfile-lib/base"
 	"gopkg.in/yaml.v3"
 )
 
 var ver = "v1"
 
-func decode(yn *yaml.Node) (base.ModFile, error) {
+func decode(yn *yaml.Node) (any, error) {
 	var mf ModFile
 	if err := yn.Decode(&mf); err != nil {
 		return nil, err
@@ -31,6 +30,6 @@ func decode(yn *yaml.Node) (base.ModFile, error) {
 	return &mf, nil
 }
 
-func GetDecoder() (string, func(*yaml.Node) (base.ModFile, error)) {
+func GetDecoder() (string, func(*yaml.Node) (any, error)) {
 	return ver, decode
 }
