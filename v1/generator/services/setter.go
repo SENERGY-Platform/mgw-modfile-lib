@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package generator
+package services
 
 import (
 	"fmt"

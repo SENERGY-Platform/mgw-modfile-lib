@@ -14,11 +14,12 @@
  * limitations under the License.
  */
 
-package generator
+package services
 
 import (
 	"errors"
 	"fmt"
+	"github.com/SENERGY-Platform/mgw-modfile-lib/v1/generator/generic"
 	"github.com/SENERGY-Platform/mgw-modfile-lib/v1/model"
 	"github.com/SENERGY-Platform/mgw-module-lib/module"
 	"io/fs"
@@ -51,7 +52,7 @@ func GenServices(mfSs map[string]model.Service) (map[string]*module.Service, err
 			BindMounts:    mBMs,
 			Tmpfs:         mTMs,
 			HttpEndpoints: mHEs,
-			RequiredSrv:   GenStringSet(mfS.RequiredServices),
+			RequiredSrv:   generic.GenStringSet(mfS.RequiredServices),
 			Ports:         mPs,
 		}
 	}

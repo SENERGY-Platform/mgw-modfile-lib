@@ -17,40 +17,45 @@
 package generator
 
 import (
+	"github.com/SENERGY-Platform/mgw-modfile-lib/v1/generator/configs"
+	"github.com/SENERGY-Platform/mgw-modfile-lib/v1/generator/generic"
+	"github.com/SENERGY-Platform/mgw-modfile-lib/v1/generator/inputs"
+	"github.com/SENERGY-Platform/mgw-modfile-lib/v1/generator/mounts"
+	"github.com/SENERGY-Platform/mgw-modfile-lib/v1/generator/services"
 	"github.com/SENERGY-Platform/mgw-modfile-lib/v1/model"
 	"github.com/SENERGY-Platform/mgw-module-lib/module"
 )
 
 func GenModule(mf *model.ModFile) (*module.Module, error) {
-	mCs, err := GenConfigs(mf.Configs)
+	mCs, err := configs.GenConfigs(mf.Configs)
 	if err != nil {
 		return nil, err
 	}
-	mSs, err := GenServices(mf.Services)
+	mSs, err := services.GenServices(mf.Services)
 	if err != nil {
 		return nil, err
 	}
-	err = SetSrvReferences(mf.ServiceReferences, mSs)
+	err = services.SetSrvReferences(mf.ServiceReferences, mSs)
 	if err != nil {
 		return nil, err
 	}
-	err = SetVolumes(mf.Volumes, mSs)
+	err = services.SetVolumes(mf.Volumes, mSs)
 	if err != nil {
 		return nil, err
 	}
-	err = SetExtDependencies(mf.Dependencies, mSs)
+	err = services.SetExtDependencies(mf.Dependencies, mSs)
 	if err != nil {
 		return nil, err
 	}
-	err = SetResources(mf.Resources, mSs)
+	err = services.SetResources(mf.Resources, mSs)
 	if err != nil {
 		return nil, err
 	}
-	err = SetSecrets(mf.Secrets, mSs)
+	err = services.SetSecrets(mf.Secrets, mSs)
 	if err != nil {
 		return nil, err
 	}
-	err = SetConfigs(mf.Configs, mSs)
+	err = services.SetConfigs(mf.Configs, mSs)
 	if err != nil {
 		return nil, err
 	}
@@ -58,106 +63,24 @@ func GenModule(mf *model.ModFile) (*module.Module, error) {
 		ID:             mf.ID,
 		Name:           mf.Name,
 		Description:    mf.Description,
-		Tags:           GenStringSet(mf.Tags),
+		Tags:           generic.GenStringSet(mf.Tags),
 		License:        mf.License,
 		Author:         mf.Author,
 		Version:        mf.Version,
 		Type:           mf.Type,
 		DeploymentType: mf.DeploymentType,
-		Architectures:  GenStringSet(mf.Architectures),
+		Architectures:  generic.GenStringSet(mf.Architectures),
 		Services:       mSs,
-		Volumes:        GenVolumes(mf.Volumes),
-		Dependencies:   GenDependencies(mf.Dependencies),
-		Resources:      GenResources(mf.Resources),
-		Secrets:        GenSecrets(mf.Secrets),
+		Volumes:        mounts.GenVolumes(mf.Volumes),
+		Dependencies:   mounts.GenDependencies(mf.Dependencies),
+		Resources:      mounts.GenResources(mf.Resources),
+		Secrets:        mounts.GenSecrets(mf.Secrets),
 		Configs:        mCs,
 		Inputs: module.Inputs{
-			Resources: GenInputs(mf.Resources),
-			Secrets:   GenInputs(mf.Secrets),
-			Configs:   GenInputs(mf.Configs),
-			Groups:    GenInputGroups(mf.InputGroups),
+			Resources: inputs.GenInputs(mf.Resources),
+			Secrets:   inputs.GenInputs(mf.Secrets),
+			Configs:   inputs.GenInputs(mf.Configs),
+			Groups:    inputs.GenInputGroups(mf.InputGroups),
 		},
 	}, nil
-}
-
-func GenStringSet(sl []string) map[string]struct{} {
-	set := make(map[string]struct{})
-	for _, s := range sl {
-		set[s] = struct{}{}
-	}
-	return set
-}
-
-func GenVolumes(mfVs map[string][]model.VolumeTarget) map[string]struct{} {
-	set := make(map[string]struct{})
-	for mfV := range mfVs {
-		set[mfV] = struct{}{}
-	}
-	return set
-}
-
-func GenDependencies(mfMDs map[string]model.ModuleDependency) map[string]string {
-	mDs := make(map[string]string)
-	for id, mfMD := range mfMDs {
-		mDs[id] = mfMD.Version
-	}
-	return mDs
-}
-
-func GenResources(mfRs map[string]model.Resource) map[string]map[string]struct{} {
-	mRs := make(map[string]map[string]struct{})
-	for ref, mfR := range mfRs {
-		mRs[ref] = GenStringSet(mfR.Tags)
-	}
-	return mRs
-}
-
-func GenSecrets(mfSs map[string]model.Secret) map[string]module.Secret {
-	mSs := make(map[string]module.Secret)
-	for ref, mfS := range mfSs {
-		mSs[ref] = module.Secret{
-			Type: mfS.Type,
-			Tags: GenStringSet(mfS.Tags),
-		}
-	}
-	return mSs
-}
-
-func GenInputs[T model.Configurable](mfCs map[string]T) map[string]module.Input {
-	mIs := make(map[string]module.Input)
-	for ref, mfC := range mfCs {
-		mfUI := mfC.GetUserInput()
-		if mfUI != nil {
-			mIs[ref] = module.Input(*mfUI)
-		}
-	}
-	return mIs
-}
-
-func GenInputGroups(mfIGs map[string]model.InputGroup) map[string]module.InputGroup {
-	mIGs := make(map[string]module.InputGroup)
-	for ref, mfIG := range mfIGs {
-		mIGs[ref] = module.InputGroup{
-			Name:        mfIG.Name,
-			Description: mfIG.Description,
-			Group:       mfIG.Group,
-		}
-	}
-	return mIGs
-}
-
-func GenConfigs(mfCVs map[string]model.ConfigValue) (module.Configs, error) {
-	mCs := make(module.Configs)
-	for ref, mfCV := range mfCVs {
-		if mfCV.IsList {
-			if err := SetSlice(ref, mfCV, mCs); err != nil {
-				return nil, err
-			}
-		} else {
-			if err := SetValue(ref, mfCV, mCs); err != nil {
-				return nil, err
-			}
-		}
-	}
-	return mCs, nil
 }
