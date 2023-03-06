@@ -159,6 +159,11 @@ func TestModFile_GetModule(t *testing.T) {
 	if err == nil {
 		t.Error("err == nil")
 	}
+	mf = NewModFile(nil, nil)
+	_, err = mf.GetModule()
+	if err == nil {
+		t.Error("err == nil")
+	}
 }
 
 func TestDecoders_Add(t *testing.T) {
