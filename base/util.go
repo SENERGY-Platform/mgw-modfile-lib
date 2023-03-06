@@ -31,9 +31,6 @@ func (mf *ModFile) UnmarshalYAML(yn *yaml.Node) error {
 	if len(mf.decoders) < 1 {
 		return errors.New("no decoders")
 	}
-	if len(mf.generators) < 1 {
-		return errors.New("no generators")
-	}
 	var mfb modFile
 	if err := yn.Decode(&mfb); err != nil {
 		return err
@@ -55,6 +52,9 @@ func (mf *ModFile) UnmarshalYAML(yn *yaml.Node) error {
 }
 
 func (mf *ModFile) GetModule() (*module.Module, error) {
+	if len(mf.generators) < 1 {
+		return nil, errors.New("no generators")
+	}
 	g, ok := mf.generators[mf.version]
 	if !ok {
 		return nil, fmt.Errorf("no generator for version '%s'", mf.version)
