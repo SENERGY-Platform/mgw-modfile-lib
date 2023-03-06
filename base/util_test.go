@@ -57,10 +57,8 @@ func TestModFile_UnmarshalYAML(t *testing.T) {
 	ver := "vTest"
 	val := "test"
 	d := make(Decoders)
-	g := make(Generators)
 	d[ver] = testDecode
-	g[ver] = testGen
-	mf := NewModFile(d, g)
+	mf := NewModFile(d, nil)
 	// ------------------
 	if err := yaml.Unmarshal(genTestYml(ver, val), &mf); err != nil {
 		fmt.Println(err)
@@ -84,7 +82,7 @@ func TestModFile_UnmarshalYAML(t *testing.T) {
 		t.Errorf("\"%s\" != \"%s\"", reflect.ValueOf(mf.modFile).Elem().FieldByName("Field").String(), val2)
 	}
 	// ------------------
-	mf = NewModFile(d, g)
+	mf = NewModFile(d, nil)
 	if err := yaml.Unmarshal(genTestYml("vErr", val), &mf); err == nil {
 		t.Errorf("yaml.Unmarshal(genTestYml(\"vErr\", \"%s\"), &mf); err == nil", val)
 	} else {
@@ -93,7 +91,7 @@ func TestModFile_UnmarshalYAML(t *testing.T) {
 		}
 	}
 	// ------------------
-	mf = NewModFile(d, g)
+	mf = NewModFile(d, nil)
 	testYml := []byte("test: test")
 	if err := yaml.Unmarshal(testYml, &mf); err == nil {
 		t.Errorf("yaml.Unmarshal(\"%s\", &mf); err == nil", string(testYml))
@@ -103,7 +101,7 @@ func TestModFile_UnmarshalYAML(t *testing.T) {
 		}
 	}
 	// ------------------
-	mf = NewModFile(d, g)
+	mf = NewModFile(d, nil)
 	testYml2 := []byte("1")
 	if err := yaml.Unmarshal(testYml2, &mf); err == nil {
 		t.Errorf("yaml.Unmarshal(\"%s\", &mf); err == nil", string(testYml2))
@@ -115,7 +113,7 @@ func TestModFile_UnmarshalYAML(t *testing.T) {
 	// ------------------
 	ver2 := "vErr"
 	d[ver2] = testErrDecode
-	mf = NewModFile(d, g)
+	mf = NewModFile(d, nil)
 	if err := yaml.Unmarshal(genTestYml(ver2, val), &mf); err == nil {
 		t.Error("err == nil")
 	} else {
