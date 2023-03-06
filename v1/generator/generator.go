@@ -27,7 +27,7 @@ import (
 	"github.com/SENERGY-Platform/mgw-module-lib/module"
 )
 
-func GenModule(f any) (*module.Module, error) {
+func generator(f any) (*module.Module, error) {
 	mf, ok := f.(*model.ModFile)
 	if !ok {
 		return nil, errors.New("invalid type")
