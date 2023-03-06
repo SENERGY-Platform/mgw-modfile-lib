@@ -18,7 +18,7 @@ package v1
 
 import "github.com/SENERGY-Platform/mgw-module-lib/module"
 
-func (mf *ModFile) GenModule() (*module.Module, error) {
+func GenModule(mf *ModFile) (*module.Module, error) {
 	mCs, err := GenConfigs(mf.Configs)
 	if err != nil {
 		return nil, err
