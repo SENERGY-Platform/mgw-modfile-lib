@@ -29,11 +29,15 @@ type testFile struct {
 	Field string `yaml:"field"`
 }
 
-func (f *testFile) GenModule() (*module.Module, error) {
-	return &module.Module{Name: f.Field}, nil
+func testGen(mf any) (*module.Module, error) {
+	tf, ok := mf.(*testFile)
+	if !ok {
+		return nil, errors.New("test")
+	}
+	return &module.Module{Name: tf.Field}, nil
 }
 
-func testDecode(yn *yaml.Node) (ModFile, error) {
+func testDecode(yn *yaml.Node) (any, error) {
 	var f testFile
 	if err := yn.Decode(&f); err != nil {
 		return nil, err
@@ -41,7 +45,7 @@ func testDecode(yn *yaml.Node) (ModFile, error) {
 	return &f, nil
 }
 
-func testErrDecode(_ *yaml.Node) (ModFile, error) {
+func testErrDecode(_ *yaml.Node) (any, error) {
 	return nil, errors.New("test")
 }
 
@@ -53,14 +57,17 @@ func TestModFile_UnmarshalYAML(t *testing.T) {
 	ver := "vTest"
 	val := "test"
 	d := make(Decoders)
+	g := make(Generators)
 	d[ver] = testDecode
-	mf := NewModFile(d)
+	g[ver] = testGen
+	mf := NewModFile(d, g)
 	// ------------------
 	if err := yaml.Unmarshal(genTestYml(ver, val), &mf); err != nil {
+		fmt.Println(err)
 		t.Error("err != nil")
 	}
-	if mf.Version != ver {
-		t.Errorf("\"%s\" != \"%s\"", mf.Version, ver)
+	if mf.version != ver {
+		t.Errorf("\"%s\" != \"%s\"", mf.version, ver)
 	}
 	if reflect.TypeOf(mf.modFile).Elem() != reflect.TypeOf(testFile{}) {
 		t.Errorf("%s != %s", reflect.TypeOf(mf.modFile).Elem(), reflect.TypeOf(testFile{}))
@@ -77,7 +84,7 @@ func TestModFile_UnmarshalYAML(t *testing.T) {
 		t.Errorf("\"%s\" != \"%s\"", reflect.ValueOf(mf.modFile).Elem().FieldByName("Field").String(), val2)
 	}
 	// ------------------
-	mf = NewModFile(d)
+	mf = NewModFile(d, g)
 	if err := yaml.Unmarshal(genTestYml("vErr", val), &mf); err == nil {
 		t.Errorf("yaml.Unmarshal(genTestYml(\"vErr\", \"%s\"), &mf); err == nil", val)
 	} else {
@@ -86,7 +93,7 @@ func TestModFile_UnmarshalYAML(t *testing.T) {
 		}
 	}
 	// ------------------
-	mf = NewModFile(d)
+	mf = NewModFile(d, g)
 	testYml := []byte("test: test")
 	if err := yaml.Unmarshal(testYml, &mf); err == nil {
 		t.Errorf("yaml.Unmarshal(\"%s\", &mf); err == nil", string(testYml))
@@ -96,7 +103,7 @@ func TestModFile_UnmarshalYAML(t *testing.T) {
 		}
 	}
 	// ------------------
-	mf = NewModFile(d)
+	mf = NewModFile(d, g)
 	testYml2 := []byte("1")
 	if err := yaml.Unmarshal(testYml2, &mf); err == nil {
 		t.Errorf("yaml.Unmarshal(\"%s\", &mf); err == nil", string(testYml2))
@@ -108,7 +115,7 @@ func TestModFile_UnmarshalYAML(t *testing.T) {
 	// ------------------
 	ver2 := "vErr"
 	d[ver2] = testErrDecode
-	mf = NewModFile(d)
+	mf = NewModFile(d, g)
 	if err := yaml.Unmarshal(genTestYml(ver2, val), &mf); err == nil {
 		t.Error("err == nil")
 	} else {
@@ -117,7 +124,7 @@ func TestModFile_UnmarshalYAML(t *testing.T) {
 		}
 	}
 	// ------------------
-	var mf2 MFBase
+	var mf2 ModFile
 	if err := yaml.Unmarshal(genTestYml(ver, val), &mf2); err == nil {
 		t.Error("err == nil")
 	} else {
@@ -128,8 +135,12 @@ func TestModFile_UnmarshalYAML(t *testing.T) {
 }
 
 func TestModFile_GetModule(t *testing.T) {
+	ver := "vTest"
 	val := "test"
-	mf := NewModFile(nil)
+	g := make(Generators)
+	g[ver] = testGen
+	mf := NewModFile(nil, g)
+	mf.version = ver
 	mf.modFile = &testFile{Field: val}
 	m, err := mf.GetModule()
 	if err != nil {
@@ -138,12 +149,24 @@ func TestModFile_GetModule(t *testing.T) {
 	if m.Name != val {
 		t.Errorf("\"%s\" != \"%s\"", m.Name, val)
 	}
+	mf = NewModFile(nil, g)
+	mf.modFile = &testFile{Field: val}
+	_, err = mf.GetModule()
+	if err == nil {
+		t.Error("err == nil")
+	}
+	mf = NewModFile(nil, g)
+	mf.version = ver
+	_, err = mf.GetModule()
+	if err == nil {
+		t.Error("err == nil")
+	}
 }
 
 func TestDecoders_Add(t *testing.T) {
 	d := make(Decoders)
 	ver := "vTest"
-	d.Add(func() (string, func(*yaml.Node) (ModFile, error)) {
+	d.Add(func() (string, func(*yaml.Node) (any, error)) {
 		return ver, testErrDecode
 	})
 	if dc, ok := d[ver]; !ok {
@@ -152,6 +175,22 @@ func TestDecoders_Add(t *testing.T) {
 		_, err := dc(nil)
 		if err == nil {
 			t.Error("wrong decoder")
+		}
+	}
+}
+
+func TestGenerators_Add(t *testing.T) {
+	g := make(Generators)
+	ver := "vTest"
+	g.Add(func() (string, func(any) (*module.Module, error)) {
+		return ver, testGen
+	})
+	if gn, ok := g[ver]; !ok {
+		t.Errorf("gn, ok := g[\"%s\"]; !ok", ver)
+	} else {
+		_, err := gn(nil)
+		if err == nil {
+			t.Error("wrong generator")
 		}
 	}
 }

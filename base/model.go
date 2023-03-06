@@ -21,18 +21,17 @@ import (
 	"gopkg.in/yaml.v3"
 )
 
-type ModFile interface {
-	GenModule() (*module.Module, error)
-}
-
-type vInfo struct {
+type modFile struct {
 	Version string `yaml:"modfileVersion"`
 }
 
-type MFBase struct {
-	Version  string
-	decoders Decoders
-	modFile  ModFile
+type ModFile struct {
+	version    string
+	modFile    any
+	decoders   Decoders
+	generators Generators
 }
 
-type Decoders map[string]func(*yaml.Node) (ModFile, error)
+type Decoders map[string]func(*yaml.Node) (any, error)
+
+type Generators map[string]func(any) (*module.Module, error)

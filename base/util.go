@@ -23,39 +23,51 @@ import (
 	"gopkg.in/yaml.v3"
 )
 
-func NewModFile(decoders Decoders) *MFBase {
-	return &MFBase{decoders: decoders}
+func NewModFile(decoders Decoders, generators Generators) *ModFile {
+	return &ModFile{decoders: decoders, generators: generators}
 }
 
-func (mfb *MFBase) UnmarshalYAML(yn *yaml.Node) error {
-	if len(mfb.decoders) == 0 {
+func (mf *ModFile) UnmarshalYAML(yn *yaml.Node) error {
+	if len(mf.decoders) < 1 {
 		return errors.New("no decoders")
 	}
-	var vi vInfo
-	if err := yn.Decode(&vi); err != nil {
+	if len(mf.generators) < 1 {
+		return errors.New("no generators")
+	}
+	var mfb modFile
+	if err := yn.Decode(&mfb); err != nil {
 		return err
 	}
-	if vi.Version == "" {
+	if mfb.Version == "" {
 		return errors.New("no version")
 	}
-	d, ok := mfb.decoders[vi.Version]
+	d, ok := mf.decoders[mfb.Version]
 	if !ok {
-		return fmt.Errorf("no decoder for version '%s'", vi.Version)
+		return fmt.Errorf("no decoder for version '%s'", mfb.Version)
 	}
-	modFile, err := d(yn)
+	m, err := d(yn)
 	if err != nil {
 		return err
 	}
-	mfb.Version = vi.Version
-	mfb.modFile = modFile
+	mf.version = mfb.Version
+	mf.modFile = m
 	return nil
 }
 
-func (mfb *MFBase) GetModule() (*module.Module, error) {
-	return mfb.modFile.GenModule()
+func (mf *ModFile) GetModule() (*module.Module, error) {
+	g, ok := mf.generators[mf.version]
+	if !ok {
+		return nil, fmt.Errorf("no generator for version '%s'", mf.version)
+	}
+	return g(mf.modFile)
 }
 
-func (d Decoders) Add(gf func() (string, func(*yaml.Node) (ModFile, error))) {
-	key, decoder := gf()
-	d[key] = decoder
+func (d Decoders) Add(f func() (string, func(*yaml.Node) (any, error))) {
+	key, df := f()
+	d[key] = df
+}
+
+func (g Generators) Add(f func() (string, func(any) (*module.Module, error))) {
+	key, gf := f()
+	g[key] = gf
 }
