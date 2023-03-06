@@ -14,8 +14,23 @@
  * limitations under the License.
  */
 
-package v1
+package decoder
 
-type configurable interface {
-	GetUserInput() *UserInput
+import (
+	"github.com/SENERGY-Platform/mgw-modfile-lib/v1/model"
+	"gopkg.in/yaml.v3"
+)
+
+var ver = "v1"
+
+func decode(yn *yaml.Node) (any, error) {
+	var mf model.ModFile
+	if err := yn.Decode(&mf); err != nil {
+		return nil, err
+	}
+	return &mf, nil
+}
+
+func GetDecoder() (string, func(*yaml.Node) (any, error)) {
+	return ver, decode
 }

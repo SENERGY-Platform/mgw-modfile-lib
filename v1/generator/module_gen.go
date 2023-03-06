@@ -14,11 +14,14 @@
  * limitations under the License.
  */
 
-package v1
+package generator
 
-import "github.com/SENERGY-Platform/mgw-module-lib/module"
+import (
+	"github.com/SENERGY-Platform/mgw-modfile-lib/v1/model"
+	"github.com/SENERGY-Platform/mgw-module-lib/module"
+)
 
-func GenModule(mf *ModFile) (*module.Module, error) {
+func GenModule(mf *model.ModFile) (*module.Module, error) {
 	mCs, err := GenConfigs(mf.Configs)
 	if err != nil {
 		return nil, err
@@ -85,7 +88,7 @@ func GenStringSet(sl []string) map[string]struct{} {
 	return set
 }
 
-func GenVolumes(mfVs map[string][]VolumeTarget) map[string]struct{} {
+func GenVolumes(mfVs map[string][]model.VolumeTarget) map[string]struct{} {
 	set := make(map[string]struct{})
 	for mfV := range mfVs {
 		set[mfV] = struct{}{}
@@ -93,7 +96,7 @@ func GenVolumes(mfVs map[string][]VolumeTarget) map[string]struct{} {
 	return set
 }
 
-func GenDependencies(mfMDs map[string]ModuleDependency) map[string]string {
+func GenDependencies(mfMDs map[string]model.ModuleDependency) map[string]string {
 	mDs := make(map[string]string)
 	for id, mfMD := range mfMDs {
 		mDs[id] = mfMD.Version
@@ -101,7 +104,7 @@ func GenDependencies(mfMDs map[string]ModuleDependency) map[string]string {
 	return mDs
 }
 
-func GenResources(mfRs map[string]Resource) map[string]map[string]struct{} {
+func GenResources(mfRs map[string]model.Resource) map[string]map[string]struct{} {
 	mRs := make(map[string]map[string]struct{})
 	for ref, mfR := range mfRs {
 		mRs[ref] = GenStringSet(mfR.Tags)
@@ -109,7 +112,7 @@ func GenResources(mfRs map[string]Resource) map[string]map[string]struct{} {
 	return mRs
 }
 
-func GenSecrets(mfSs map[string]Secret) map[string]module.Secret {
+func GenSecrets(mfSs map[string]model.Secret) map[string]module.Secret {
 	mSs := make(map[string]module.Secret)
 	for ref, mfS := range mfSs {
 		mSs[ref] = module.Secret{
@@ -120,7 +123,7 @@ func GenSecrets(mfSs map[string]Secret) map[string]module.Secret {
 	return mSs
 }
 
-func GenInputs[T configurable](mfCs map[string]T) map[string]module.Input {
+func GenInputs[T model.Configurable](mfCs map[string]T) map[string]module.Input {
 	mIs := make(map[string]module.Input)
 	for ref, mfC := range mfCs {
 		mfUI := mfC.GetUserInput()
@@ -131,7 +134,7 @@ func GenInputs[T configurable](mfCs map[string]T) map[string]module.Input {
 	return mIs
 }
 
-func GenInputGroups(mfIGs map[string]InputGroup) map[string]module.InputGroup {
+func GenInputGroups(mfIGs map[string]model.InputGroup) map[string]module.InputGroup {
 	mIGs := make(map[string]module.InputGroup)
 	for ref, mfIG := range mfIGs {
 		mIGs[ref] = module.InputGroup{
@@ -143,7 +146,7 @@ func GenInputGroups(mfIGs map[string]InputGroup) map[string]module.InputGroup {
 	return mIGs
 }
 
-func GenConfigs(mfCVs map[string]ConfigValue) (module.Configs, error) {
+func GenConfigs(mfCVs map[string]model.ConfigValue) (module.Configs, error) {
 	mCs := make(module.Configs)
 	for ref, mfCV := range mfCVs {
 		if mfCV.IsList {

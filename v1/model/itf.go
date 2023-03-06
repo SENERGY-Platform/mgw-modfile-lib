@@ -14,11 +14,8 @@
  * limitations under the License.
  */
 
-package v1
+package model
 
-const (
-	BoolType    DataType = "bool"
-	Int64Type   DataType = "int"
-	Float64Type DataType = "float"
-	StringType  DataType = "string"
-)
+type Configurable interface {
+	GetUserInput() *UserInput
+}

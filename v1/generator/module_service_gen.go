@@ -14,17 +14,18 @@
  * limitations under the License.
  */
 
-package v1
+package generator
 
 import (
 	"errors"
 	"fmt"
+	"github.com/SENERGY-Platform/mgw-modfile-lib/v1/model"
 	"github.com/SENERGY-Platform/mgw-module-lib/module"
 	"io/fs"
 	"time"
 )
 
-func GenServices(mfSs map[string]Service) (map[string]*module.Service, error) {
+func GenServices(mfSs map[string]model.Service) (map[string]*module.Service, error) {
 	mSs := make(map[string]*module.Service)
 	for ref, mfS := range mfSs {
 		mBMs, err := GenBindMounts(mfS.Include)
@@ -57,7 +58,7 @@ func GenServices(mfSs map[string]Service) (map[string]*module.Service, error) {
 	return mSs, nil
 }
 
-func GenRunConfig(mfRC RunConfig) module.RunConfig {
+func GenRunConfig(mfRC model.RunConfig) module.RunConfig {
 	mRC := module.RunConfig{
 		MaxRetries: mfRC.MaxRetries,
 		RunOnce:    mfRC.RunOnce,
@@ -70,7 +71,7 @@ func GenRunConfig(mfRC RunConfig) module.RunConfig {
 	return mRC
 }
 
-func GenBindMounts(mfBMs []BindMount) (map[string]module.BindMount, error) {
+func GenBindMounts(mfBMs []model.BindMount) (map[string]module.BindMount, error) {
 	mBMs := make(map[string]module.BindMount)
 	for _, mfBM := range mfBMs {
 		if v, ok := mBMs[mfBM.MountPoint]; ok {
@@ -87,7 +88,7 @@ func GenBindMounts(mfBMs []BindMount) (map[string]module.BindMount, error) {
 	return mBMs, nil
 }
 
-func GenTmpfsMounts(mfTMs []TmpfsMount) (map[string]module.TmpfsMount, error) {
+func GenTmpfsMounts(mfTMs []model.TmpfsMount) (map[string]module.TmpfsMount, error) {
 	mTMs := make(map[string]module.TmpfsMount)
 	for _, mfTM := range mfTMs {
 		if _, ok := mTMs[mfTM.MountPoint]; ok {
@@ -102,7 +103,7 @@ func GenTmpfsMounts(mfTMs []TmpfsMount) (map[string]module.TmpfsMount, error) {
 	return mTMs, nil
 }
 
-func GenHttpEndpoints(mfHEs []HttpEndpoint) (map[string]module.HttpEndpoint, error) {
+func GenHttpEndpoints(mfHEs []model.HttpEndpoint) (map[string]module.HttpEndpoint, error) {
 	mHEs := make(map[string]module.HttpEndpoint)
 	for _, mfHE := range mfHEs {
 		p := mfHE.Path
@@ -124,7 +125,7 @@ func GenHttpEndpoints(mfHEs []HttpEndpoint) (map[string]module.HttpEndpoint, err
 	return mHEs, nil
 }
 
-func GenPorts(mfSPs []SrvPort) ([]module.Port, error) {
+func GenPorts(mfSPs []model.SrvPort) ([]module.Port, error) {
 	var mPs []module.Port
 	for _, mfSP := range mfSPs {
 		proto := module.TcpPort

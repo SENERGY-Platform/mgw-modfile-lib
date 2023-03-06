@@ -14,14 +14,15 @@
  * limitations under the License.
  */
 
-package v1
+package generator
 
 import (
 	"fmt"
+	"github.com/SENERGY-Platform/mgw-modfile-lib/v1/model"
 	"github.com/SENERGY-Platform/mgw-module-lib/module"
 )
 
-func SetSrvReferences(mfSRs map[string][]DependencyTarget, mSs map[string]*module.Service) error {
+func SetSrvReferences(mfSRs map[string][]model.DependencyTarget, mSs map[string]*module.Service) error {
 	for ref, mfDTs := range mfSRs {
 		for _, mfDT := range mfDTs {
 			for _, tRef := range mfDT.Services {
@@ -45,7 +46,7 @@ func SetSrvReferences(mfSRs map[string][]DependencyTarget, mSs map[string]*modul
 	return nil
 }
 
-func SetVolumes(mfVs map[string][]VolumeTarget, mSs map[string]*module.Service) error {
+func SetVolumes(mfVs map[string][]model.VolumeTarget, mSs map[string]*module.Service) error {
 	for mfV, mfVTs := range mfVs {
 		for _, mfVT := range mfVTs {
 			for _, ref := range mfVT.Services {
@@ -69,7 +70,7 @@ func SetVolumes(mfVs map[string][]VolumeTarget, mSs map[string]*module.Service) 
 	return nil
 }
 
-func SetExtDependencies(mfMDs map[string]ModuleDependency, mSs map[string]*module.Service) error {
+func SetExtDependencies(mfMDs map[string]model.ModuleDependency, mSs map[string]*module.Service) error {
 	for extId, mfMD := range mfMDs {
 		for extRef, mfDTs := range mfMD.RequiredServices {
 			for _, mfDT := range mfDTs {
@@ -98,7 +99,7 @@ func SetExtDependencies(mfMDs map[string]ModuleDependency, mSs map[string]*modul
 	return nil
 }
 
-func SetResources(mfRs map[string]Resource, mSs map[string]*module.Service) error {
+func SetResources(mfRs map[string]model.Resource, mSs map[string]*module.Service) error {
 	for rRef, mfR := range mfRs {
 		for _, mfRT := range mfR.Targets {
 			for _, sRef := range mfRT.Services {
@@ -125,7 +126,7 @@ func SetResources(mfRs map[string]Resource, mSs map[string]*module.Service) erro
 	return nil
 }
 
-func SetSecrets(mfSCTs map[string]Secret, mSs map[string]*module.Service) error {
+func SetSecrets(mfSCTs map[string]model.Secret, mSs map[string]*module.Service) error {
 	for sctRef, mfSCT := range mfSCTs {
 		for _, mfRTB := range mfSCT.Targets {
 			for _, sRef := range mfRTB.Services {
@@ -149,7 +150,7 @@ func SetSecrets(mfSCTs map[string]Secret, mSs map[string]*module.Service) error 
 	return nil
 }
 
-func SetConfigs(mfCVs map[string]ConfigValue, mSs map[string]*module.Service) error {
+func SetConfigs(mfCVs map[string]model.ConfigValue, mSs map[string]*module.Service) error {
 	for cRef, mfCV := range mfCVs {
 		for _, mfCT := range mfCV.Targets {
 			for _, sRef := range mfCT.Services {

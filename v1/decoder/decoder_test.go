@@ -14,9 +14,10 @@
  * limitations under the License.
  */
 
-package v1
+package decoder
 
 import (
+	"github.com/SENERGY-Platform/mgw-modfile-lib/v1/model"
 	"gopkg.in/yaml.v3"
 	"reflect"
 	"testing"
@@ -29,16 +30,16 @@ func TestGetDecoder(t *testing.T) {
 	}
 	if f, err := d(&yaml.Node{}); err != nil {
 		t.Error(err)
-	} else if reflect.TypeOf(f).Elem() != reflect.TypeOf(ModFile{}) {
-		t.Errorf("%s != %s", reflect.TypeOf(f).Elem(), reflect.TypeOf(ModFile{}))
+	} else if reflect.TypeOf(f).Elem() != reflect.TypeOf(model.ModFile{}) {
+		t.Errorf("%s != %s", reflect.TypeOf(f).Elem(), reflect.TypeOf(model.ModFile{}))
 	}
 }
 
 func TestDecode(t *testing.T) {
 	if f, err := decode(&yaml.Node{}); err != nil {
 		t.Error("err != nil")
-	} else if reflect.TypeOf(f).Elem() != reflect.TypeOf(ModFile{}) {
-		t.Errorf("%s != %s", reflect.TypeOf(f).Elem(), reflect.TypeOf(ModFile{}))
+	} else if reflect.TypeOf(f).Elem() != reflect.TypeOf(model.ModFile{}) {
+		t.Errorf("%s != %s", reflect.TypeOf(f).Elem(), reflect.TypeOf(model.ModFile{}))
 	}
 	if _, err := decode(&yaml.Node{Value: "1"}); err == nil {
 		t.Error("err == nil")

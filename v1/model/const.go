@@ -14,22 +14,11 @@
  * limitations under the License.
  */
 
-package v1
+package model
 
-import (
-	"gopkg.in/yaml.v3"
+const (
+	BoolType    DataType = "bool"
+	Int64Type   DataType = "int"
+	Float64Type DataType = "float"
+	StringType  DataType = "string"
 )
-
-var ver = "v1"
-
-func decode(yn *yaml.Node) (any, error) {
-	var mf ModFile
-	if err := yn.Decode(&mf); err != nil {
-		return nil, err
-	}
-	return &mf, nil
-}
-
-func GetDecoder() (string, func(*yaml.Node) (any, error)) {
-	return ver, decode
-}

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package v1
+package model
 
 import (
 	"io/fs"

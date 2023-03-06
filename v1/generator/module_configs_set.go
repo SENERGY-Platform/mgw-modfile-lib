@@ -14,34 +14,35 @@
  * limitations under the License.
  */
 
-package v1
+package generator
 
 import (
 	"fmt"
+	"github.com/SENERGY-Platform/mgw-modfile-lib/v1/model"
 	"github.com/SENERGY-Platform/mgw-module-lib/module"
 )
 
-func SetSlice(ref string, mfCV ConfigValue, mCs module.Configs) error {
+func SetSlice(ref string, mfCV model.ConfigValue, mCs module.Configs) error {
 	switch mfCV.DataType {
-	case StringType:
+	case model.StringType:
 		d, o, co, err := parseConfigSlice(mfCV.Value, mfCV.Options, mfCV.TypeOptions, parseConfigValueString)
 		if err != nil {
 			return fmt.Errorf("error parsing config '%s': %s", ref, err)
 		}
 		mCs.SetStringSlice(ref, d, o, mfCV.OptionsExt, mfCV.Type, co, mfCV.Delimiter)
-	case BoolType:
+	case model.BoolType:
 		d, o, co, err := parseConfigSlice(mfCV.Value, mfCV.Options, mfCV.TypeOptions, parseConfigValueBool)
 		if err != nil {
 			return fmt.Errorf("error parsing config '%s': %s", ref, err)
 		}
 		mCs.SetBoolSlice(ref, d, o, mfCV.OptionsExt, mfCV.Type, co, mfCV.Delimiter)
-	case Int64Type:
+	case model.Int64Type:
 		d, o, co, err := parseConfigSlice(mfCV.Value, mfCV.Options, mfCV.TypeOptions, parseConfigValueInt64)
 		if err != nil {
 			return fmt.Errorf("error parsing config '%s': %s", ref, err)
 		}
 		mCs.SetInt64Slice(ref, d, o, mfCV.OptionsExt, mfCV.Type, co, mfCV.Delimiter)
-	case Float64Type:
+	case model.Float64Type:
 		d, o, co, err := parseConfigSlice(mfCV.Value, mfCV.Options, mfCV.TypeOptions, parseConfigValueFloat64)
 		if err != nil {
 			return fmt.Errorf("error parsing config '%s': %s", ref, err)
@@ -53,27 +54,27 @@ func SetSlice(ref string, mfCV ConfigValue, mCs module.Configs) error {
 	return nil
 }
 
-func SetValue(ref string, mfCV ConfigValue, mCs module.Configs) error {
+func SetValue(ref string, mfCV model.ConfigValue, mCs module.Configs) error {
 	switch mfCV.DataType {
-	case StringType:
+	case model.StringType:
 		d, o, co, err := parseConfig(mfCV.Value, mfCV.Options, mfCV.TypeOptions, parseConfigValueString)
 		if err != nil {
 			return fmt.Errorf("error parsing config '%s': %s", ref, err)
 		}
 		mCs.SetString(ref, d, o, mfCV.OptionsExt, mfCV.Type, co)
-	case BoolType:
+	case model.BoolType:
 		d, o, co, err := parseConfig(mfCV.Value, mfCV.Options, mfCV.TypeOptions, parseConfigValueBool)
 		if err != nil {
 			return fmt.Errorf("error parsing config '%s': %s", ref, err)
 		}
 		mCs.SetBool(ref, d, o, mfCV.OptionsExt, mfCV.Type, co)
-	case Int64Type:
+	case model.Int64Type:
 		d, o, co, err := parseConfig(mfCV.Value, mfCV.Options, mfCV.TypeOptions, parseConfigValueInt64)
 		if err != nil {
 			return fmt.Errorf("error parsing config '%s': %s", ref, err)
 		}
 		mCs.SetInt64(ref, d, o, mfCV.OptionsExt, mfCV.Type, co)
-	case Float64Type:
+	case model.Float64Type:
 		d, o, co, err := parseConfig(mfCV.Value, mfCV.Options, mfCV.TypeOptions, parseConfigValueFloat64)
 		if err != nil {
 			return fmt.Errorf("error parsing config '%s': %s", ref, err)
