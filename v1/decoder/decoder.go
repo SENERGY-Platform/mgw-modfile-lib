@@ -21,8 +21,6 @@ import (
 	"gopkg.in/yaml.v3"
 )
 
-var ver = "v1"
-
 func decode(yn *yaml.Node) (any, error) {
 	var mf model.ModFile
 	if err := yn.Decode(&mf); err != nil {
@@ -32,5 +30,5 @@ func decode(yn *yaml.Node) (any, error) {
 }
 
 func GetDecoder() (string, func(*yaml.Node) (any, error)) {
-	return ver, decode
+	return model.Version, decode
 }

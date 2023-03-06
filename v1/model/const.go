@@ -16,6 +16,8 @@
 
 package model
 
+const Version = "v1"
+
 const (
 	BoolType    DataType = "bool"
 	Int64Type   DataType = "int"

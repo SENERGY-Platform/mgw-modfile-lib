@@ -25,8 +25,8 @@ import (
 
 func TestGetDecoder(t *testing.T) {
 	v, d := GetDecoder()
-	if v != ver {
-		t.Errorf("\"%s\" != \"%s\"", v, ver)
+	if v != model.Version {
+		t.Errorf("\"%s\" != \"%s\"", v, model.Version)
 	}
 	if f, err := d(&yaml.Node{}); err != nil {
 		t.Error(err)
