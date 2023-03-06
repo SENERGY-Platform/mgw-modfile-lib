@@ -89,3 +89,7 @@ func generator(f any) (*module.Module, error) {
 		},
 	}, nil
 }
+
+func GetGenerator() (string, func(any) (*module.Module, error)) {
+	return model.Version, generator
+}
