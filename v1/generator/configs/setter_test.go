@@ -59,7 +59,7 @@ func TestParseConfigValueBool(t *testing.T) {
 	if v, err := parseConfigValueBool(b); err != nil {
 		t.Errorf("v, err := parseConfigValueString(%v); err != nil", b)
 	} else if v != b {
-		t.Errorf("\"%v\" != \"%v\"", v, b)
+		t.Errorf("%v != %v", v, b)
 	}
 	if _, err := parseConfigValueBool(1); err == nil {
 		t.Error("v, err := parseConfigValueBool(1); err == nil")
@@ -71,27 +71,27 @@ func TestParseConfigValueInt64(t *testing.T) {
 	if v, err := parseConfigValueInt64(int(i)); err != nil {
 		t.Errorf("v, err := parseConfigValueInt64(int(%d)); err != nil", i)
 	} else if v != i {
-		t.Errorf("\"%d\" != \"%d\"", v, i)
+		t.Errorf("%d != %d", v, i)
 	}
 	if v, err := parseConfigValueInt64(int8(i)); err != nil {
 		t.Errorf("v, err := parseConfigValueInt64(int8(%d)); err != nil", i)
 	} else if v != i {
-		t.Errorf("\"%d\" != \"%d\"", v, i)
+		t.Errorf("%d != %d", v, i)
 	}
 	if v, err := parseConfigValueInt64(int16(i)); err != nil {
 		t.Errorf("v, err := parseConfigValueInt64(int16(%d)); err != nil", i)
 	} else if v != i {
-		t.Errorf("\"%d\" != \"%d\"", v, i)
+		t.Errorf("%d != %d", v, i)
 	}
 	if v, err := parseConfigValueInt64(int32(i)); err != nil {
 		t.Errorf("v, err := parseConfigValueInt64(int32(%d)); err != nil", i)
 	} else if v != i {
-		t.Errorf("\"%d\" != \"%d\"", v, i)
+		t.Errorf("%d != %d", v, i)
 	}
 	if v, err := parseConfigValueInt64(i); err != nil {
 		t.Errorf("v, err := parseConfigValueInt64(%d); err != nil", i)
 	} else if v != i {
-		t.Errorf("\"%d\" != \"%d\"", v, i)
+		t.Errorf("%d != %d", v, i)
 	}
 	if _, err := parseConfigValueInt64(""); err == nil {
 		t.Error("v, err := parseConfigValueInt64(\"\"); err == nil")
@@ -103,12 +103,12 @@ func TestParseConfigValueFloat64(t *testing.T) {
 	if v, err := parseConfigValueFloat64(float32(f)); err != nil {
 		t.Errorf("v, err := parseConfigValueFloat64(float32(%f)); err != nil", f)
 	} else if v != f {
-		t.Errorf("\"%f\" != \"%f\"", v, f)
+		t.Errorf("%f != %f", v, f)
 	}
 	if v, err := parseConfigValueFloat64(f); err != nil {
 		t.Errorf("v, err := parseConfigValueFloat64(%f); err != nil", f)
 	} else if v != f {
-		t.Errorf("\"%f\" != \"%f\"", v, f)
+		t.Errorf("%f != %f", v, f)
 	}
 	if _, err := parseConfigValueFloat64(""); err == nil {
 		t.Error("v, err := parseConfigValueFloat64(\"\"); err == nil")
