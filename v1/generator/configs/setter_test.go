@@ -97,3 +97,20 @@ func TestParseConfigValueInt64(t *testing.T) {
 		t.Error("v, err := parseConfigValueInt64(\"\"); err == nil")
 	}
 }
+
+func TestParseConfigValueFloat64(t *testing.T) {
+	f := 1.0
+	if v, err := parseConfigValueFloat64(float32(f)); err != nil {
+		t.Errorf("v, err := parseConfigValueFloat64(float32(%f)); err != nil", f)
+	} else if v != f {
+		t.Errorf("\"%f\" != \"%f\"", v, f)
+	}
+	if v, err := parseConfigValueFloat64(f); err != nil {
+		t.Errorf("v, err := parseConfigValueFloat64(%f); err != nil", f)
+	} else if v != f {
+		t.Errorf("\"%f\" != \"%f\"", v, f)
+	}
+	if _, err := parseConfigValueFloat64(""); err == nil {
+		t.Error("v, err := parseConfigValueFloat64(\"\"); err == nil")
+	}
+}
