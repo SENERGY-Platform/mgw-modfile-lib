@@ -242,7 +242,7 @@ func TestParseConfig(t *testing.T) {
 	var opt []any
 	var ctOpt map[string]any
 	p, o, to, err := parseConfig(nil, opt, ctOpt, func(a any) (int, error) {
-		return a.(int) + 1, nil
+		return 0, nil
 	})
 	if err != nil {
 		t.Error("err != nil")
@@ -290,6 +290,83 @@ func TestParseConfig(t *testing.T) {
 		t.Errorf("%d != 2", o[0])
 	}
 	_, _, _, err = parseConfig(nil, opt, ctOpt, func(a any) (int, error) {
+		return 0, errors.New("test")
+	})
+	if err == nil {
+		t.Error("err == nil")
+	}
+}
+
+func TestParseConfigSlice(t *testing.T) {
+	var opt []any
+	var ctOpt map[string]any
+	sl, o, to, err := parseConfigSlice(nil, opt, ctOpt, func(a any) (int, error) {
+		return 0, nil
+	})
+	if err != nil {
+		t.Error("err != nil")
+	} else if len(sl) != 0 {
+		t.Errorf("len(%v) != 0", sl)
+	} else if len(o) != 0 {
+		t.Errorf("len(%v) != 0", o)
+	} else if len(to) != 0 {
+		t.Errorf("len(%v) != 0", to)
+	}
+	_, _, _, err = parseConfigSlice("", opt, ctOpt, func(a any) (int, error) {
+		return 0, nil
+	})
+	if err == nil {
+		t.Error("err == nil")
+	}
+	var val []any
+	sl, o, to, err = parseConfigSlice(val, opt, ctOpt, func(a any) (int, error) {
+		return 0, nil
+	})
+	if err != nil {
+		t.Error("err != nil")
+	} else if len(sl) != 0 {
+		t.Errorf("len(%v) != 0", sl)
+	}
+	ctOpt = make(map[string]any)
+	ctOpt["test"] = uint(1)
+	_, _, _, err = parseConfigSlice(nil, opt, ctOpt, func(a any) (int, error) {
+		return 0, nil
+	})
+	if err == nil {
+		t.Error("err == nil")
+	}
+	ctOpt = nil
+
+	opt = append(opt, 1)
+	sl, o, to, err = parseConfigSlice(nil, opt, ctOpt, func(a any) (int, error) {
+		return a.(int) + 1, nil
+	})
+	if err != nil {
+		t.Error("err != nil")
+	} else if len(o) != 1 {
+		t.Errorf("len(%v) != 1", o)
+	} else if o[0] != 2 {
+		t.Errorf("%d != 2", o[0])
+	}
+	_, _, _, err = parseConfigSlice(nil, opt, ctOpt, func(a any) (int, error) {
+		return 0, errors.New("test")
+	})
+	if err == nil {
+		t.Error("err == nil")
+	}
+	opt = []any{}
+	val = append(val, 1)
+	sl, o, to, err = parseConfigSlice(val, opt, ctOpt, func(a any) (int, error) {
+		return a.(int) + 1, nil
+	})
+	if err != nil {
+		t.Error("err != nil")
+	} else if len(sl) != 1 {
+		t.Errorf("len(%v) != 1", sl)
+	} else if sl[0] != 2 {
+		t.Errorf("%d != 2", sl[0])
+	}
+	sl, o, to, err = parseConfigSlice(val, opt, ctOpt, func(a any) (int, error) {
 		return 0, errors.New("test")
 	})
 	if err == nil {
