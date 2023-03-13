@@ -39,8 +39,6 @@ func TestParseConfigOptions(t *testing.T) {
 	})
 	if err == nil {
 		t.Error("err == nil")
-	} else if len(o) != 0 {
-		t.Errorf("len(%v) != 0", o)
 	}
 }
 
@@ -227,5 +225,64 @@ func TestParseConfigTypeOptions(t *testing.T) {
 	opt[str] = uint(1)
 	if _, err := parseConfigTypeOptions(opt); err == nil {
 		t.Errorf("_, err := parseConfigTypeOptions(%v); err == nil", opt)
+	}
+}
+
+func TestParseConfig(t *testing.T) {
+	var opt []any
+	var ctOpt map[string]any
+	p, o, to, err := parseConfig(nil, opt, ctOpt, func(a any) (int, error) {
+		return a.(int) + 1, nil
+	})
+	if err != nil {
+		t.Error("err != nil")
+	} else if p != nil {
+		t.Error("p != nil")
+	} else if len(o) != 0 {
+		t.Errorf("len(%v) != 0", o)
+	} else if len(to) != 0 {
+		t.Errorf("len(%v) != 0", to)
+	}
+	p, o, to, err = parseConfig(1, opt, ctOpt, func(a any) (int, error) {
+		return a.(int) + 1, nil
+	})
+	if err != nil {
+		t.Error("err != nil")
+	} else if p == nil {
+		t.Error("p != nil")
+	} else if *p != 2 {
+		t.Error("*p != 2")
+	}
+	_, _, _, err = parseConfig(1, opt, ctOpt, func(a any) (int, error) {
+		return 0, errors.New("test")
+	})
+	if err == nil {
+		t.Error("err == nil")
+	}
+	ctOpt = make(map[string]any)
+	ctOpt["test"] = uint(1)
+	_, _, _, err = parseConfig(nil, opt, ctOpt, func(a any) (int, error) {
+		return 0, errors.New("test")
+	})
+	if err == nil {
+		t.Error("err == nil")
+	}
+	ctOpt = nil
+	opt = append(opt, 1)
+	p, o, to, err = parseConfig(nil, opt, ctOpt, func(a any) (int, error) {
+		return a.(int) + 1, nil
+	})
+	if err != nil {
+		t.Error("err != nil")
+	} else if len(o) != 1 {
+		t.Errorf("len(%v) != 1", o)
+	} else if o[0] != 2 {
+		t.Errorf("%d != 2", o[0])
+	}
+	_, _, _, err = parseConfig(nil, opt, ctOpt, func(a any) (int, error) {
+		return 0, errors.New("test")
+	})
+	if err == nil {
+		t.Error("err == nil")
 	}
 }
