@@ -86,14 +86,14 @@ func SetValue(ref string, mfCV model.ConfigValue, mCs module.Configs) error {
 	return nil
 }
 
-func parseConfig[T any](val any, opt []any, ctOpt map[string]any, valParser func(any) (T, error)) (d *T, o []T, co module.ConfigTypeOptions, err error) {
+func parseConfig[T any](val any, opt []any, ctOpt map[string]any, valParser func(any) (T, error)) (p *T, o []T, co module.ConfigTypeOptions, err error) {
 	if val != nil {
 		v, er := valParser(val)
 		if er != nil {
 			err = er
 			return
 		}
-		d = &v
+		p = &v
 	}
 	if o, err = parseConfigOptions(opt, valParser); err != nil {
 		return
@@ -102,7 +102,7 @@ func parseConfig[T any](val any, opt []any, ctOpt map[string]any, valParser func
 	return
 }
 
-func parseConfigSlice[T any](val any, opt []any, ctOpt map[string]any, valParser func(any) (T, error)) (d []T, o []T, co module.ConfigTypeOptions, err error) {
+func parseConfigSlice[T any](val any, opt []any, ctOpt map[string]any, valParser func(any) (T, error)) (sl []T, o []T, co module.ConfigTypeOptions, err error) {
 	if val != nil {
 		v, ok := val.([]any)
 		if !ok {
@@ -115,7 +115,7 @@ func parseConfigSlice[T any](val any, opt []any, ctOpt map[string]any, valParser
 				err = e
 				return
 			}
-			d = append(d, pi)
+			sl = append(sl, pi)
 		}
 	}
 	if o, err = parseConfigOptions(opt, valParser); err != nil {
