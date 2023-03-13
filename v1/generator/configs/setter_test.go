@@ -18,6 +18,8 @@ package configs
 
 import (
 	"errors"
+	"github.com/SENERGY-Platform/mgw-module-lib/module"
+	"reflect"
 	"testing"
 )
 
@@ -112,5 +114,118 @@ func TestParseConfigValueFloat64(t *testing.T) {
 	}
 	if _, err := parseConfigValueFloat64(""); err == nil {
 		t.Error("v, err := parseConfigValueFloat64(\"\"); err == nil")
+	}
+}
+
+func TestParseConfigTypeOptions(t *testing.T) {
+	var opt map[string]any
+	if cto, err := parseConfigTypeOptions(opt); err != nil {
+		t.Errorf("cto, err := parseConfigTypeOptions(%v); err != nil", opt)
+	} else if len(cto) != 0 {
+		t.Errorf("len(%v) != 0", cto)
+	}
+	opt = make(map[string]any)
+	if cto, err := parseConfigTypeOptions(opt); err != nil {
+		t.Errorf("cto, err := parseConfigTypeOptions(%v); err != nil", opt)
+	} else if len(cto) != 0 {
+		t.Errorf("len(%v) != 0", cto)
+	}
+	str := "test"
+	opt[str] = str
+	if cto, err := parseConfigTypeOptions(opt); err != nil {
+		t.Errorf("cto, err := parseConfigTypeOptions(%v); err != nil", opt)
+	} else if o, ok := cto[str]; !ok {
+		t.Errorf("o, ok := cto[\"%s\"]; !ok", str)
+	} else if o.DataType != module.StringType {
+		t.Error("o.DataType != module.StringType")
+	} else if reflect.DeepEqual(o.Value, str) == false {
+		t.Errorf("reflect.DeepEqual(%v, \"%s\") == false", o.Value, str)
+	}
+	i := int64(1)
+	opt[str] = int(i)
+	if cto, err := parseConfigTypeOptions(opt); err != nil {
+		t.Errorf("cto, err := parseConfigTypeOptions(%v); err != nil", opt)
+	} else if o, ok := cto[str]; !ok {
+		t.Errorf("o, ok := cto[\"%s\"]; !ok", str)
+	} else if o.DataType != module.Int64Type {
+		t.Error("o.DataType != module.Int64Type")
+	} else if reflect.DeepEqual(o.Value, i) == false {
+		t.Errorf("reflect.DeepEqual(%v, %d) == false", o.Value, i)
+	}
+	opt[str] = int8(i)
+	if cto, err := parseConfigTypeOptions(opt); err != nil {
+		t.Errorf("cto, err := parseConfigTypeOptions(%v); err != nil", opt)
+	} else if o, ok := cto[str]; !ok {
+		t.Errorf("o, ok := cto[\"%s\"]; !ok", str)
+	} else if o.DataType != module.Int64Type {
+		t.Error("o.DataType != module.Int64Type")
+	} else if reflect.DeepEqual(o.Value, i) == false {
+		t.Errorf("reflect.DeepEqual(%v, %d) == false", o.Value, i)
+	}
+	opt[str] = int16(i)
+	if cto, err := parseConfigTypeOptions(opt); err != nil {
+		t.Errorf("cto, err := parseConfigTypeOptions(%v); err != nil", opt)
+	} else if o, ok := cto[str]; !ok {
+		t.Errorf("o, ok := cto[\"%s\"]; !ok", str)
+	} else if o.DataType != module.Int64Type {
+		t.Error("o.DataType != module.Int64Type")
+	} else if reflect.DeepEqual(o.Value, i) == false {
+		t.Errorf("reflect.DeepEqual(%v, %d) == false", o.Value, i)
+	}
+	opt[str] = int32(i)
+	if cto, err := parseConfigTypeOptions(opt); err != nil {
+		t.Errorf("cto, err := parseConfigTypeOptions(%v); err != nil", opt)
+	} else if o, ok := cto[str]; !ok {
+		t.Errorf("o, ok := cto[\"%s\"]; !ok", str)
+	} else if o.DataType != module.Int64Type {
+		t.Error("o.DataType != module.Int64Type")
+	} else if reflect.DeepEqual(o.Value, i) == false {
+		t.Errorf("reflect.DeepEqual(%v, %d) == false", o.Value, i)
+	}
+	opt[str] = i
+	if cto, err := parseConfigTypeOptions(opt); err != nil {
+		t.Errorf("cto, err := parseConfigTypeOptions(%v); err != nil", opt)
+	} else if o, ok := cto[str]; !ok {
+		t.Errorf("o, ok := cto[\"%s\"]; !ok", str)
+	} else if o.DataType != module.Int64Type {
+		t.Error("o.DataType != module.Int64Type")
+	} else if reflect.DeepEqual(o.Value, i) == false {
+		t.Errorf("reflect.DeepEqual(%v, %d) == false", o.Value, i)
+	}
+	f := 1.0
+	opt[str] = float32(f)
+	if cto, err := parseConfigTypeOptions(opt); err != nil {
+		t.Errorf("cto, err := parseConfigTypeOptions(%v); err != nil", opt)
+	} else if o, ok := cto[str]; !ok {
+		t.Errorf("o, ok := cto[\"%s\"]; !ok", str)
+	} else if o.DataType != module.Float64Type {
+		t.Error("o.DataType != module.Float64Type")
+	} else if reflect.DeepEqual(o.Value, f) == false {
+		t.Errorf("reflect.DeepEqual(%v, %f) == false", o.Value, f)
+	}
+	opt[str] = f
+	if cto, err := parseConfigTypeOptions(opt); err != nil {
+		t.Errorf("cto, err := parseConfigTypeOptions(%v); err != nil", opt)
+	} else if o, ok := cto[str]; !ok {
+		t.Errorf("o, ok := cto[\"%s\"]; !ok", str)
+	} else if o.DataType != module.Float64Type {
+		t.Error("o.DataType != module.Float64Type")
+	} else if reflect.DeepEqual(o.Value, f) == false {
+		t.Errorf("reflect.DeepEqual(%v, %f) == false", o.Value, f)
+	}
+	b := true
+	opt[str] = b
+	if cto, err := parseConfigTypeOptions(opt); err != nil {
+		t.Errorf("cto, err := parseConfigTypeOptions(%v); err != nil", opt)
+	} else if o, ok := cto[str]; !ok {
+		t.Errorf("o, ok := cto[\"%s\"]; !ok", str)
+	} else if o.DataType != module.BoolType {
+		t.Error("o.DataType != module.BoolType")
+	} else if reflect.DeepEqual(o.Value, b) == false {
+		t.Errorf("reflect.DeepEqual(%v, %v) == false", o.Value, b)
+	}
+	opt[str] = uint(1)
+	if _, err := parseConfigTypeOptions(opt); err == nil {
+		t.Errorf("_, err := parseConfigTypeOptions(%v); err == nil", opt)
 	}
 }
