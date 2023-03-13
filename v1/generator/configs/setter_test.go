@@ -261,7 +261,7 @@ func TestParseConfig(t *testing.T) {
 	} else if p == nil {
 		t.Error("p != nil")
 	} else if *p != 2 {
-		t.Error("*p != 2")
+		t.Errorf("%d != 2", *p)
 	}
 	_, _, _, err = parseConfig(1, opt, ctOpt, func(a any) (int, error) {
 		return 0, errors.New("test")
