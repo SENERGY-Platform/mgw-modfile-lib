@@ -53,3 +53,15 @@ func TestParseConfigValueString(t *testing.T) {
 		t.Error("v, err := parseConfigValueString(1); err == nil")
 	}
 }
+
+func TestParseConfigValueBool(t *testing.T) {
+	b := true
+	if v, err := parseConfigValueBool(b); err != nil {
+		t.Errorf("v, err := parseConfigValueString(\"%v\"); err != nil", b)
+	} else if v != b {
+		t.Errorf("\"%v\" != \"%v\"", v, b)
+	}
+	if _, err := parseConfigValueBool(1); err == nil {
+		t.Error("v, err := parseConfigValueBool(1); err == nil")
+	}
+}
