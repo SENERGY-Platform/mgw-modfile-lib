@@ -272,7 +272,7 @@ func TestParseConfig(t *testing.T) {
 	ctOpt = make(map[string]any)
 	ctOpt["test"] = uint(1)
 	_, _, _, err = parseConfig(nil, opt, ctOpt, func(a any) (int, error) {
-		return 0, errors.New("test")
+		return 0, nil
 	})
 	if err == nil {
 		t.Error("err == nil")
