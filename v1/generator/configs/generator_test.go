@@ -25,10 +25,8 @@ func TestGenConfigs(t *testing.T) {
 	var mfCVs map[string]model.ConfigValue
 	if mCs, err := GenConfigs(mfCVs); err != nil {
 		t.Errorf("mCs, err := GenConfigs(%v); err != nil", mfCVs)
-	} else {
-		if len(mCs) != 0 {
-			t.Errorf("len(%v) != 0", mCs)
-		}
+	} else if len(mCs) != 0 {
+		t.Errorf("len(%v) != 0", mCs)
 	}
 	mfCVs = make(map[string]model.ConfigValue)
 	if mCs, err := GenConfigs(mfCVs); err != nil {
