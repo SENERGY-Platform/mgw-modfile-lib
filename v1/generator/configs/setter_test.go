@@ -15,3 +15,29 @@
  */
 
 package configs
+
+import (
+	"errors"
+	"testing"
+)
+
+func TestParseConfigOptions(t *testing.T) {
+	o, err := parseConfigOptions([]any{1}, func(a any) (int, error) {
+		return a.(int) + 1, nil
+	})
+	if err != nil {
+		t.Error("err != nil")
+	} else if len(o) != 1 {
+		t.Errorf("len(%v) != 1", o)
+	} else if o[0] != 2 {
+		t.Errorf("%d != 2", o[0])
+	}
+	o, err = parseConfigOptions([]any{1}, func(a any) (int, error) {
+		return 0, errors.New("test")
+	})
+	if err == nil {
+		t.Error("err == nil")
+	} else if len(o) != 0 {
+		t.Errorf("len(%v) != 0", o)
+	}
+}
