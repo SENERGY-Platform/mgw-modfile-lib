@@ -61,13 +61,17 @@ func GenServices(mfSs map[string]model.Service) (map[string]*module.Service, err
 
 func GenRunConfig(mfRC model.RunConfig) module.RunConfig {
 	mRC := module.RunConfig{
-		MaxRetries: mfRC.MaxRetries,
-		RunOnce:    mfRC.RunOnce,
-		StopSignal: mfRC.StopSignal,
-		PseudoTTY:  mfRC.PseudoTTY,
+		MaxRetries:  3,
+		RunOnce:     mfRC.RunOnce,
+		StopTimeout: 5 * time.Second,
+		StopSignal:  mfRC.StopSignal,
+		PseudoTTY:   mfRC.PseudoTTY,
+	}
+	if mfRC.MaxRetries != nil {
+		mRC.MaxRetries = uint(*mfRC.MaxRetries)
 	}
 	if mfRC.StopTimeout != nil {
-		mRC.StopTimeout = (*time.Duration)(mfRC.StopTimeout)
+		mRC.StopTimeout = time.Duration(*mfRC.StopTimeout)
 	}
 	return mRC
 }
