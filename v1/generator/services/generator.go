@@ -99,9 +99,12 @@ func GenTmpfsMounts(mfTMs []model.TmpfsMount) (map[string]module.TmpfsMount, err
 		if _, ok := mTMs[mfTM.MountPoint]; ok {
 			return nil, fmt.Errorf("duplicate '%s'", mfTM.MountPoint)
 		}
-		mTM := module.TmpfsMount{Size: uint64(mfTM.Size)}
+		mTM := module.TmpfsMount{
+			Size: uint64(mfTM.Size),
+			Mode: fs.FileMode(504),
+		}
 		if mfTM.Mode != nil {
-			mTM.Mode = (*fs.FileMode)(mfTM.Mode)
+			mTM.Mode = fs.FileMode(*mfTM.Mode)
 		}
 		mTMs[mfTM.MountPoint] = mTM
 	}
