@@ -133,12 +133,14 @@ func TestParseConfigTypeOptions(t *testing.T) {
 	} else if len(cto) != 0 {
 		t.Errorf("len(%v) != 0", cto)
 	}
+	// ---------------------------------------
 	opt = make(map[string]any)
 	if cto, err := parseConfigTypeOptions(opt); err != nil {
 		t.Errorf("cto, err := parseConfigTypeOptions(%v); err != nil", opt)
 	} else if len(cto) != 0 {
 		t.Errorf("len(%v) != 0", cto)
 	}
+	// ---------------------------------------
 	str := "test"
 	opt[str] = str
 	if cto, err := parseConfigTypeOptions(opt); err != nil {
@@ -150,6 +152,7 @@ func TestParseConfigTypeOptions(t *testing.T) {
 	} else if reflect.DeepEqual(o.Value, str) == false {
 		t.Errorf("reflect.DeepEqual(%v, \"%s\") == false", o.Value, str)
 	}
+	// ---------------------------------------
 	i := int64(1)
 	opt[str] = int(i)
 	if cto, err := parseConfigTypeOptions(opt); err != nil {
@@ -161,6 +164,7 @@ func TestParseConfigTypeOptions(t *testing.T) {
 	} else if reflect.DeepEqual(o.Value, i) == false {
 		t.Errorf("reflect.DeepEqual(%v, %d) == false", o.Value, i)
 	}
+	// ---------------------------------------
 	opt[str] = int8(i)
 	if cto, err := parseConfigTypeOptions(opt); err != nil {
 		t.Errorf("cto, err := parseConfigTypeOptions(%v); err != nil", opt)
@@ -171,6 +175,7 @@ func TestParseConfigTypeOptions(t *testing.T) {
 	} else if reflect.DeepEqual(o.Value, i) == false {
 		t.Errorf("reflect.DeepEqual(%v, %d) == false", o.Value, i)
 	}
+	// ---------------------------------------
 	opt[str] = int16(i)
 	if cto, err := parseConfigTypeOptions(opt); err != nil {
 		t.Errorf("cto, err := parseConfigTypeOptions(%v); err != nil", opt)
@@ -181,6 +186,7 @@ func TestParseConfigTypeOptions(t *testing.T) {
 	} else if reflect.DeepEqual(o.Value, i) == false {
 		t.Errorf("reflect.DeepEqual(%v, %d) == false", o.Value, i)
 	}
+	// ---------------------------------------
 	opt[str] = int32(i)
 	if cto, err := parseConfigTypeOptions(opt); err != nil {
 		t.Errorf("cto, err := parseConfigTypeOptions(%v); err != nil", opt)
@@ -191,6 +197,7 @@ func TestParseConfigTypeOptions(t *testing.T) {
 	} else if reflect.DeepEqual(o.Value, i) == false {
 		t.Errorf("reflect.DeepEqual(%v, %d) == false", o.Value, i)
 	}
+	// ---------------------------------------
 	opt[str] = i
 	if cto, err := parseConfigTypeOptions(opt); err != nil {
 		t.Errorf("cto, err := parseConfigTypeOptions(%v); err != nil", opt)
@@ -201,6 +208,7 @@ func TestParseConfigTypeOptions(t *testing.T) {
 	} else if reflect.DeepEqual(o.Value, i) == false {
 		t.Errorf("reflect.DeepEqual(%v, %d) == false", o.Value, i)
 	}
+	// ---------------------------------------
 	f := 1.0
 	opt[str] = float32(f)
 	if cto, err := parseConfigTypeOptions(opt); err != nil {
@@ -212,6 +220,7 @@ func TestParseConfigTypeOptions(t *testing.T) {
 	} else if reflect.DeepEqual(o.Value, f) == false {
 		t.Errorf("reflect.DeepEqual(%v, %f) == false", o.Value, f)
 	}
+	// ---------------------------------------
 	opt[str] = f
 	if cto, err := parseConfigTypeOptions(opt); err != nil {
 		t.Errorf("cto, err := parseConfigTypeOptions(%v); err != nil", opt)
@@ -222,6 +231,7 @@ func TestParseConfigTypeOptions(t *testing.T) {
 	} else if reflect.DeepEqual(o.Value, f) == false {
 		t.Errorf("reflect.DeepEqual(%v, %f) == false", o.Value, f)
 	}
+	// ---------------------------------------
 	b := true
 	opt[str] = b
 	if cto, err := parseConfigTypeOptions(opt); err != nil {
@@ -233,6 +243,7 @@ func TestParseConfigTypeOptions(t *testing.T) {
 	} else if reflect.DeepEqual(o.Value, b) == false {
 		t.Errorf("reflect.DeepEqual(%v, %v) == false", o.Value, b)
 	}
+	// ---------------------------------------
 	opt[str] = uint(1)
 	if _, err := parseConfigTypeOptions(opt); err == nil {
 		t.Errorf("_, err := parseConfigTypeOptions(%v); err == nil", opt)
@@ -254,6 +265,7 @@ func TestParseConfig(t *testing.T) {
 	} else if len(to) != 0 {
 		t.Errorf("len(%v) != 0", to)
 	}
+	// ---------------------------------------
 	p, o, to, err = parseConfig(1, opt, ctOpt, func(a any) (int, error) {
 		return a.(int) + 1, nil
 	})
@@ -264,12 +276,14 @@ func TestParseConfig(t *testing.T) {
 	} else if *p != 2 {
 		t.Errorf("%d != 2", *p)
 	}
+	// ---------------------------------------
 	_, _, _, err = parseConfig(1, opt, ctOpt, func(a any) (int, error) {
 		return 0, errors.New("test")
 	})
 	if err == nil {
 		t.Error("err == nil")
 	}
+	// ---------------------------------------
 	ctOpt = make(map[string]any)
 	ctOpt["test"] = uint(1)
 	_, _, _, err = parseConfig(nil, opt, ctOpt, func(a any) (int, error) {
@@ -279,6 +293,7 @@ func TestParseConfig(t *testing.T) {
 		t.Error("err == nil")
 	}
 	ctOpt = nil
+	// ---------------------------------------
 	opt = append(opt, 1)
 	p, o, to, err = parseConfig(nil, opt, ctOpt, func(a any) (int, error) {
 		return a.(int) + 1, nil
@@ -290,6 +305,7 @@ func TestParseConfig(t *testing.T) {
 	} else if o[0] != 2 {
 		t.Errorf("%d != 2", o[0])
 	}
+	// ---------------------------------------
 	_, _, _, err = parseConfig(nil, opt, ctOpt, func(a any) (int, error) {
 		return 0, errors.New("test")
 	})
@@ -313,12 +329,14 @@ func TestParseConfigSlice(t *testing.T) {
 	} else if len(to) != 0 {
 		t.Errorf("len(%v) != 0", to)
 	}
+	// ---------------------------------------
 	_, _, _, err = parseConfigSlice("", opt, ctOpt, func(a any) (int, error) {
 		return 0, nil
 	})
 	if err == nil {
 		t.Error("err == nil")
 	}
+	// ---------------------------------------
 	var val []any
 	sl, o, to, err = parseConfigSlice(val, opt, ctOpt, func(a any) (int, error) {
 		return 0, nil
@@ -328,6 +346,7 @@ func TestParseConfigSlice(t *testing.T) {
 	} else if len(sl) != 0 {
 		t.Errorf("len(%v) != 0", sl)
 	}
+	// ---------------------------------------
 	ctOpt = make(map[string]any)
 	ctOpt["test"] = uint(1)
 	_, _, _, err = parseConfigSlice(nil, opt, ctOpt, func(a any) (int, error) {
@@ -337,7 +356,7 @@ func TestParseConfigSlice(t *testing.T) {
 		t.Error("err == nil")
 	}
 	ctOpt = nil
-
+	// ---------------------------------------
 	opt = append(opt, 1)
 	sl, o, to, err = parseConfigSlice(nil, opt, ctOpt, func(a any) (int, error) {
 		return a.(int) + 1, nil
@@ -349,12 +368,14 @@ func TestParseConfigSlice(t *testing.T) {
 	} else if o[0] != 2 {
 		t.Errorf("%d != 2", o[0])
 	}
+	// ---------------------------------------
 	_, _, _, err = parseConfigSlice(nil, opt, ctOpt, func(a any) (int, error) {
 		return 0, errors.New("test")
 	})
 	if err == nil {
 		t.Error("err == nil")
 	}
+	// ---------------------------------------
 	opt = []any{}
 	val = append(val, 1)
 	sl, o, to, err = parseConfigSlice(val, opt, ctOpt, func(a any) (int, error) {
@@ -367,6 +388,7 @@ func TestParseConfigSlice(t *testing.T) {
 	} else if sl[0] != 2 {
 		t.Errorf("%d != 2", sl[0])
 	}
+	// ---------------------------------------
 	sl, o, to, err = parseConfigSlice(val, opt, ctOpt, func(a any) (int, error) {
 		return 0, errors.New("test")
 	})
