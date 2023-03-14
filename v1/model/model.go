@@ -60,9 +60,9 @@ type Service struct {
 type Duration time.Duration
 
 type RunConfig struct {
-	MaxRetries  *int      `yaml:"maxRetries"`
+	MaxRetries  *int      `yaml:"maxRetries"` // defaults to 3 if nil
 	RunOnce     bool      `yaml:"runOnce"`
-	StopTimeout *Duration `yaml:"stopTimeout"`
+	StopTimeout *Duration `yaml:"stopTimeout"` // defaults to 5s if nil
 	StopSignal  *string   `yaml:"stopSignal"`
 	PseudoTTY   bool      `yaml:"pseudoTTY"`
 }
@@ -144,7 +144,7 @@ type ConfigValue struct {
 	TypeOptions map[string]any `yaml:"typeOptions"` // type specific options (e.g. number supports min, max values or step)
 	DataType    string         `yaml:"dataType"`    // data type of the configuration value (e.g. string, int, ...)
 	IsList      bool           `yaml:"isList"`      // set to true if multiple configuration values are required
-	Delimiter   *string        `yaml:"delimiter"`   // delimiter to be used for marshalling multiple configuration values
+	Delimiter   *string        `yaml:"delimiter"`   // delimiter to be used for marshalling multiple configuration values (defaults to "," if nil)
 	UserInput   *UserInput     `yaml:"userInput"`   // meta info for user input via gui (if nil a default value must be set)
 	Targets     []ConfigTarget `yaml:"targets"`     // reference variables for the configuration value
 }
