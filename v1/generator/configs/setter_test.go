@@ -468,3 +468,86 @@ func testSetValue[T comparable](t *testing.T, value any, options []any, dataType
 		t.Errorf("%v != \"\"", c.Delimiter)
 	}
 }
+
+func TestSetSlice(t *testing.T) {
+	mCs := make(module.Configs)
+	if err := SetSlice("", model.ConfigValue{}, mCs); err == nil {
+		t.Error("err == nil")
+	} else if len(mCs) != 0 {
+		t.Errorf("len(%v) != 0", mCs)
+	}
+}
+
+func TestSetSliceStr(t *testing.T) {
+	str := "test"
+	testSetSlice[string](t, []any{str}, []any{str}, module.StringType, 1)
+}
+
+func TestSetSliceBool(t *testing.T) {
+	b := true
+	testSetSlice[bool](t, []any{b}, []any{b}, module.BoolType, "")
+}
+
+func TestSetSliceInt64(t *testing.T) {
+	i := int64(1)
+	testSetSlice[int64](t, []any{i}, []any{i}, module.Int64Type, "")
+}
+
+func TestSetSliceFloat64(t *testing.T) {
+	f := 1.0
+	testSetSlice[float64](t, []any{f}, []any{f}, module.Float64Type, "")
+}
+
+func testSetSlice[T comparable](t *testing.T, value any, options []any, dataType string, errVal any) {
+	mCs := make(module.Configs)
+	if err := SetSlice("", model.ConfigValue{Value: errVal, DataType: dataType}, mCs); err == nil {
+		t.Error("err == nil")
+	} else if len(mCs) != 0 {
+		t.Errorf("len(%v) != 0", mCs)
+	}
+	str := "test"
+	if err := SetSlice(str, model.ConfigValue{Value: []any{1}, DataType: module.Int64Type}, mCs); err != nil {
+		t.Error("err != nil")
+	} else if c, ok := mCs[str]; !ok {
+		t.Errorf("c, ok := mCs[\"%s\"]; !ok", str)
+	} else if c.Delimiter != "," {
+		t.Error("c.Delimiter != \",\"")
+	}
+	cv := model.ConfigValue{
+		Value:       value,
+		Options:     options,
+		OptionsExt:  true,
+		Type:        str,
+		TypeOptions: map[string]any{str: str},
+		DataType:    dataType,
+		IsList:      true,
+		Delimiter:   &str,
+	}
+	if err := SetSlice(str, cv, mCs); err != nil {
+		t.Error("err != nil")
+	} else if c, ok := mCs[str]; !ok {
+		t.Errorf("c, ok := mCs[\"%s\"]; !ok", str)
+	} else if cv.DataType != c.DataType {
+		t.Errorf("%v != %v", cv.DataType, c.DataType)
+	} else if len(c.Default.([]T)) == 0 {
+		t.Errorf("len(%v) == 0", c.Default)
+	} else if reflect.DeepEqual(cv.Value.([]any)[0], c.Default.([]T)[0]) == false {
+		t.Errorf("reflect.DeepEqual(%v, %v) == false", cv.Value.([]any)[0], c.Default.([]T)[0])
+	} else if len(c.Options.([]T)) == 0 {
+		t.Errorf("len(%v) == 0", c.Options)
+	} else if reflect.DeepEqual(cv.Options[0], c.Options.([]T)[0]) == false {
+		t.Errorf("reflect.DeepEqual(%v, %v) == false", cv.Options[0], c.Options.([]T)[0])
+	} else if cv.OptionsExt != c.OptExt {
+		t.Errorf("%v != %v", cv.OptionsExt, c.OptExt)
+	} else if cv.Type != c.Type {
+		t.Errorf("%v != %v", cv.Type, c.Type)
+	} else if to, k := c.TypeOpt[str]; !k {
+		t.Errorf("to, k := c.TypeOpt[\"%s\"]; !k", str)
+	} else if reflect.DeepEqual(cv.TypeOptions[str], to.Value) == false {
+		t.Errorf("reflect.DeepEqual(%v, %v) == false", cv.TypeOptions[str], to.Value)
+	} else if cv.IsList != c.IsSlice {
+		t.Errorf("%v != %v", cv.IsList, c.IsSlice)
+	} else if *cv.Delimiter != c.Delimiter {
+		t.Errorf("%v != %v", *cv.Delimiter, c.Delimiter)
+	}
+}
