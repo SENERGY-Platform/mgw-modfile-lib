@@ -463,7 +463,7 @@ func testSetValue[T comparable](t *testing.T, value any, options []any, dataType
 	} else if to, k := c.TypeOpt[str]; !k {
 		t.Errorf("to, k := c.TypeOpt[\"%s\"]; !k", str)
 	} else if reflect.DeepEqual(cv.TypeOptions[str], to.Value) == false {
-		t.Errorf("reflect.DeepEqual(%v, %v[\"%s\"]) == false", to.Value, cv.TypeOptions, str)
+		t.Errorf("reflect.DeepEqual(%v, %v) == false", cv.TypeOptions[str], to.Value)
 	} else if cv.IsList != c.IsSlice {
 		t.Errorf("%v != %v", cv.IsList, c.IsSlice)
 	} else if cv.Delimiter != c.Delimiter {
