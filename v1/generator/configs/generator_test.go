@@ -18,6 +18,7 @@ package configs
 
 import (
 	"github.com/SENERGY-Platform/mgw-modfile-lib/v1/model"
+	"github.com/SENERGY-Platform/mgw-module-lib/module"
 	"testing"
 )
 
@@ -43,7 +44,7 @@ func TestGenConfigs(t *testing.T) {
 	if _, err := GenConfigs(mfCVs); err == nil {
 		t.Errorf("mCs, err := GenConfigs(%v); err == nil", mfCVs)
 	}
-	mfCVs[str] = model.ConfigValue{DataType: model.StringType}
+	mfCVs[str] = model.ConfigValue{DataType: module.StringType}
 	if mCs, err := GenConfigs(mfCVs); err != nil {
 		t.Errorf("mCs, err := GenConfigs(%v); err != nil", mfCVs)
 	} else if mC, ok := mCs[str]; !ok {
@@ -51,7 +52,7 @@ func TestGenConfigs(t *testing.T) {
 	} else if mC.IsSlice == true {
 		t.Error("mC.IsSlice == true")
 	}
-	mfCVs[str] = model.ConfigValue{DataType: model.StringType, IsList: true}
+	mfCVs[str] = model.ConfigValue{DataType: module.StringType, IsList: true}
 	if mCs, err := GenConfigs(mfCVs); err != nil {
 		t.Errorf("mCs, err := GenConfigs(%v); err != nil", mfCVs)
 	} else if mC, ok := mCs[str]; !ok {
