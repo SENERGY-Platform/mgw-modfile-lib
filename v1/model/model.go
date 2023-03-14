@@ -136,15 +136,13 @@ type Secret struct {
 	Targets      []ResourceTargetBase `yaml:"targets"` // mount points for the secret
 }
 
-type DataType = string
-
 type ConfigValue struct {
 	Value       any            `yaml:"value"`       // default configuration value or nil
 	Options     []any          `yaml:"options"`     // list of possible configuration values
 	OptionsExt  bool           `yaml:"optionsExt"`  // if true a value not defined in options can be set (only required if options are provided)
 	Type        string         `yaml:"type"`        // type of the configuration value (e.g. text, number, date, ...)
 	TypeOptions map[string]any `yaml:"typeOptions"` // type specific options (e.g. number supports min, max values or step)
-	DataType    DataType       `yaml:"dataType"`    // data type of the configuration value (e.g. string, int, ...)
+	DataType    string         `yaml:"dataType"`    // data type of the configuration value (e.g. string, int, ...)
 	IsList      bool           `yaml:"isList"`      // set to true if multiple configuration values are required
 	Delimiter   *string        `yaml:"delimiter"`   // delimiter to be used for marshalling multiple configuration values
 	UserInput   *UserInput     `yaml:"userInput"`   // meta info for user input via gui (if nil a default value must be set)

@@ -26,6 +26,8 @@ import (
 	"time"
 )
 
+const Version = "v1"
+
 func (p *Port) UnmarshalYAML(yn *yaml.Node) error {
 	var it any
 	if err := yn.Decode(&it); err != nil {
