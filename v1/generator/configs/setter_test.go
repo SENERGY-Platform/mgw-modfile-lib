@@ -18,6 +18,7 @@ package configs
 
 import (
 	"errors"
+	"github.com/SENERGY-Platform/mgw-modfile-lib/v1/model"
 	"github.com/SENERGY-Platform/mgw-module-lib/module"
 	"reflect"
 	"testing"
@@ -371,5 +372,79 @@ func TestParseConfigSlice(t *testing.T) {
 	})
 	if err == nil {
 		t.Error("err == nil")
+	}
+}
+
+func TestSetValue(t *testing.T) {
+	mCs := make(module.Configs)
+	if err := SetValue("", model.ConfigValue{}, mCs); err == nil {
+		t.Error("err == nil")
+	} else if len(mCs) != 0 {
+		t.Errorf("len(%v) != 0", mCs)
+	}
+}
+
+func TestSetValueStr(t *testing.T) {
+	str := "test"
+	testSetValue[string](t, str, []any{str}, module.StringType, 1)
+}
+
+func TestSetValueBool(t *testing.T) {
+	b := true
+	testSetValue[bool](t, b, []any{b}, module.BoolType, "")
+}
+
+func TestSetValueInt64(t *testing.T) {
+	i := int64(1)
+	testSetValue[int64](t, i, []any{i}, module.Int64Type, "")
+}
+
+func TestSetValueFloat64(t *testing.T) {
+	f := 1.0
+	testSetValue[float64](t, f, []any{f}, module.Float64Type, "")
+}
+
+func testSetValue[T comparable](t *testing.T, value any, options []any, dataType string, errVal any) {
+	mCs := make(module.Configs)
+	if err := SetValue("", model.ConfigValue{Value: errVal, DataType: dataType}, mCs); err == nil {
+		t.Error("err == nil")
+	} else if len(mCs) != 0 {
+		t.Errorf("len(%v) != 0", mCs)
+	}
+	str := "test"
+	cv := model.ConfigValue{
+		Value:       value,
+		Options:     options,
+		OptionsExt:  true,
+		Type:        str,
+		TypeOptions: map[string]any{str: str},
+		DataType:    dataType,
+		IsList:      false,
+		Delimiter:   nil,
+	}
+	if err := SetValue(str, cv, mCs); err != nil {
+		t.Error("err != nil")
+	} else if c, ok := mCs[str]; !ok {
+		t.Errorf("c, ok := mCs[\"%s\"]; !ok", str)
+	} else if cv.DataType != c.DataType {
+		t.Errorf("%v != %v", cv.DataType, c.DataType)
+	} else if reflect.DeepEqual(cv.Value, c.Default) == false {
+		t.Errorf("reflect.DeepEqual(%v, %v) == false", cv.Value, c.Default)
+	} else if len(c.Options.([]T)) == 0 {
+		t.Errorf("len(%v) == 0", c.Options)
+	} else if reflect.DeepEqual(cv.Options[0], c.Options.([]T)[0]) == false {
+		t.Errorf("reflect.DeepEqual(%v, %v) == false", cv.Options[0], c.Options.([]T)[0])
+	} else if cv.OptionsExt != c.OptExt {
+		t.Errorf("%v != %v", cv.OptionsExt, c.OptExt)
+	} else if cv.Type != c.Type {
+		t.Errorf("%v != %v", cv.Type, c.Type)
+	} else if to, k := c.TypeOpt[str]; !k {
+		t.Errorf("to, k := c.TypeOpt[\"%s\"]; !k", str)
+	} else if reflect.DeepEqual(cv.TypeOptions[str], to.Value) == false {
+		t.Errorf("reflect.DeepEqual(%v, %v[\"%s\"]) == false", to.Value, cv.TypeOptions, str)
+	} else if cv.IsList != c.IsSlice {
+		t.Errorf("%v != %v", cv.IsList, c.IsSlice)
+	} else if cv.Delimiter != c.Delimiter {
+		t.Errorf("%v != %v", cv.Delimiter, c.Delimiter)
 	}
 }
