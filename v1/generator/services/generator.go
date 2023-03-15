@@ -96,7 +96,10 @@ func GenBindMounts(mfBMs []model.BindMount) (map[string]module.BindMount, error)
 func GenTmpfsMounts(mfTMs []model.TmpfsMount) (map[string]module.TmpfsMount, error) {
 	mTMs := make(map[string]module.TmpfsMount)
 	for _, mfTM := range mfTMs {
-		if _, ok := mTMs[mfTM.MountPoint]; ok {
+		if v, ok := mTMs[mfTM.MountPoint]; ok {
+			if v.Size == uint64(mfTM.Size) && (mfTM.Mode == nil || v.Mode == fs.FileMode(*mfTM.Mode)) {
+				continue
+			}
 			return nil, fmt.Errorf("duplicate '%s'", mfTM.MountPoint)
 		}
 		mTM := module.TmpfsMount{
