@@ -15,3 +15,23 @@
  */
 
 package mounts
+
+import (
+	"github.com/SENERGY-Platform/mgw-modfile-lib/v1/model"
+	"testing"
+)
+
+func TestGenVolumes(t *testing.T) {
+	var mfVs map[string][]model.VolumeTarget
+	if vtm := GenVolumes(mfVs); len(vtm) != 0 {
+		t.Errorf("vtm := GenVolumes(%v); len(%v) != 0", mfVs, vtm)
+	}
+	mfVs = make(map[string][]model.VolumeTarget)
+	str := "test"
+	mfVs[str] = []model.VolumeTarget{}
+	if vtm := GenVolumes(mfVs); len(vtm) != 1 {
+		t.Errorf("vtm := GenVolumes(%v); len(%v) != 1", mfVs, vtm)
+	} else if _, ok := vtm[str]; !ok {
+		t.Errorf("_, ok := vtm[%s]; !ok", str)
+	}
+}
