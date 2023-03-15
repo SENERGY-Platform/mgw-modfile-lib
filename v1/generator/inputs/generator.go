@@ -35,11 +35,7 @@ func GenInputs[T model.Configurable](mfCs map[string]T) map[string]module.Input 
 func GenInputGroups(mfIGs map[string]model.InputGroup) map[string]module.InputGroup {
 	mIGs := make(map[string]module.InputGroup)
 	for ref, mfIG := range mfIGs {
-		mIGs[ref] = module.InputGroup{
-			Name:        mfIG.Name,
-			Description: mfIG.Description,
-			Group:       mfIG.Group,
-		}
+		mIGs[ref] = module.InputGroup(mfIG)
 	}
 	return mIGs
 }
