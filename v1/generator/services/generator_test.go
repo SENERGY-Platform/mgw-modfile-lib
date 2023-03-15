@@ -15,3 +15,44 @@
  */
 
 package services
+
+import (
+	"github.com/SENERGY-Platform/mgw-modfile-lib/v1/model"
+	"github.com/SENERGY-Platform/mgw-module-lib/module"
+	"reflect"
+	"testing"
+	"time"
+)
+
+func TestGenRunConfig(t *testing.T) {
+	a := module.RunConfig{
+		MaxRetries:  3,
+		RunOnce:     false,
+		StopTimeout: 5 * time.Second,
+		StopSignal:  nil,
+		PseudoTTY:   false,
+	}
+	if b := GenRunConfig(model.RunConfig{}); reflect.DeepEqual(a, b) == false {
+		t.Errorf("%+v != %+v", a, b)
+	}
+	str := "test"
+	i := 1
+	d := model.Duration(1 * time.Second)
+	c := model.RunConfig{
+		MaxRetries:  &i,
+		RunOnce:     true,
+		StopTimeout: &d,
+		StopSignal:  &str,
+		PseudoTTY:   true,
+	}
+	a = module.RunConfig{
+		MaxRetries:  1,
+		RunOnce:     true,
+		StopTimeout: 1 * time.Second,
+		StopSignal:  &str,
+		PseudoTTY:   true,
+	}
+	if b := GenRunConfig(c); reflect.DeepEqual(a, b) == false {
+		t.Errorf("%+v != %+v", a, b)
+	}
+}
