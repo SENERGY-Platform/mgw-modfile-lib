@@ -49,3 +49,20 @@ func TestGenInputs(t *testing.T) {
 		t.Errorf("%s != %s", ui.Name, str)
 	}
 }
+
+func TestGenInputGroups(t *testing.T) {
+	var mfIGs map[string]model.InputGroup
+	if igm := GenInputGroups(mfIGs); len(igm) != 0 {
+		t.Errorf("igm := GenInputGroups(%v); len(%v) != 0", mfIGs, igm)
+	}
+	mfIGs = make(map[string]model.InputGroup)
+	str := "test"
+	mfIGs[str] = model.InputGroup{Name: str}
+	if igm := GenInputGroups(mfIGs); len(igm) != 1 {
+		t.Errorf("igm := GenInputGroups(%v); len(%v) != 1", mfIGs, igm)
+	} else if ig, ok := igm[str]; !ok {
+		t.Errorf("ig, ok := igm[%s]; !ok", str)
+	} else if ig.Name != str {
+		t.Errorf("%s != %s", ig.Name, str)
+	}
+}
