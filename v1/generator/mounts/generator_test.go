@@ -35,3 +35,18 @@ func TestGenVolumes(t *testing.T) {
 		t.Errorf("_, ok := vtm[%s]; !ok", str)
 	}
 }
+
+func TestGenDependencies(t *testing.T) {
+	var mfMDs map[string]model.ModuleDependency
+	if m := GenDependencies(mfMDs); len(m) != 0 {
+		t.Errorf("m := GenDependencies(%v); len(%v) != 0", mfMDs, m)
+	}
+	mfMDs = make(map[string]model.ModuleDependency)
+	str := "test"
+	mfMDs[str] = model.ModuleDependency{}
+	if m := GenDependencies(mfMDs); len(m) != 1 {
+		t.Errorf("m := GenDependencies(%v); len(%v) != 1", mfMDs, m)
+	} else if _, ok := m[str]; !ok {
+		t.Errorf("_, ok := m[%s]; !ok", str)
+	}
+}
