@@ -56,3 +56,50 @@ func TestGenRunConfig(t *testing.T) {
 		t.Errorf("%+v != %+v", a, b)
 	}
 }
+
+func TestGenBindMounts(t *testing.T) {
+	var mfBMs []model.BindMount
+	if bm, err := GenBindMounts(mfBMs); err != nil {
+		t.Error("err != nil")
+	} else if len(bm) != 0 {
+		t.Errorf("len(%v) != 0", bm)
+	}
+	str := "test"
+	str2 := "test2"
+	mfBMs = append(mfBMs, model.BindMount{
+		MountPoint: str,
+		Source:     str2,
+		ReadOnly:   true,
+	})
+	a := module.BindMount{
+		Source:   str2,
+		ReadOnly: true,
+	}
+	if bm, err := GenBindMounts(mfBMs); err != nil {
+		t.Error("err != nil")
+	} else if len(bm) != 1 {
+		t.Errorf("len(%v) != 1", bm)
+	} else if b, ok := bm[str]; !ok {
+		t.Errorf("b, ok := bm[%s]; !ok", str)
+	} else if reflect.DeepEqual(a, b) == false {
+		t.Errorf("%+v != %+v", a, b)
+	}
+	mfBMs = append(mfBMs, model.BindMount{
+		MountPoint: str,
+		Source:     str2,
+		ReadOnly:   true,
+	})
+	if bm, err := GenBindMounts(mfBMs); err != nil {
+		t.Error("err != nil")
+	} else if len(bm) != 1 {
+		t.Errorf("len(%v) != 1", bm)
+	}
+	mfBMs = append(mfBMs, model.BindMount{
+		MountPoint: str,
+		Source:     "test3",
+		ReadOnly:   true,
+	})
+	if _, err := GenBindMounts(mfBMs); err == nil {
+		t.Error("err == nil")
+	}
+}
