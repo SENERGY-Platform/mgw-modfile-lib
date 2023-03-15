@@ -69,3 +69,27 @@ func TestGenResources(t *testing.T) {
 		t.Errorf("_, ok := set[%s]; !ok", str)
 	}
 }
+
+func TestGenSecrets(t *testing.T) {
+	var mfSs map[string]model.Secret
+	if sm := GenSecrets(mfSs); len(sm) != 0 {
+		t.Errorf("sm := GenSecrets(%v); len(%v) != 0", mfSs, sm)
+	}
+	mfSs = make(map[string]model.Secret)
+	str := "test"
+	mfSs[str] = model.Secret{
+		ResourceBase: model.ResourceBase{Tags: []string{str}},
+		Type:         str,
+	}
+	if sm := GenSecrets(mfSs); len(sm) != 1 {
+		t.Errorf("sm := GenSecrets(%v); len(%v) != 1", mfSs, sm)
+	} else if s, ok := sm[str]; !ok {
+		t.Errorf("s, ok := sm[%s]; !ok", str)
+	} else if len(s.Tags) != 1 {
+		t.Errorf("len(%v) != 1", s.Tags)
+	} else if _, ok := s.Tags[str]; !ok {
+		t.Errorf("_, ok := s.Tags[%s]; !ok", str)
+	} else if s.Type != str {
+		t.Errorf("%s != %s", s.Type, str)
+	}
+}
