@@ -105,4 +105,14 @@ func TestGenBindMounts(t *testing.T) {
 	if _, err := GenBindMounts(mfBMs); err == nil {
 		t.Error("err == nil")
 	}
+	// --------------------------------
+	mfBMs = mfBMs[:len(mfBMs)-1]
+	mfBMs = append(mfBMs, model.BindMount{
+		MountPoint: str,
+		Source:     str2,
+		ReadOnly:   false,
+	})
+	if _, err := GenBindMounts(mfBMs); err == nil {
+		t.Error("err == nil")
+	}
 }
