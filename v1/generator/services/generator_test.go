@@ -64,6 +64,7 @@ func TestGenBindMounts(t *testing.T) {
 	} else if len(bm) != 0 {
 		t.Errorf("len(%v) != 0", bm)
 	}
+	// --------------------------------
 	str := "test"
 	str2 := "test2"
 	mfBMs = append(mfBMs, model.BindMount{
@@ -84,6 +85,7 @@ func TestGenBindMounts(t *testing.T) {
 	} else if reflect.DeepEqual(a, b) == false {
 		t.Errorf("%+v != %+v", a, b)
 	}
+	// --------------------------------
 	mfBMs = append(mfBMs, model.BindMount{
 		MountPoint: str,
 		Source:     str2,
@@ -94,6 +96,7 @@ func TestGenBindMounts(t *testing.T) {
 	} else if len(bm) != 1 {
 		t.Errorf("len(%v) != 1", bm)
 	}
+	// --------------------------------
 	mfBMs = append(mfBMs, model.BindMount{
 		MountPoint: str,
 		Source:     "test3",
