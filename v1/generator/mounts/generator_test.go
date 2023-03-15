@@ -50,3 +50,22 @@ func TestGenDependencies(t *testing.T) {
 		t.Errorf("_, ok := m[%s]; !ok", str)
 	}
 }
+
+func TestGenResources(t *testing.T) {
+	var mfRs map[string]model.Resource
+	if m := GenResources(mfRs); len(m) != 0 {
+		t.Errorf("m := GenResources(%v); len(%v) != 0", mfRs, m)
+	}
+	mfRs = make(map[string]model.Resource)
+	str := "test"
+	mfRs[str] = model.Resource{ResourceBase: model.ResourceBase{Tags: []string{str}}}
+	if m := GenResources(mfRs); len(m) != 1 {
+		t.Errorf("m := GenResources(%v); len(%v) != 1", mfRs, m)
+	} else if set, ok := m[str]; !ok {
+		t.Errorf("set, ok := m[%s]; !ok", str)
+	} else if len(set) != 1 {
+		t.Errorf("len(%v) != 1", set)
+	} else if _, ok := set[str]; !ok {
+		t.Errorf("_, ok := set[%s]; !ok", str)
+	}
+}
