@@ -19,6 +19,7 @@ package model
 import (
 	"gopkg.in/yaml.v3"
 	"testing"
+	"time"
 )
 
 func TestByteFmt_UnmarshalYAML(t *testing.T) {
@@ -41,6 +42,28 @@ func TestByteFmt_UnmarshalYAML(t *testing.T) {
 	}
 	// ---------------------------
 	if err := yaml.Unmarshal([]byte("1.1"), &b); err == nil {
+		t.Error("err == nil")
+	}
+}
+
+func TestDuration_UnmarshalYAML(t *testing.T) {
+	a := Duration(time.Second)
+	var b Duration
+	if err := yaml.Unmarshal([]byte("1s"), &b); err != nil {
+		t.Error("err != nil")
+	} else if a != b {
+		t.Errorf("%d != %d", a, b)
+	}
+	// ---------------------------
+	if err := yaml.Unmarshal([]byte("1"), &b); err == nil {
+		t.Error("err == nil")
+	}
+	// ---------------------------
+	if err := yaml.Unmarshal([]byte("test"), &b); err == nil {
+		t.Error("err == nil")
+	}
+	// ---------------------------
+	if err := yaml.Unmarshal([]byte("test:"), &b); err == nil {
 		t.Error("err == nil")
 	}
 }
