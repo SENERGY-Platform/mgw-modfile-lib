@@ -533,3 +533,206 @@ func TestGenPorts(t *testing.T) {
 		t.Error("err == nil")
 	}
 }
+
+func TestGenServices(t *testing.T) {
+	var mfSs map[string]model.Service
+	if sm, err := GenServices(mfSs); err != nil {
+		t.Error("err != nil")
+	} else if len(sm) != 0 {
+		t.Errorf("len(%v) != 0", sm)
+	}
+	// --------------------------------
+	mfSs = make(map[string]model.Service)
+	str := "test"
+	str2 := "test2"
+	mfSs[str] = model.Service{
+		Name:      str,
+		Image:     str2,
+		RunConfig: model.RunConfig{},
+		Include: []model.BindMount{
+			{
+				MountPoint: str,
+				Source:     str2,
+				ReadOnly:   true,
+			},
+		},
+		Tmpfs: []model.TmpfsMount{
+			{
+				MountPoint: str,
+				Size:       64,
+				Mode:       nil,
+			},
+		},
+		HttpEndpoints: []model.HttpEndpoint{
+			{
+				Name:    str,
+				Path:    str2,
+				Port:    nil,
+				ExtPath: nil,
+			},
+		},
+		Ports: []model.SrvPort{
+			{
+				Name:     nil,
+				Port:     "80",
+				HostPort: nil,
+				Protocol: nil,
+			},
+		},
+		RequiredServices: []string{str},
+	}
+	a := module.Service{
+		Name:  str,
+		Image: str2,
+		RunConfig: module.RunConfig{
+			MaxRetries:  3,
+			RunOnce:     false,
+			StopTimeout: 5 * time.Second,
+			StopSignal:  nil,
+			PseudoTTY:   false,
+		},
+		BindMounts: map[string]module.BindMount{
+			str: {
+				Source:   str2,
+				ReadOnly: true,
+			},
+		},
+		Tmpfs: map[string]module.TmpfsMount{
+			str: {
+				Size: 64,
+				Mode: 504,
+			},
+		},
+		Volumes:       nil,
+		Resources:     nil,
+		Secrets:       nil,
+		Configs:       nil,
+		SrvReferences: nil,
+		HttpEndpoints: map[string]module.HttpEndpoint{
+			str2: {
+				Name: str,
+				Port: nil,
+				Path: str2,
+			},
+		},
+		RequiredSrv:     map[string]struct{}{str: {}},
+		RequiredBySrv:   nil,
+		ExtDependencies: nil,
+		Ports: []module.Port{
+			{
+				Name:     nil,
+				Number:   80,
+				Protocol: module.TcpPort,
+				Bindings: nil,
+			},
+		},
+	}
+	if sm, err := GenServices(mfSs); err != nil {
+		t.Error("err != nil")
+	} else if len(sm) != 1 {
+		t.Errorf("len(%v) != 1", sm)
+	} else if b, ok := sm[str]; !ok {
+		t.Errorf("b, ok := sm[%v]; !ok", str)
+	} else if reflect.DeepEqual(a, *b) == false {
+		t.Errorf("%+v != %+v", a, *b)
+	}
+	// --------------------------------
+	mfSs[str] = model.Service{
+		Name:      "",
+		Image:     "",
+		RunConfig: model.RunConfig{},
+		Include: []model.BindMount{
+			{
+				MountPoint: str,
+				Source:     str2,
+				ReadOnly:   true,
+			},
+			{
+				MountPoint: str,
+				Source:     "",
+				ReadOnly:   true,
+			},
+		},
+		Tmpfs:            nil,
+		HttpEndpoints:    nil,
+		Ports:            nil,
+		RequiredServices: nil,
+	}
+	if _, err := GenServices(mfSs); err == nil {
+		t.Error("err == nil")
+	}
+	// --------------------------------
+	mfSs[str] = model.Service{
+		Name:      "",
+		Image:     "",
+		RunConfig: model.RunConfig{},
+		Include:   nil,
+		Tmpfs: []model.TmpfsMount{
+			{
+				MountPoint: str,
+				Size:       64,
+				Mode:       nil,
+			},
+			{
+				MountPoint: str,
+				Size:       32,
+				Mode:       nil,
+			},
+		},
+		HttpEndpoints:    nil,
+		Ports:            nil,
+		RequiredServices: nil,
+	}
+	if _, err := GenServices(mfSs); err == nil {
+		t.Error("err == nil")
+	}
+	// --------------------------------
+	i := 80
+	mfSs[str] = model.Service{
+		Name:      "",
+		Image:     "",
+		RunConfig: model.RunConfig{},
+		Include:   nil,
+		Tmpfs:     nil,
+		HttpEndpoints: []model.HttpEndpoint{
+			{
+				Name:    str,
+				Path:    str2,
+				Port:    nil,
+				ExtPath: nil,
+			},
+			{
+				Name:    str,
+				Path:    str2,
+				Port:    &i,
+				ExtPath: nil,
+			},
+		},
+		Ports:            nil,
+		RequiredServices: nil,
+	}
+	if _, err := GenServices(mfSs); err == nil {
+		t.Error("err == nil")
+	}
+	// --------------------------------
+	mfSs[str] = model.Service{
+		Name:          "",
+		Image:         "",
+		RunConfig:     model.RunConfig{},
+		Include:       nil,
+		Tmpfs:         nil,
+		HttpEndpoints: nil,
+		Ports: []model.SrvPort{
+			{
+				Name:     nil,
+				Port:     "",
+				HostPort: nil,
+				Protocol: nil,
+			},
+		},
+		RequiredServices: nil,
+	}
+	if _, err := GenServices(mfSs); err == nil {
+		t.Error("err == nil")
+	}
+}
