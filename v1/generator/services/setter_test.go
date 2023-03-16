@@ -276,3 +276,125 @@ func TestSetExtDependencies(t *testing.T) {
 		t.Error("err == nil")
 	}
 }
+
+func TestSetResources(t *testing.T) {
+	ref := "a"
+	var mfRs map[string]model.Resource
+	mSs := map[string]*module.Service{ref: {}}
+	if err := SetResources(mfRs, mSs); err != nil {
+		t.Error("err != nil")
+	}
+	// --------------------------------
+	mfRs = make(map[string]model.Resource)
+	res := "res"
+	mp := "mp"
+	mfRs[res] = model.Resource{
+		Targets: []model.ResourceTarget{
+			{
+				ResourceTargetBase: model.ResourceTargetBase{
+					MountPoint: mp,
+					Services:   []string{ref},
+				},
+				ReadOnly: true,
+			},
+		},
+	}
+	a := map[string]module.ResourceTarget{
+		mp: {
+			Ref:      res,
+			ReadOnly: true,
+		},
+	}
+	if err := SetResources(mfRs, mSs); err != nil {
+		t.Error("err != nil")
+	} else if ms := mSs[ref]; reflect.DeepEqual(a, ms.Resources) == false {
+		t.Errorf("%v != %v", a, ms.Resources)
+	}
+	// --------------------------------
+	mfRs[res] = model.Resource{
+		Targets: []model.ResourceTarget{
+			{
+				ResourceTargetBase: model.ResourceTargetBase{
+					MountPoint: mp,
+					Services:   []string{ref},
+				},
+				ReadOnly: true,
+			},
+			{
+				ResourceTargetBase: model.ResourceTargetBase{
+					MountPoint: mp,
+					Services:   []string{ref},
+				},
+				ReadOnly: true,
+			},
+		},
+	}
+	if err := SetResources(mfRs, mSs); err != nil {
+		t.Error("err != nil")
+	} else if ms := mSs[ref]; reflect.DeepEqual(a, ms.Resources) == false {
+		t.Errorf("%v != %v", a, ms.Resources)
+	}
+	// --------------------------------
+	mfRs[res] = model.Resource{
+		Targets: []model.ResourceTarget{
+			{
+				ResourceTargetBase: model.ResourceTargetBase{
+					MountPoint: mp,
+					Services:   []string{ref},
+				},
+				ReadOnly: false,
+			},
+			{
+				ResourceTargetBase: model.ResourceTargetBase{
+					MountPoint: mp,
+					Services:   []string{ref},
+				},
+				ReadOnly: true,
+			},
+		},
+	}
+	if err := SetResources(mfRs, mSs); err == nil {
+		t.Error("err == nil")
+	}
+	// --------------------------------
+	mfRs[res] = model.Resource{
+		Targets: []model.ResourceTarget{
+			{
+				ResourceTargetBase: model.ResourceTargetBase{
+					MountPoint: mp,
+					Services:   []string{ref},
+				},
+				ReadOnly: false,
+			},
+		},
+	}
+	mfRs["test"] = model.Resource{
+		Targets: []model.ResourceTarget{
+			{
+				ResourceTargetBase: model.ResourceTargetBase{
+					MountPoint: mp,
+					Services:   []string{ref},
+				},
+				ReadOnly: false,
+			},
+		},
+	}
+	if err := SetResources(mfRs, mSs); err == nil {
+		t.Error("err == nil")
+	}
+	// --------------------------------
+	mfRs[res] = model.Resource{
+		Targets: []model.ResourceTarget{
+			{
+				ResourceTargetBase: model.ResourceTargetBase{
+					MountPoint: mp,
+					Services:   []string{"b"},
+				},
+				ReadOnly: true,
+			},
+		},
+	}
+	if err := SetResources(mfRs, mSs); err == nil {
+		t.Error("err == nil")
+	}
+}
