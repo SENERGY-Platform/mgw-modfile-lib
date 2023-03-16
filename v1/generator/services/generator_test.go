@@ -213,3 +213,82 @@ func TestGenTmpfsMounts(t *testing.T) {
 		t.Errorf("%+v != %+v", a, b)
 	}
 }
+
+func TestGenHttpEndpoints(t *testing.T) {
+	var mfHEs []model.HttpEndpoint
+	if ep, err := GenHttpEndpoints(mfHEs); err != nil {
+		t.Error("err != nil")
+	} else if len(ep) != 0 {
+		t.Errorf("len(%v) != 0", ep)
+	}
+	// --------------------------------
+	str := "test"
+	str2 := "test2"
+	mfHEs = append(mfHEs, model.HttpEndpoint{
+		Name:    str,
+		Path:    str2,
+		Port:    nil,
+		ExtPath: nil,
+	})
+	a := module.HttpEndpoint{
+		Name: str,
+		Port: nil,
+		Path: str2,
+	}
+	if ep, err := GenHttpEndpoints(mfHEs); err != nil {
+		t.Error("err != nil")
+	} else if len(ep) != 1 {
+		t.Errorf("len(%v) != 1", ep)
+	} else if b, ok := ep[str2]; !ok {
+		t.Errorf("b, ok := ep[%s]; !ok", str2)
+	} else if reflect.DeepEqual(a, b) == false {
+		t.Errorf("%v != %v", a, b)
+	}
+	// --------------------------------
+	mfHEs = append(mfHEs, model.HttpEndpoint{
+		Name:    str,
+		Path:    str2,
+		Port:    nil,
+		ExtPath: nil,
+	})
+	if ep, err := GenHttpEndpoints(mfHEs); err != nil {
+		t.Error("err != nil")
+	} else if len(ep) != 1 {
+		t.Errorf("len(%v) != 1", ep)
+	}
+	mfHEs = mfHEs[:len(mfHEs)-1]
+	// --------------------------------
+	str3 := "test3"
+	i := 80
+	mfHEs = append(mfHEs, model.HttpEndpoint{
+		Name:    str,
+		Path:    str2,
+		Port:    &i,
+		ExtPath: &str3,
+	})
+	a = module.HttpEndpoint{
+		Name: str,
+		Port: &i,
+		Path: str2,
+	}
+	if ep, err := GenHttpEndpoints(mfHEs); err != nil {
+		t.Error("err != nil")
+	} else if len(ep) != 2 {
+		t.Errorf("len(%v) != 2", ep)
+	} else if b, ok := ep[str3]; !ok {
+		t.Errorf("b, ok := ep[%s]; !ok", str3)
+	} else if reflect.DeepEqual(a, b) == false {
+		t.Errorf("%v != %v", a, b)
+	}
+	mfHEs = mfHEs[:len(mfHEs)-1]
+	// --------------------------------
+	mfHEs = append(mfHEs, model.HttpEndpoint{
+		Name:    str,
+		Path:    str2,
+		Port:    &i,
+		ExtPath: nil,
+	})
+	if _, err := GenHttpEndpoints(mfHEs); err == nil {
+		t.Error("err == nil")
+	}
+}
