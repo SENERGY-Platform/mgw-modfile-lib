@@ -241,6 +241,32 @@ func TestSetExtDependencies(t *testing.T) {
 			dRef: {
 				{
 					RefVar:   rVar,
+					Services: []string{ref},
+				},
+			},
+		},
+	}
+	mfMDs["test"] = model.ModuleDependency{
+		Version: mVer,
+		RequiredServices: map[string][]model.DependencyTarget{
+			dRef: {
+				{
+					RefVar:   rVar,
+					Services: []string{ref},
+				},
+			},
+		},
+	}
+	if err := SetExtDependencies(mfMDs, mSs); err == nil {
+		t.Error("err == nil")
+	}
+	// --------------------------------
+	mfMDs[mID] = model.ModuleDependency{
+		Version: mVer,
+		RequiredServices: map[string][]model.DependencyTarget{
+			dRef: {
+				{
+					RefVar:   rVar,
 					Services: []string{"c"},
 				},
 			},
