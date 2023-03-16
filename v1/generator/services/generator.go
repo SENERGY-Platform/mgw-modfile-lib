@@ -173,12 +173,15 @@ func GenPorts(mfSPs []model.SrvPort) ([]module.Port, error) {
 			})
 		} else {
 			for i, n := range ep {
-				mPs = append(mPs, module.Port{
+				mP := module.Port{
 					Name:     mfSP.Name,
 					Number:   n,
 					Protocol: proto,
-					Bindings: []uint{hp[i]},
-				})
+				}
+				if lhp > 0 {
+					mP.Bindings = []uint{hp[i]}
+				}
+				mPs = append(mPs, mP)
 			}
 		}
 	}
