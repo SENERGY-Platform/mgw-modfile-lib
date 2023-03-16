@@ -475,3 +475,80 @@ func TestSetSecrets(t *testing.T) {
 		t.Error("err == nil")
 	}
 }
+
+func TestSetConfigs(t *testing.T) {
+	sRef := "a"
+	var mfCVs map[string]model.ConfigValue
+	mSs := map[string]*module.Service{sRef: {}}
+	if err := SetConfigs(mfCVs, mSs); err != nil {
+		t.Error("err != nil")
+	}
+	// --------------------------------
+	mfCVs = make(map[string]model.ConfigValue)
+	cfg := "cfg"
+	rVar := "var"
+	mfCVs[cfg] = model.ConfigValue{
+		Targets: []model.ConfigTarget{
+			{
+				RefVar:   rVar,
+				Services: []string{sRef},
+			},
+		},
+	}
+	a := map[string]string{rVar: cfg}
+	if err := SetConfigs(mfCVs, mSs); err != nil {
+		t.Error("err != nil")
+	} else if ms := mSs[sRef]; reflect.DeepEqual(a, ms.Configs) == false {
+		t.Errorf("%v != %v", a, ms.Configs)
+	}
+	// --------------------------------
+	mfCVs[cfg] = model.ConfigValue{
+		Targets: []model.ConfigTarget{
+			{
+				RefVar:   rVar,
+				Services: []string{sRef},
+			},
+			{
+				RefVar:   rVar,
+				Services: []string{sRef},
+			},
+		},
+	}
+	if err := SetConfigs(mfCVs, mSs); err != nil {
+		t.Error("err != nil")
+	} else if ms := mSs[sRef]; reflect.DeepEqual(a, ms.Configs) == false {
+		t.Errorf("%v != %v", a, ms.Configs)
+	}
+	// --------------------------------
+	mfCVs[cfg] = model.ConfigValue{
+		Targets: []model.ConfigTarget{
+			{
+				RefVar:   rVar,
+				Services: []string{"b"},
+			},
+		},
+	}
+	if err := SetConfigs(mfCVs, mSs); err == nil {
+		t.Error("err == nil")
+	}
+	// --------------------------------
+	mfCVs[cfg] = model.ConfigValue{
+		Targets: []model.ConfigTarget{
+			{
+				RefVar:   rVar,
+				Services: []string{sRef},
+			},
+		},
+	}
+	mfCVs["test"] = model.ConfigValue{
+		Targets: []model.ConfigTarget{
+			{
+				RefVar:   rVar,
+				Services: []string{sRef},
+			},
+		},
+	}
+	if err := SetConfigs(mfCVs, mSs); err == nil {
+		t.Error("err == nil")
+	}
+}
