@@ -398,3 +398,80 @@ func TestSetResources(t *testing.T) {
 		t.Error("err == nil")
 	}
 }
+
+func TestSetSecrets(t *testing.T) {
+	sRef := "a"
+	var mfSCTs map[string]model.Secret
+	mSs := map[string]*module.Service{sRef: {}}
+	if err := SetSecrets(mfSCTs, mSs); err != nil {
+		t.Error("err != nil")
+	}
+	// --------------------------------
+	mfSCTs = make(map[string]model.Secret)
+	sec := "sec"
+	mp := "mp"
+	mfSCTs[sec] = model.Secret{
+		Targets: []model.ResourceTargetBase{
+			{
+				MountPoint: mp,
+				Services:   []string{sRef},
+			},
+		},
+	}
+	a := map[string]string{mp: sec}
+	if err := SetSecrets(mfSCTs, mSs); err != nil {
+		t.Error("err != nil")
+	} else if ms := mSs[sRef]; reflect.DeepEqual(a, ms.Secrets) == false {
+		t.Errorf("%v != %v", a, ms.Secrets)
+	}
+	// --------------------------------
+	mfSCTs[sec] = model.Secret{
+		Targets: []model.ResourceTargetBase{
+			{
+				MountPoint: mp,
+				Services:   []string{sRef},
+			},
+			{
+				MountPoint: mp,
+				Services:   []string{sRef},
+			},
+		},
+	}
+	if err := SetSecrets(mfSCTs, mSs); err != nil {
+		t.Error("err != nil")
+	} else if ms := mSs[sRef]; reflect.DeepEqual(a, ms.Secrets) == false {
+		t.Errorf("%v != %v", a, ms.Secrets)
+	}
+	// --------------------------------
+	mfSCTs[sec] = model.Secret{
+		Targets: []model.ResourceTargetBase{
+			{
+				MountPoint: mp,
+				Services:   []string{"test"},
+			},
+		},
+	}
+	if err := SetSecrets(mfSCTs, mSs); err == nil {
+		t.Error("err == nil")
+	}
+	// --------------------------------
+	mfSCTs[sec] = model.Secret{
+		Targets: []model.ResourceTargetBase{
+			{
+				MountPoint: mp,
+				Services:   []string{sRef},
+			},
+		},
+	}
+	mfSCTs["test"] = model.Secret{
+		Targets: []model.ResourceTargetBase{
+			{
+				MountPoint: mp,
+				Services:   []string{sRef},
+			},
+		},
+	}
+	if err := SetSecrets(mfSCTs, mSs); err == nil {
+		t.Error("err == nil")
+	}
+}
