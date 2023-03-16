@@ -323,7 +323,7 @@ func TestSetResources(t *testing.T) {
 			{
 				ResourceTargetBase: model.ResourceTargetBase{
 					MountPoint: mp,
-					Services:   []string{ref},
+					Services:   []string{sRef},
 				},
 				ReadOnly: true,
 			},
@@ -348,6 +348,21 @@ func TestSetResources(t *testing.T) {
 				ResourceTargetBase: model.ResourceTargetBase{
 					MountPoint: mp,
 					Services:   []string{sRef},
+				},
+				ReadOnly: true,
+			},
+		},
+	}
+	if err := SetResources(mfRs, mSs); err == nil {
+		t.Error("err == nil")
+	}
+	// --------------------------------
+	mfRs[res] = model.Resource{
+		Targets: []model.ResourceTarget{
+			{
+				ResourceTargetBase: model.ResourceTargetBase{
+					MountPoint: mp,
+					Services:   []string{"b"},
 				},
 				ReadOnly: true,
 			},
