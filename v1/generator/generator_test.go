@@ -15,3 +15,14 @@
  */
 
 package generator
+
+import (
+	"github.com/SENERGY-Platform/mgw-modfile-lib/v1/model"
+	"testing"
+)
+
+func TestGetGenerator(t *testing.T) {
+	if s, _ := GetGenerator(); s != model.Version {
+		t.Errorf("%s != %s", s, model.Version)
+	}
+}
