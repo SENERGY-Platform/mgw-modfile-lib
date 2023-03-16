@@ -47,7 +47,6 @@ func TestSetSrvReferences(t *testing.T) {
 		t.Errorf("%v != %v", a, ms.SrvReferences)
 	}
 	// --------------------------------
-	mfSRs = make(map[string][]model.DependencyTarget)
 	mfSRs[dRef] = []model.DependencyTarget{
 		{
 			RefVar:   rVar,
@@ -64,7 +63,6 @@ func TestSetSrvReferences(t *testing.T) {
 		t.Errorf("%v != %v", a, ms.SrvReferences)
 	}
 	// --------------------------------
-	mfSRs = make(map[string][]model.DependencyTarget)
 	mfSRs[dRef] = []model.DependencyTarget{
 		{
 			RefVar:   rVar,
@@ -81,7 +79,6 @@ func TestSetSrvReferences(t *testing.T) {
 		t.Error("err != nil")
 	}
 	// --------------------------------
-	mfSRs = make(map[string][]model.DependencyTarget)
 	mfSRs[dRef] = []model.DependencyTarget{
 		{
 			RefVar:   rVar,
