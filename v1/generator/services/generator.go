@@ -156,11 +156,13 @@ func GenPorts(mfSPs []model.SrvPort) ([]module.Port, error) {
 		}
 		lep := len(ep)
 		lhp := len(hp)
-		if lep > lhp {
-			return nil, errors.New("range mismatch: ports > host ports")
-		}
-		if lep > 1 && lep < lhp {
-			return nil, errors.New("range mismatch: ports < host ports")
+		if lhp > 0 {
+			if lep > lhp {
+				return nil, errors.New("range mismatch: ports > host ports")
+			}
+			if lep > 1 && lep < lhp {
+				return nil, errors.New("range mismatch: ports < host ports")
+			}
 		}
 		if lep == 1 {
 			mPs = append(mPs, module.Port{
