@@ -66,13 +66,7 @@ func TestSetSrvReferences(t *testing.T) {
 	mfSRs[dRef] = []model.DependencyTarget{
 		{
 			RefVar:   rVar,
-			Services: []string{ref},
-		},
-	}
-	mfSRs["c"] = []model.DependencyTarget{
-		{
-			RefVar:   rVar,
-			Services: []string{ref},
+			Services: []string{"c"},
 		},
 	}
 	if err := SetSrvReferences(mfSRs, mSs); err == nil {
@@ -82,7 +76,13 @@ func TestSetSrvReferences(t *testing.T) {
 	mfSRs[dRef] = []model.DependencyTarget{
 		{
 			RefVar:   rVar,
-			Services: []string{"c"},
+			Services: []string{ref},
+		},
+	}
+	mfSRs["c"] = []model.DependencyTarget{
+		{
+			RefVar:   rVar,
+			Services: []string{ref},
 		},
 	}
 	if err := SetSrvReferences(mfSRs, mSs); err == nil {
@@ -133,13 +133,7 @@ func TestSetVolumes(t *testing.T) {
 	mfVs[vl] = []model.VolumeTarget{
 		{
 			MountPoint: mp,
-			Services:   []string{sRef},
-		},
-	}
-	mfVs["vl2"] = []model.VolumeTarget{
-		{
-			MountPoint: mp,
-			Services:   []string{sRef},
+			Services:   []string{"b"},
 		},
 	}
 	if err := SetVolumes(mfVs, mSs); err == nil {
@@ -149,7 +143,13 @@ func TestSetVolumes(t *testing.T) {
 	mfVs[vl] = []model.VolumeTarget{
 		{
 			MountPoint: mp,
-			Services:   []string{"b"},
+			Services:   []string{sRef},
+		},
+	}
+	mfVs["vl2"] = []model.VolumeTarget{
+		{
+			MountPoint: mp,
+			Services:   []string{sRef},
 		},
 	}
 	if err := SetVolumes(mfVs, mSs); err == nil {
@@ -241,18 +241,7 @@ func TestSetExtDependencies(t *testing.T) {
 			dRef: {
 				{
 					RefVar:   rVar,
-					Services: []string{ref},
-				},
-			},
-		},
-	}
-	mfMDs["test"] = model.ModuleDependency{
-		Version: mVer,
-		RequiredServices: map[string][]model.DependencyTarget{
-			dRef: {
-				{
-					RefVar:   rVar,
-					Services: []string{ref},
+					Services: []string{"c"},
 				},
 			},
 		},
@@ -267,7 +256,18 @@ func TestSetExtDependencies(t *testing.T) {
 			dRef: {
 				{
 					RefVar:   rVar,
-					Services: []string{"c"},
+					Services: []string{ref},
+				},
+			},
+		},
+	}
+	mfMDs["test"] = model.ModuleDependency{
+		Version: mVer,
+		RequiredServices: map[string][]model.DependencyTarget{
+			dRef: {
+				{
+					RefVar:   rVar,
+					Services: []string{ref},
 				},
 			},
 		},
