@@ -156,3 +156,97 @@ func TestSetVolumes(t *testing.T) {
 		t.Error("err != nil")
 	}
 }
+
+func TestSetExtDependencies(t *testing.T) {
+	ref := "a"
+	var mfMDs map[string]model.ModuleDependency
+	mSs := map[string]*module.Service{ref: {}}
+	if err := SetExtDependencies(mfMDs, mSs); err != nil {
+		t.Error("err != nil")
+	}
+	// --------------------------------
+	mfMDs = make(map[string]model.ModuleDependency)
+	mID := "mid"
+	mVer := "ver"
+	dRef := "b"
+	rVar := "var"
+	mfMDs[mID] = model.ModuleDependency{
+		Version: mVer,
+		RequiredServices: map[string][]model.DependencyTarget{
+			dRef: {
+				{
+					RefVar:   rVar,
+					Services: []string{ref},
+				},
+			},
+		},
+	}
+	a := map[string]module.ExtDependencyTarget{
+		rVar: {
+			ID:      mID,
+			Service: dRef,
+		},
+	}
+	if err := SetExtDependencies(mfMDs, mSs); err != nil {
+		t.Error("err != nil")
+	} else if ms := mSs[ref]; reflect.DeepEqual(a, ms.ExtDependencies) == false {
+		t.Errorf("%v != %v", a, ms.ExtDependencies)
+	}
+	// --------------------------------
+	mfMDs[mID] = model.ModuleDependency{
+		Version: mVer,
+		RequiredServices: map[string][]model.DependencyTarget{
+			dRef: {
+				{
+					RefVar:   rVar,
+					Services: []string{ref},
+				},
+				{
+					RefVar:   rVar,
+					Services: []string{ref},
+				},
+			},
+		},
+	}
+	if err := SetExtDependencies(mfMDs, mSs); err != nil {
+		t.Error("err != nil")
+	} else if ms := mSs[ref]; reflect.DeepEqual(a, ms.ExtDependencies) == false {
+		t.Errorf("%v != %v", a, ms.ExtDependencies)
+	}
+	// --------------------------------
+	mfMDs[mID] = model.ModuleDependency{
+		Version: mVer,
+		RequiredServices: map[string][]model.DependencyTarget{
+			dRef: {
+				{
+					RefVar:   rVar,
+					Services: []string{ref},
+				},
+			},
+			"c": {
+				{
+					RefVar:   rVar,
+					Services: []string{ref},
+				},
+			},
+		},
+	}
+	if err := SetExtDependencies(mfMDs, mSs); err == nil {
+		t.Error("err == nil")
+	}
+	// --------------------------------
+	mfMDs[mID] = model.ModuleDependency{
+		Version: mVer,
+		RequiredServices: map[string][]model.DependencyTarget{
+			dRef: {
+				{
+					RefVar:   rVar,
+					Services: []string{"c"},
+				},
+			},
+		},
+	}
+	if err := SetExtDependencies(mfMDs, mSs); err == nil {
+		t.Error("err == nil")
+	}
+}
