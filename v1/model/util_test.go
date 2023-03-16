@@ -67,3 +67,27 @@ func TestDuration_UnmarshalYAML(t *testing.T) {
 		t.Error("err == nil")
 	}
 }
+
+func TestFileMode_UnmarshalYAML(t *testing.T) {
+	a := FileMode(504)
+	var b FileMode
+	if err := yaml.Unmarshal([]byte("770"), &b); err != nil {
+		t.Error("err != nil")
+	} else if a != b {
+		t.Errorf("%d != %d", a, b)
+	}
+	// ---------------------------
+	if err := yaml.Unmarshal([]byte("0770"), &b); err != nil {
+		t.Error("err != nil")
+	} else if a != b {
+		t.Errorf("%d != %d", a, b)
+	}
+	// ---------------------------
+	if err := yaml.Unmarshal([]byte("test"), &b); err == nil {
+		t.Error("err == nil")
+	}
+	// ---------------------------
+	if err := yaml.Unmarshal([]byte("test:"), &b); err == nil {
+		t.Error("err == nil")
+	}
+}
