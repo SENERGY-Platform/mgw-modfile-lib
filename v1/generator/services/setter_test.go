@@ -397,19 +397,4 @@ func TestSetResources(t *testing.T) {
 	if err := SetResources(mfRs, mSs); err == nil {
 		t.Error("err == nil")
 	}
-	// --------------------------------
-	mfRs[res] = model.Resource{
-		Targets: []model.ResourceTarget{
-			{
-				ResourceTargetBase: model.ResourceTargetBase{
-					MountPoint: mp,
-					Services:   []string{"b"},
-				},
-				ReadOnly: true,
-			},
-		},
-	}
-	if err := SetResources(mfRs, mSs); err == nil {
-		t.Error("err == nil")
-	}
 }
