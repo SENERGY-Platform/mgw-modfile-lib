@@ -89,3 +89,70 @@ func TestSetSrvReferences(t *testing.T) {
 		t.Error("err != nil")
 	}
 }
+
+func TestSetVolumes(t *testing.T) {
+	sRef := "a"
+	var mfVs map[string][]model.VolumeTarget
+	mSs := map[string]*module.Service{sRef: {}}
+	if err := SetVolumes(mfVs, mSs); err != nil {
+		t.Error("err != nil")
+	}
+	// --------------------------------
+	mfVs = make(map[string][]model.VolumeTarget)
+	vl := "vl"
+	mp := "mp"
+	mfVs[vl] = []model.VolumeTarget{
+		{
+			MountPoint: mp,
+			Services:   []string{sRef},
+		},
+	}
+	a := map[string]string{mp: vl}
+	if err := SetVolumes(mfVs, mSs); err != nil {
+		t.Error("err != nil")
+	} else if ms := mSs[sRef]; reflect.DeepEqual(a, ms.Volumes) == false {
+		t.Errorf("%v != %v", a, ms.Volumes)
+	}
+	// --------------------------------
+	mfVs[vl] = []model.VolumeTarget{
+		{
+			MountPoint: mp,
+			Services:   []string{sRef},
+		},
+		{
+			MountPoint: mp,
+			Services:   []string{sRef},
+		},
+	}
+	if err := SetVolumes(mfVs, mSs); err != nil {
+		t.Error("err != nil")
+	} else if ms := mSs[sRef]; reflect.DeepEqual(a, ms.Volumes) == false {
+		t.Errorf("%v != %v", a, ms.Volumes)
+	}
+	// --------------------------------
+	mfVs[vl] = []model.VolumeTarget{
+		{
+			MountPoint: mp,
+			Services:   []string{sRef},
+		},
+	}
+	mfVs["vl2"] = []model.VolumeTarget{
+		{
+			MountPoint: mp,
+			Services:   []string{sRef},
+		},
+	}
+	if err := SetVolumes(mfVs, mSs); err == nil {
+		t.Error("err != nil")
+	}
+	// --------------------------------
+	mfVs[vl] = []model.VolumeTarget{
+		{
+			MountPoint: mp,
+			Services:   []string{"b"},
+		},
+	}
+	if err := SetVolumes(mfVs, mSs); err == nil {
+		t.Error("err != nil")
+	}
+}
