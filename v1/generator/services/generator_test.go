@@ -292,3 +292,244 @@ func TestGenHttpEndpoints(t *testing.T) {
 		t.Error("err == nil")
 	}
 }
+
+func TestGenPorts(t *testing.T) {
+	var mfSPs []model.SrvPort
+	if p, err := GenPorts(mfSPs); err != nil {
+		t.Error("err != nil")
+	} else if len(p) != 0 {
+		t.Errorf("len(%v) != 0", p)
+	}
+	// --------------------------------
+	mfSPs = []model.SrvPort{
+		{
+			Name:     nil,
+			Port:     "80",
+			HostPort: nil,
+			Protocol: nil,
+		},
+	}
+	a := module.Port{
+		Name:     nil,
+		Number:   80,
+		Protocol: module.TcpPort,
+		Bindings: nil,
+	}
+	if p, err := GenPorts(mfSPs); err != nil {
+		t.Error("err != nil")
+	} else if len(p) != 1 {
+		t.Errorf("len(%v) != 1", p)
+	} else if reflect.DeepEqual(a, p[0]) == false {
+		t.Errorf("%v != %v", a, p[0])
+	}
+	// --------------------------------
+	str := "test"
+	mfSPs = []model.SrvPort{
+		{
+			Name:     &str,
+			Port:     "80",
+			HostPort: nil,
+			Protocol: &str,
+		},
+	}
+	a = module.Port{
+		Name:     &str,
+		Number:   80,
+		Protocol: str,
+		Bindings: nil,
+	}
+	if p, err := GenPorts(mfSPs); err != nil {
+		t.Error("err != nil")
+	} else if len(p) != 1 {
+		t.Errorf("len(%v) != 1", p)
+	} else if reflect.DeepEqual(a, p[0]) == false {
+		t.Errorf("%v != %v", a, p[0])
+	}
+	// --------------------------------
+	mfSPs = []model.SrvPort{
+		{
+			Name:     nil,
+			Port:     "80-81",
+			HostPort: nil,
+			Protocol: nil,
+		},
+	}
+	a2 := []module.Port{
+		{
+			Name:     nil,
+			Number:   80,
+			Protocol: module.TcpPort,
+			Bindings: nil,
+		},
+		{
+			Name:     nil,
+			Number:   81,
+			Protocol: module.TcpPort,
+			Bindings: nil,
+		},
+	}
+	if p, err := GenPorts(mfSPs); err != nil {
+		t.Error("err != nil")
+	} else if len(p) != 2 {
+		t.Errorf("len(%v) != 2", p)
+	} else if reflect.DeepEqual(a2, p) == false {
+		t.Errorf("%v != %v", a2, p)
+	}
+	// --------------------------------
+	mfSPs = []model.SrvPort{
+		{
+			Name:     &str,
+			Port:     "80-81",
+			HostPort: nil,
+			Protocol: &str,
+		},
+	}
+	a2 = []module.Port{
+		{
+			Name:     &str,
+			Number:   80,
+			Protocol: str,
+			Bindings: nil,
+		},
+		{
+			Name:     &str,
+			Number:   81,
+			Protocol: str,
+			Bindings: nil,
+		},
+	}
+	if p, err := GenPorts(mfSPs); err != nil {
+		t.Error("err != nil")
+	} else if len(p) != 2 {
+		t.Errorf("len(%v) != 2", p)
+	} else if reflect.DeepEqual(a2, p) == false {
+		t.Errorf("%v != %v", a2, p)
+	}
+	// --------------------------------
+	hp := model.Port("80")
+	mfSPs = []model.SrvPort{
+		{
+			Name:     nil,
+			Port:     "80",
+			HostPort: &hp,
+			Protocol: nil,
+		},
+	}
+	a = module.Port{
+		Name:     nil,
+		Number:   80,
+		Protocol: module.TcpPort,
+		Bindings: []uint{80},
+	}
+	if p, err := GenPorts(mfSPs); err != nil {
+		t.Error("err != nil")
+	} else if len(p) != 1 {
+		t.Errorf("len(%v) != 1", p)
+	} else if reflect.DeepEqual(a, p[0]) == false {
+		t.Errorf("%v != %v", a, p[0])
+	}
+	// --------------------------------
+	hp2 := model.Port("80-81")
+	mfSPs = []model.SrvPort{
+		{
+			Name:     nil,
+			Port:     "80",
+			HostPort: &hp2,
+			Protocol: nil,
+		},
+	}
+	a = module.Port{
+		Name:     nil,
+		Number:   80,
+		Protocol: module.TcpPort,
+		Bindings: []uint{80, 81},
+	}
+	if p, err := GenPorts(mfSPs); err != nil {
+		t.Error("err != nil")
+	} else if len(p) != 1 {
+		t.Errorf("len(%v) != 1", p)
+	} else if reflect.DeepEqual(a, p[0]) == false {
+		t.Errorf("%v != %v", a, p[0])
+	}
+	// --------------------------------
+	mfSPs = []model.SrvPort{
+		{
+			Name:     nil,
+			Port:     "80-81",
+			HostPort: &hp2,
+			Protocol: nil,
+		},
+	}
+	a2 = []module.Port{
+		{
+			Name:     nil,
+			Number:   80,
+			Protocol: module.TcpPort,
+			Bindings: []uint{80},
+		},
+		{
+			Name:     nil,
+			Number:   81,
+			Protocol: module.TcpPort,
+			Bindings: []uint{81},
+		},
+	}
+	if p, err := GenPorts(mfSPs); err != nil {
+		t.Error("err != nil")
+	} else if len(p) != 2 {
+		t.Errorf("len(%v) != 2", p)
+	} else if reflect.DeepEqual(a2, p) == false {
+		t.Errorf("%v != %v", a2, p)
+	}
+	// --------------------------------
+	mfSPs = []model.SrvPort{
+		{
+			Name:     nil,
+			Port:     "test",
+			HostPort: nil,
+			Protocol: nil,
+		},
+	}
+	if _, err := GenPorts(mfSPs); err == nil {
+		t.Error("err == nil")
+	}
+	// --------------------------------
+	hp3 := model.Port("test")
+	mfSPs = []model.SrvPort{
+		{
+			Name:     nil,
+			Port:     "80",
+			HostPort: &hp3,
+			Protocol: nil,
+		},
+	}
+	if _, err := GenPorts(mfSPs); err == nil {
+		t.Error("err == nil")
+	}
+	// --------------------------------
+	hp4 := model.Port("80")
+	mfSPs = []model.SrvPort{
+		{
+			Name:     nil,
+			Port:     "80-81",
+			HostPort: &hp4,
+			Protocol: nil,
+		},
+	}
+	if _, err := GenPorts(mfSPs); err == nil {
+		t.Error("err == nil")
+	}
+	// --------------------------------
+	hp5 := model.Port("80-82")
+	mfSPs = []model.SrvPort{
+		{
+			Name:     nil,
+			Port:     "80-81",
+			HostPort: &hp5,
+			Protocol: nil,
+		},
+	}
+	if _, err := GenPorts(mfSPs); err == nil {
+		t.Error("err == nil")
+	}
+}
