@@ -278,9 +278,9 @@ func TestSetExtDependencies(t *testing.T) {
 }
 
 func TestSetResources(t *testing.T) {
-	ref := "a"
+	sRef := "a"
 	var mfRs map[string]model.Resource
-	mSs := map[string]*module.Service{ref: {}}
+	mSs := map[string]*module.Service{sRef: {}}
 	if err := SetResources(mfRs, mSs); err != nil {
 		t.Error("err != nil")
 	}
@@ -293,7 +293,7 @@ func TestSetResources(t *testing.T) {
 			{
 				ResourceTargetBase: model.ResourceTargetBase{
 					MountPoint: mp,
-					Services:   []string{ref},
+					Services:   []string{sRef},
 				},
 				ReadOnly: true,
 			},
@@ -307,7 +307,7 @@ func TestSetResources(t *testing.T) {
 	}
 	if err := SetResources(mfRs, mSs); err != nil {
 		t.Error("err != nil")
-	} else if ms := mSs[ref]; reflect.DeepEqual(a, ms.Resources) == false {
+	} else if ms := mSs[sRef]; reflect.DeepEqual(a, ms.Resources) == false {
 		t.Errorf("%v != %v", a, ms.Resources)
 	}
 	// --------------------------------
@@ -316,7 +316,7 @@ func TestSetResources(t *testing.T) {
 			{
 				ResourceTargetBase: model.ResourceTargetBase{
 					MountPoint: mp,
-					Services:   []string{ref},
+					Services:   []string{sRef},
 				},
 				ReadOnly: true,
 			},
@@ -331,7 +331,7 @@ func TestSetResources(t *testing.T) {
 	}
 	if err := SetResources(mfRs, mSs); err != nil {
 		t.Error("err != nil")
-	} else if ms := mSs[ref]; reflect.DeepEqual(a, ms.Resources) == false {
+	} else if ms := mSs[sRef]; reflect.DeepEqual(a, ms.Resources) == false {
 		t.Errorf("%v != %v", a, ms.Resources)
 	}
 	// --------------------------------
@@ -340,14 +340,14 @@ func TestSetResources(t *testing.T) {
 			{
 				ResourceTargetBase: model.ResourceTargetBase{
 					MountPoint: mp,
-					Services:   []string{ref},
+					Services:   []string{sRef},
 				},
 				ReadOnly: false,
 			},
 			{
 				ResourceTargetBase: model.ResourceTargetBase{
 					MountPoint: mp,
-					Services:   []string{ref},
+					Services:   []string{sRef},
 				},
 				ReadOnly: true,
 			},
@@ -362,7 +362,7 @@ func TestSetResources(t *testing.T) {
 			{
 				ResourceTargetBase: model.ResourceTargetBase{
 					MountPoint: mp,
-					Services:   []string{ref},
+					Services:   []string{sRef},
 				},
 				ReadOnly: false,
 			},
@@ -373,7 +373,7 @@ func TestSetResources(t *testing.T) {
 			{
 				ResourceTargetBase: model.ResourceTargetBase{
 					MountPoint: mp,
-					Services:   []string{ref},
+					Services:   []string{sRef},
 				},
 				ReadOnly: false,
 			},
