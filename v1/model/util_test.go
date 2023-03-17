@@ -18,6 +18,7 @@ package model
 
 import (
 	"gopkg.in/yaml.v3"
+	"reflect"
 	"testing"
 	"time"
 )
@@ -121,6 +122,46 @@ func TestPort_UnmarshalYAML(t *testing.T) {
 	}
 	// ---------------------------
 	if err := yaml.Unmarshal([]byte("test"), &b); err == nil {
+		t.Error("err == nil")
+	}
+}
+
+func TestPort_Parse(t *testing.T) {
+	a := []uint{80}
+	if b, err := Port("80").Parse(); err != nil {
+		t.Error("err != nil")
+	} else if reflect.DeepEqual(a, b) == false {
+		t.Errorf("%v != %v", a, b)
+	}
+	// ---------------------------
+	a = []uint{80, 81}
+	if b, err := Port("80-81").Parse(); err != nil {
+		t.Error("err != nil")
+	} else if reflect.DeepEqual(a, b) == false {
+		t.Errorf("%v != %v", a, b)
+	}
+	// ---------------------------
+	if _, err := Port("81-80").Parse(); err == nil {
+		t.Error("err == nil")
+	}
+	// ---------------------------
+	if _, err := Port("80-81-").Parse(); err == nil {
+		t.Error("err == nil")
+	}
+	// ---------------------------
+	if _, err := Port("80-test").Parse(); err == nil {
+		t.Error("err == nil")
+	}
+	// ---------------------------
+	if _, err := Port("test").Parse(); err == nil {
+		t.Error("err == nil")
+	}
+	// ---------------------------
+	if _, err := Port("-").Parse(); err == nil {
+		t.Error("err == nil")
+	}
+	// ---------------------------
+	if _, err := Port("").Parse(); err == nil {
 		t.Error("err == nil")
 	}
 }
