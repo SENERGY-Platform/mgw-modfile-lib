@@ -56,87 +56,87 @@ func TestParseConfigOptions(t *testing.T) {
 func TestParseConfigValueString(t *testing.T) {
 	str := "test"
 	if v, err := parseConfigValueString(str); err != nil {
-		t.Errorf("v, err := parseConfigValueString(\"%s\"); err != nil", str)
+		t.Error("err != nil")
 	} else if v != str {
-		t.Errorf("\"%s\" != \"%s\"", v, str)
+		t.Errorf("%s != %s", v, str)
 	}
 	if _, err := parseConfigValueString(1); err == nil {
-		t.Error("v, err := parseConfigValueString(1); err == nil")
+		t.Error("err == nil")
 	}
 }
 
 func TestParseConfigValueBool(t *testing.T) {
 	b := true
 	if v, err := parseConfigValueBool(b); err != nil {
-		t.Errorf("v, err := parseConfigValueString(%v); err != nil", b)
+		t.Error("err != nil")
 	} else if v != b {
 		t.Errorf("%v != %v", v, b)
 	}
 	if _, err := parseConfigValueBool(1); err == nil {
-		t.Error("v, err := parseConfigValueBool(1); err == nil")
+		t.Error("err == nil")
 	}
 }
 
 func TestParseConfigValueInt64(t *testing.T) {
 	i := int64(1)
 	if v, err := parseConfigValueInt64(int(i)); err != nil {
-		t.Errorf("v, err := parseConfigValueInt64(int(%d)); err != nil", i)
+		t.Error("err != nil")
 	} else if v != i {
 		t.Errorf("%d != %d", v, i)
 	}
 	if v, err := parseConfigValueInt64(int8(i)); err != nil {
-		t.Errorf("v, err := parseConfigValueInt64(int8(%d)); err != nil", i)
+		t.Error("err != nil")
 	} else if v != i {
 		t.Errorf("%d != %d", v, i)
 	}
 	if v, err := parseConfigValueInt64(int16(i)); err != nil {
-		t.Errorf("v, err := parseConfigValueInt64(int16(%d)); err != nil", i)
+		t.Error("err != nil")
 	} else if v != i {
 		t.Errorf("%d != %d", v, i)
 	}
 	if v, err := parseConfigValueInt64(int32(i)); err != nil {
-		t.Errorf("v, err := parseConfigValueInt64(int32(%d)); err != nil", i)
+		t.Error("err != nil")
 	} else if v != i {
 		t.Errorf("%d != %d", v, i)
 	}
 	if v, err := parseConfigValueInt64(i); err != nil {
-		t.Errorf("v, err := parseConfigValueInt64(%d); err != nil", i)
+		t.Error("err != nil")
 	} else if v != i {
 		t.Errorf("%d != %d", v, i)
 	}
 	if _, err := parseConfigValueInt64(""); err == nil {
-		t.Error("v, err := parseConfigValueInt64(\"\"); err == nil")
+		t.Error("err == nil")
 	}
 }
 
 func TestParseConfigValueFloat64(t *testing.T) {
 	f := 1.0
 	if v, err := parseConfigValueFloat64(float32(f)); err != nil {
-		t.Errorf("v, err := parseConfigValueFloat64(float32(%f)); err != nil", f)
+		t.Error("err != nil")
 	} else if v != f {
 		t.Errorf("%f != %f", v, f)
 	}
 	if v, err := parseConfigValueFloat64(f); err != nil {
-		t.Errorf("v, err := parseConfigValueFloat64(%f); err != nil", f)
+		t.Error("err != nil")
 	} else if v != f {
 		t.Errorf("%f != %f", v, f)
 	}
 	if _, err := parseConfigValueFloat64(""); err == nil {
-		t.Error("v, err := parseConfigValueFloat64(\"\"); err == nil")
+		t.Error("err == nil")
 	}
 }
 
 func TestParseConfigTypeOptions(t *testing.T) {
 	var opt map[string]any
 	if cto, err := parseConfigTypeOptions(opt); err != nil {
-		t.Errorf("cto, err := parseConfigTypeOptions(%v); err != nil", opt)
+		t.Error("err != nil")
 	} else if len(cto) != 0 {
 		t.Errorf("len(%v) != 0", cto)
 	}
 	// ---------------------------------------
 	opt = make(map[string]any)
 	if cto, err := parseConfigTypeOptions(opt); err != nil {
-		t.Errorf("cto, err := parseConfigTypeOptions(%v); err != nil", opt)
+		t.Error("err != nil")
 	} else if len(cto) != 0 {
 		t.Errorf("len(%v) != 0", cto)
 	}
@@ -144,109 +144,109 @@ func TestParseConfigTypeOptions(t *testing.T) {
 	str := "test"
 	opt[str] = str
 	if cto, err := parseConfigTypeOptions(opt); err != nil {
-		t.Errorf("cto, err := parseConfigTypeOptions(%v); err != nil", opt)
+		t.Error("err != nil")
 	} else if o, ok := cto[str]; !ok {
-		t.Errorf("o, ok := cto[\"%s\"]; !ok", str)
+		t.Errorf("o, ok := cto[%s]; !ok", str)
 	} else if o.DataType != module.StringType {
-		t.Error("o.DataType != module.StringType")
+		t.Errorf("%s != %s", o.DataType, module.StringType)
 	} else if reflect.DeepEqual(o.Value, str) == false {
-		t.Errorf("reflect.DeepEqual(%v, \"%s\") == false", o.Value, str)
+		t.Errorf("%v != %s", o.Value, str)
 	}
 	// ---------------------------------------
 	i := int64(1)
 	opt[str] = int(i)
 	if cto, err := parseConfigTypeOptions(opt); err != nil {
-		t.Errorf("cto, err := parseConfigTypeOptions(%v); err != nil", opt)
+		t.Error("err != nil")
 	} else if o, ok := cto[str]; !ok {
-		t.Errorf("o, ok := cto[\"%s\"]; !ok", str)
+		t.Errorf("o, ok := cto[%s]; !ok", str)
 	} else if o.DataType != module.Int64Type {
-		t.Error("o.DataType != module.Int64Type")
+		t.Errorf("%s != %s", o.DataType, module.Int64Type)
 	} else if reflect.DeepEqual(o.Value, i) == false {
-		t.Errorf("reflect.DeepEqual(%v, %d) == false", o.Value, i)
+		t.Errorf("%v != %d", o.Value, i)
 	}
 	// ---------------------------------------
 	opt[str] = int8(i)
 	if cto, err := parseConfigTypeOptions(opt); err != nil {
-		t.Errorf("cto, err := parseConfigTypeOptions(%v); err != nil", opt)
+		t.Error("err != nil")
 	} else if o, ok := cto[str]; !ok {
-		t.Errorf("o, ok := cto[\"%s\"]; !ok", str)
+		t.Errorf("o, ok := cto[%s]; !ok", str)
 	} else if o.DataType != module.Int64Type {
-		t.Error("o.DataType != module.Int64Type")
+		t.Errorf("%s != %s", o.DataType, module.Int64Type)
 	} else if reflect.DeepEqual(o.Value, i) == false {
-		t.Errorf("reflect.DeepEqual(%v, %d) == false", o.Value, i)
+		t.Errorf("%v != %d", o.Value, i)
 	}
 	// ---------------------------------------
 	opt[str] = int16(i)
 	if cto, err := parseConfigTypeOptions(opt); err != nil {
-		t.Errorf("cto, err := parseConfigTypeOptions(%v); err != nil", opt)
+		t.Error("err != nil")
 	} else if o, ok := cto[str]; !ok {
-		t.Errorf("o, ok := cto[\"%s\"]; !ok", str)
+		t.Errorf("o, ok := cto[%s]; !ok", str)
 	} else if o.DataType != module.Int64Type {
-		t.Error("o.DataType != module.Int64Type")
+		t.Errorf("%s != %s", o.DataType, module.Int64Type)
 	} else if reflect.DeepEqual(o.Value, i) == false {
-		t.Errorf("reflect.DeepEqual(%v, %d) == false", o.Value, i)
+		t.Errorf("%v != %d", o.Value, i)
 	}
 	// ---------------------------------------
 	opt[str] = int32(i)
 	if cto, err := parseConfigTypeOptions(opt); err != nil {
-		t.Errorf("cto, err := parseConfigTypeOptions(%v); err != nil", opt)
+		t.Error("err != nil")
 	} else if o, ok := cto[str]; !ok {
-		t.Errorf("o, ok := cto[\"%s\"]; !ok", str)
+		t.Errorf("o, ok := cto[%s]; !ok", str)
 	} else if o.DataType != module.Int64Type {
-		t.Error("o.DataType != module.Int64Type")
+		t.Errorf("%s != %s", o.DataType, module.Int64Type)
 	} else if reflect.DeepEqual(o.Value, i) == false {
-		t.Errorf("reflect.DeepEqual(%v, %d) == false", o.Value, i)
+		t.Errorf("%v != %d", o.Value, i)
 	}
 	// ---------------------------------------
 	opt[str] = i
 	if cto, err := parseConfigTypeOptions(opt); err != nil {
-		t.Errorf("cto, err := parseConfigTypeOptions(%v); err != nil", opt)
+		t.Error("err != nil")
 	} else if o, ok := cto[str]; !ok {
-		t.Errorf("o, ok := cto[\"%s\"]; !ok", str)
+		t.Errorf("o, ok := cto[%s]; !ok", str)
 	} else if o.DataType != module.Int64Type {
-		t.Error("o.DataType != module.Int64Type")
+		t.Errorf("%s != %s", o.DataType, module.Float64Type)
 	} else if reflect.DeepEqual(o.Value, i) == false {
-		t.Errorf("reflect.DeepEqual(%v, %d) == false", o.Value, i)
+		t.Errorf("%v != %d", o.Value, i)
 	}
 	// ---------------------------------------
 	f := 1.0
 	opt[str] = float32(f)
 	if cto, err := parseConfigTypeOptions(opt); err != nil {
-		t.Errorf("cto, err := parseConfigTypeOptions(%v); err != nil", opt)
+		t.Error("err != nil")
 	} else if o, ok := cto[str]; !ok {
-		t.Errorf("o, ok := cto[\"%s\"]; !ok", str)
+		t.Errorf("o, ok := cto[%s]; !ok", str)
 	} else if o.DataType != module.Float64Type {
-		t.Error("o.DataType != module.Float64Type")
+		t.Errorf("%s != %s", o.DataType, module.Float64Type)
 	} else if reflect.DeepEqual(o.Value, f) == false {
-		t.Errorf("reflect.DeepEqual(%v, %f) == false", o.Value, f)
+		t.Errorf("%v != %f", o.Value, f)
 	}
 	// ---------------------------------------
 	opt[str] = f
 	if cto, err := parseConfigTypeOptions(opt); err != nil {
-		t.Errorf("cto, err := parseConfigTypeOptions(%v); err != nil", opt)
+		t.Error("err != nil")
 	} else if o, ok := cto[str]; !ok {
-		t.Errorf("o, ok := cto[\"%s\"]; !ok", str)
+		t.Errorf("o, ok := cto[%s]; !ok", str)
 	} else if o.DataType != module.Float64Type {
-		t.Error("o.DataType != module.Float64Type")
+		t.Errorf("%s != %s", o.DataType, module.Float64Type)
 	} else if reflect.DeepEqual(o.Value, f) == false {
-		t.Errorf("reflect.DeepEqual(%v, %f) == false", o.Value, f)
+		t.Errorf("%v != %f", o.Value, f)
 	}
 	// ---------------------------------------
 	b := true
 	opt[str] = b
 	if cto, err := parseConfigTypeOptions(opt); err != nil {
-		t.Errorf("cto, err := parseConfigTypeOptions(%v); err != nil", opt)
+		t.Error("err != nil")
 	} else if o, ok := cto[str]; !ok {
-		t.Errorf("o, ok := cto[\"%s\"]; !ok", str)
+		t.Errorf("o, ok := cto[%s]; !ok", str)
 	} else if o.DataType != module.BoolType {
-		t.Error("o.DataType != module.BoolType")
+		t.Errorf("%s != %s", o.DataType, module.BoolType)
 	} else if reflect.DeepEqual(o.Value, b) == false {
-		t.Errorf("reflect.DeepEqual(%v, %v) == false", o.Value, b)
+		t.Errorf("%v != %v", o.Value, b)
 	}
 	// ---------------------------------------
 	opt[str] = uint(1)
 	if _, err := parseConfigTypeOptions(opt); err == nil {
-		t.Errorf("_, err := parseConfigTypeOptions(%v); err == nil", opt)
+		t.Error("err == nil")
 	}
 }
 
@@ -259,7 +259,7 @@ func TestParseConfig(t *testing.T) {
 	if err != nil {
 		t.Error("err != nil")
 	} else if p != nil {
-		t.Error("p != nil")
+		t.Errorf("%v  != nil", p)
 	} else if len(o) != 0 {
 		t.Errorf("len(%v) != 0", o)
 	} else if len(to) != 0 {
@@ -272,7 +272,7 @@ func TestParseConfig(t *testing.T) {
 	if err != nil {
 		t.Error("err != nil")
 	} else if p == nil {
-		t.Error("p != nil")
+		t.Errorf("%v  != nil", p)
 	} else if *p != 2 {
 		t.Errorf("%d != 2", *p)
 	}
@@ -445,23 +445,23 @@ func testSetValue[T comparable](t *testing.T, value any, options []any, dataType
 	if err := SetValue(str, cv, mCs); err != nil {
 		t.Error("err != nil")
 	} else if c, ok := mCs[str]; !ok {
-		t.Errorf("c, ok := mCs[\"%s\"]; !ok", str)
+		t.Errorf("c, ok := mCs[%s]; !ok", str)
 	} else if cv.DataType != c.DataType {
 		t.Errorf("%v != %v", cv.DataType, c.DataType)
 	} else if reflect.DeepEqual(cv.Value, c.Default) == false {
-		t.Errorf("reflect.DeepEqual(%v, %v) == false", cv.Value, c.Default)
+		t.Errorf("%v != %v", cv.Value, c.Default)
 	} else if len(c.Options.([]T)) == 0 {
 		t.Errorf("len(%v) == 0", c.Options)
 	} else if reflect.DeepEqual(cv.Options[0], c.Options.([]T)[0]) == false {
-		t.Errorf("reflect.DeepEqual(%v, %v) == false", cv.Options[0], c.Options.([]T)[0])
+		t.Errorf("%v != %v", cv.Options[0], c.Options.([]T)[0])
 	} else if cv.OptionsExt != c.OptExt {
 		t.Errorf("%v != %v", cv.OptionsExt, c.OptExt)
 	} else if cv.Type != c.Type {
 		t.Errorf("%v != %v", cv.Type, c.Type)
 	} else if to, k := c.TypeOpt[str]; !k {
-		t.Errorf("to, k := c.TypeOpt[\"%s\"]; !k", str)
+		t.Errorf("to, k := c.TypeOpt[%s]; !k", str)
 	} else if reflect.DeepEqual(cv.TypeOptions[str], to.Value) == false {
-		t.Errorf("reflect.DeepEqual(%v, %v) == false", cv.TypeOptions[str], to.Value)
+		t.Errorf("%v != %v", cv.TypeOptions[str], to.Value)
 	} else if cv.IsList != c.IsSlice {
 		t.Errorf("%v != %v", cv.IsList, c.IsSlice)
 	} else if c.Delimiter != "" {
@@ -509,7 +509,7 @@ func testSetSlice[T comparable](t *testing.T, value any, options []any, dataType
 	if err := SetSlice(str, model.ConfigValue{Value: []any{1}, DataType: module.Int64Type}, mCs); err != nil {
 		t.Error("err != nil")
 	} else if c, ok := mCs[str]; !ok {
-		t.Errorf("c, ok := mCs[\"%s\"]; !ok", str)
+		t.Errorf("c, ok := mCs[%s]; !ok", str)
 	} else if c.Delimiter != "," {
 		t.Error("c.Delimiter != \",\"")
 	}
@@ -526,25 +526,25 @@ func testSetSlice[T comparable](t *testing.T, value any, options []any, dataType
 	if err := SetSlice(str, cv, mCs); err != nil {
 		t.Error("err != nil")
 	} else if c, ok := mCs[str]; !ok {
-		t.Errorf("c, ok := mCs[\"%s\"]; !ok", str)
+		t.Errorf("c, ok := mCs[%s]; !ok", str)
 	} else if cv.DataType != c.DataType {
 		t.Errorf("%v != %v", cv.DataType, c.DataType)
 	} else if len(c.Default.([]T)) == 0 {
 		t.Errorf("len(%v) == 0", c.Default)
 	} else if reflect.DeepEqual(cv.Value.([]any)[0], c.Default.([]T)[0]) == false {
-		t.Errorf("reflect.DeepEqual(%v, %v) == false", cv.Value.([]any)[0], c.Default.([]T)[0])
+		t.Errorf("%v != %v", cv.Value.([]any)[0], c.Default.([]T)[0])
 	} else if len(c.Options.([]T)) == 0 {
 		t.Errorf("len(%v) == 0", c.Options)
 	} else if reflect.DeepEqual(cv.Options[0], c.Options.([]T)[0]) == false {
-		t.Errorf("reflect.DeepEqual(%v, %v) == false", cv.Options[0], c.Options.([]T)[0])
+		t.Errorf("%v != %v", cv.Options[0], c.Options.([]T)[0])
 	} else if cv.OptionsExt != c.OptExt {
 		t.Errorf("%v != %v", cv.OptionsExt, c.OptExt)
 	} else if cv.Type != c.Type {
 		t.Errorf("%v != %v", cv.Type, c.Type)
 	} else if to, k := c.TypeOpt[str]; !k {
-		t.Errorf("to, k := c.TypeOpt[\"%s\"]; !k", str)
+		t.Errorf("to, k := c.TypeOpt[%s]; !k", str)
 	} else if reflect.DeepEqual(cv.TypeOptions[str], to.Value) == false {
-		t.Errorf("reflect.DeepEqual(%v, %v) == false", cv.TypeOptions[str], to.Value)
+		t.Errorf("%v != %v", cv.TypeOptions[str], to.Value)
 	} else if cv.IsList != c.IsSlice {
 		t.Errorf("%v != %v", cv.IsList, c.IsSlice)
 	} else if *cv.Delimiter != c.Delimiter {
