@@ -24,13 +24,13 @@ import (
 func TestGenVolumes(t *testing.T) {
 	var mfVs map[string][]model.VolumeTarget
 	if vtm := GenVolumes(mfVs); len(vtm) != 0 {
-		t.Errorf("vtm := GenVolumes(%v); len(%v) != 0", mfVs, vtm)
+		t.Errorf("len(%v) != 0", vtm)
 	}
 	mfVs = make(map[string][]model.VolumeTarget)
 	str := "test"
 	mfVs[str] = []model.VolumeTarget{}
 	if vtm := GenVolumes(mfVs); len(vtm) != 1 {
-		t.Errorf("vtm := GenVolumes(%v); len(%v) != 1", mfVs, vtm)
+		t.Errorf("len(%v) != 1", vtm)
 	} else if _, ok := vtm[str]; !ok {
 		t.Errorf("_, ok := vtm[%s]; !ok", str)
 	}
@@ -39,13 +39,13 @@ func TestGenVolumes(t *testing.T) {
 func TestGenDependencies(t *testing.T) {
 	var mfMDs map[string]model.ModuleDependency
 	if m := GenDependencies(mfMDs); len(m) != 0 {
-		t.Errorf("m := GenDependencies(%v); len(%v) != 0", mfMDs, m)
+		t.Errorf("len(%v) != 0", m)
 	}
 	mfMDs = make(map[string]model.ModuleDependency)
 	str := "test"
 	mfMDs[str] = model.ModuleDependency{}
 	if m := GenDependencies(mfMDs); len(m) != 1 {
-		t.Errorf("m := GenDependencies(%v); len(%v) != 1", mfMDs, m)
+		t.Errorf("len(%v) != 1", m)
 	} else if _, ok := m[str]; !ok {
 		t.Errorf("_, ok := m[%s]; !ok", str)
 	}
@@ -54,13 +54,13 @@ func TestGenDependencies(t *testing.T) {
 func TestGenResources(t *testing.T) {
 	var mfRs map[string]model.Resource
 	if m := GenResources(mfRs); len(m) != 0 {
-		t.Errorf("m := GenResources(%v); len(%v) != 0", mfRs, m)
+		t.Errorf("len(%v) != 0", m)
 	}
 	mfRs = make(map[string]model.Resource)
 	str := "test"
 	mfRs[str] = model.Resource{ResourceBase: model.ResourceBase{Tags: []string{str}}}
 	if m := GenResources(mfRs); len(m) != 1 {
-		t.Errorf("m := GenResources(%v); len(%v) != 1", mfRs, m)
+		t.Errorf("len(%v) != 1", m)
 	} else if set, ok := m[str]; !ok {
 		t.Errorf("set, ok := m[%s]; !ok", str)
 	} else if len(set) != 1 {
@@ -73,7 +73,7 @@ func TestGenResources(t *testing.T) {
 func TestGenSecrets(t *testing.T) {
 	var mfSs map[string]model.Secret
 	if sm := GenSecrets(mfSs); len(sm) != 0 {
-		t.Errorf("sm := GenSecrets(%v); len(%v) != 0", mfSs, sm)
+		t.Errorf("len(%v) != 0", sm)
 	}
 	mfSs = make(map[string]model.Secret)
 	str := "test"
@@ -82,7 +82,7 @@ func TestGenSecrets(t *testing.T) {
 		Type:         str,
 	}
 	if sm := GenSecrets(mfSs); len(sm) != 1 {
-		t.Errorf("sm := GenSecrets(%v); len(%v) != 1", mfSs, sm)
+		t.Errorf("len(%v) != 1", sm)
 	} else if s, ok := sm[str]; !ok {
 		t.Errorf("s, ok := sm[%s]; !ok", str)
 	} else if len(s.Tags) != 1 {
