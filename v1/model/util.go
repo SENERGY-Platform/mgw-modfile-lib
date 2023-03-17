@@ -55,9 +55,9 @@ func (p *Port) UnmarshalYAML(yn *yaml.Node) error {
 	return nil
 }
 
-func (p *Port) Parse() ([]uint, error) {
+func (p Port) Parse() ([]uint, error) {
 	var r []uint
-	parts := strings.Split(string(*p), "-")
+	parts := strings.Split(string(p), "-")
 	pl := len(parts)
 	if pl < 1 || pl > 2 {
 		return nil, errors.New("invalid format")
