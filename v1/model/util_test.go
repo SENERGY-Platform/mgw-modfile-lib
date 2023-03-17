@@ -91,3 +91,36 @@ func TestFileMode_UnmarshalYAML(t *testing.T) {
 		t.Error("err == nil")
 	}
 }
+
+func TestPort_UnmarshalYAML(t *testing.T) {
+	a := Port("80")
+	var b Port
+	if err := yaml.Unmarshal([]byte("80"), &b); err != nil {
+		t.Error("err != nil")
+	} else if a != b {
+		t.Errorf("%s != %s", a, b)
+	}
+	// ---------------------------
+	a = "80-81"
+	if err := yaml.Unmarshal([]byte("80-81"), &b); err != nil {
+		t.Error("err != nil")
+	} else if a != b {
+		t.Errorf("%s != %s", a, b)
+	}
+	// ---------------------------
+	if err := yaml.Unmarshal([]byte("80-81-"), &b); err == nil {
+		t.Error("err == nil")
+	}
+	// ---------------------------
+	if err := yaml.Unmarshal([]byte("-1"), &b); err == nil {
+		t.Error("err == nil")
+	}
+	// ---------------------------
+	if err := yaml.Unmarshal([]byte("1.1"), &b); err == nil {
+		t.Error("err == nil")
+	}
+	// ---------------------------
+	if err := yaml.Unmarshal([]byte("test"), &b); err == nil {
+		t.Error("err == nil")
+	}
+}
