@@ -32,17 +32,17 @@ func (t test) GetUserInput() *model.UserInput {
 func TestGenInputs(t *testing.T) {
 	var mfCs map[string]test
 	if im := GenInputs(mfCs); len(im) != 0 {
-		t.Errorf("im := GenInputs(%v); len(%v) != 0", mfCs, im)
+		t.Errorf("len(%v) != 0", im)
 	}
 	mfCs = make(map[string]test)
 	mfCs["a"] = test{}
 	if im := GenInputs(mfCs); len(im) != 0 {
-		t.Errorf("im := GenInputs(%v); len(%v) != 0", mfCs, im)
+		t.Errorf("len(%v) != 0", im)
 	}
 	str := "test"
 	mfCs[str] = test{uInput: &model.UserInput{Name: str}}
 	if im := GenInputs(mfCs); len(im) != 1 {
-		t.Errorf("im := GenInputs(%v); len(%v) != 1", mfCs, im)
+		t.Errorf("len(%v) != 1", im)
 	} else if ui, ok := im[str]; !ok {
 		t.Errorf("ui, ok := im[%s]; !ok", str)
 	} else if ui.Name != str {
@@ -53,13 +53,13 @@ func TestGenInputs(t *testing.T) {
 func TestGenInputGroups(t *testing.T) {
 	var mfIGs map[string]model.InputGroup
 	if igm := GenInputGroups(mfIGs); len(igm) != 0 {
-		t.Errorf("igm := GenInputGroups(%v); len(%v) != 0", mfIGs, igm)
+		t.Errorf("len(%v) != 0", igm)
 	}
 	mfIGs = make(map[string]model.InputGroup)
 	str := "test"
 	mfIGs[str] = model.InputGroup{Name: str}
 	if igm := GenInputGroups(mfIGs); len(igm) != 1 {
-		t.Errorf("igm := GenInputGroups(%v); len(%v) != 1", mfIGs, igm)
+		t.Errorf("len(%v) != 1", igm)
 	} else if ig, ok := igm[str]; !ok {
 		t.Errorf("ig, ok := igm[%s]; !ok", str)
 	} else if ig.Name != str {
