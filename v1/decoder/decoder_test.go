@@ -26,10 +26,10 @@ import (
 func TestGetDecoder(t *testing.T) {
 	v, d := GetDecoder()
 	if v != model.Version {
-		t.Errorf("\"%s\" != \"%s\"", v, model.Version)
+		t.Errorf("%s != %s", v, model.Version)
 	}
 	if f, err := d(&yaml.Node{}); err != nil {
-		t.Error(err)
+		t.Error("err != nil")
 	} else if reflect.TypeOf(f).Elem() != reflect.TypeOf(model.ModFile{}) {
 		t.Errorf("%s != %s", reflect.TypeOf(f).Elem(), reflect.TypeOf(model.ModFile{}))
 	}
