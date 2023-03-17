@@ -25,38 +25,38 @@ import (
 func TestGenConfigs(t *testing.T) {
 	var mfCVs map[string]model.ConfigValue
 	if mCs, err := GenConfigs(mfCVs); err != nil {
-		t.Errorf("mCs, err := GenConfigs(%v); err != nil", mfCVs)
+		t.Error("err != nil")
 	} else if len(mCs) != 0 {
 		t.Errorf("len(%v) != 0", mCs)
 	}
 	mfCVs = make(map[string]model.ConfigValue)
 	if mCs, err := GenConfigs(mfCVs); err != nil {
-		t.Errorf("mCs, err := GenConfigs(%v); err != nil", mfCVs)
+		t.Error("err != nil")
 	} else if len(mCs) != 0 {
 		t.Errorf("len(%v) != 0", mCs)
 	}
 	str := "test"
 	mfCVs[str] = model.ConfigValue{}
 	if _, err := GenConfigs(mfCVs); err == nil {
-		t.Errorf("mCs, err := GenConfigs(%v); err == nil", mfCVs)
+		t.Error("err == nil")
 	}
 	mfCVs[str] = model.ConfigValue{IsList: true}
 	if _, err := GenConfigs(mfCVs); err == nil {
-		t.Errorf("mCs, err := GenConfigs(%v); err == nil", mfCVs)
+		t.Error("err == nil")
 	}
 	mfCVs[str] = model.ConfigValue{DataType: module.StringType}
 	if mCs, err := GenConfigs(mfCVs); err != nil {
-		t.Errorf("mCs, err := GenConfigs(%v); err != nil", mfCVs)
+		t.Error("err != nil")
 	} else if mC, ok := mCs[str]; !ok {
-		t.Errorf("mC, ok := mCs[\"%s\"]; !ok", str)
+		t.Errorf("mC, ok := mCs[%s]; !ok", str)
 	} else if mC.IsSlice == true {
 		t.Error("mC.IsSlice == true")
 	}
 	mfCVs[str] = model.ConfigValue{DataType: module.StringType, IsList: true}
 	if mCs, err := GenConfigs(mfCVs); err != nil {
-		t.Errorf("mCs, err := GenConfigs(%v); err != nil", mfCVs)
+		t.Error("err != nil")
 	} else if mC, ok := mCs[str]; !ok {
-		t.Errorf("mC, ok := mCs[\"%s\"]; !ok", str)
+		t.Errorf("mC, ok := mCs[%s]; !ok", str)
 	} else if mC.IsSlice == false {
 		t.Error("mC.IsSlice == false")
 	}
