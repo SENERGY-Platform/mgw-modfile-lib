@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package base
+package modfile
 
 import (
 	"github.com/SENERGY-Platform/mgw-module-lib/module"
