@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package decoder
+package v1dec
 
 import (
 	"github.com/SENERGY-Platform/mgw-modfile-lib/v1/model"
