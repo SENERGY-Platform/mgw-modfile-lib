@@ -23,7 +23,7 @@ import (
 	"gopkg.in/yaml.v3"
 )
 
-func NewModFile(decoders Decoders, generators Generators) *ModFile {
+func New(decoders Decoders, generators Generators) *ModFile {
 	return &ModFile{decoders: decoders, generators: generators}
 }
 
