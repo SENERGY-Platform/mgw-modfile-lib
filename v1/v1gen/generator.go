@@ -14,16 +14,16 @@
  * limitations under the License.
  */
 
-package generator
+package v1gen
 
 import (
 	"errors"
-	"github.com/SENERGY-Platform/mgw-modfile-lib/v1/generator/configs"
-	"github.com/SENERGY-Platform/mgw-modfile-lib/v1/generator/generic"
-	"github.com/SENERGY-Platform/mgw-modfile-lib/v1/generator/inputs"
-	"github.com/SENERGY-Platform/mgw-modfile-lib/v1/generator/mounts"
-	"github.com/SENERGY-Platform/mgw-modfile-lib/v1/generator/services"
 	"github.com/SENERGY-Platform/mgw-modfile-lib/v1/model"
+	"github.com/SENERGY-Platform/mgw-modfile-lib/v1/v1gen/configs"
+	"github.com/SENERGY-Platform/mgw-modfile-lib/v1/v1gen/generic"
+	"github.com/SENERGY-Platform/mgw-modfile-lib/v1/v1gen/inputs"
+	"github.com/SENERGY-Platform/mgw-modfile-lib/v1/v1gen/mounts"
+	"github.com/SENERGY-Platform/mgw-modfile-lib/v1/v1gen/services"
 	"github.com/SENERGY-Platform/mgw-module-lib/module"
 )
 

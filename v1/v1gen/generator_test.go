@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package generator
+package v1gen
 
 import (
 	"github.com/SENERGY-Platform/mgw-modfile-lib/v1/model"

@@ -19,8 +19,8 @@ package services
 import (
 	"errors"
 	"fmt"
-	"github.com/SENERGY-Platform/mgw-modfile-lib/v1/generator/generic"
 	"github.com/SENERGY-Platform/mgw-modfile-lib/v1/model"
+	"github.com/SENERGY-Platform/mgw-modfile-lib/v1/v1gen/generic"
 	"github.com/SENERGY-Platform/mgw-module-lib/module"
 	"io/fs"
 	"time"
