@@ -19,6 +19,7 @@ package v1gen
 import (
 	"github.com/SENERGY-Platform/mgw-modfile-lib/v1/model"
 	"github.com/SENERGY-Platform/mgw-module-lib/module"
+	"github.com/SENERGY-Platform/mgw-module-lib/util"
 	"reflect"
 	"testing"
 	"time"
@@ -195,7 +196,7 @@ func TestGenerator(t *testing.T) {
 		Dependencies: map[string]string{
 			"ext": "ver",
 		},
-		Resources: map[string]map[string]struct{}{
+		Resources: map[string]util.Set[string]{
 			"res": {
 				"tag": {},
 			},

@@ -20,6 +20,7 @@ import (
 	"github.com/SENERGY-Platform/mgw-modfile-lib/v1/model"
 	"github.com/SENERGY-Platform/mgw-modfile-lib/v1/v1gen/generic"
 	"github.com/SENERGY-Platform/mgw-module-lib/module"
+	"github.com/SENERGY-Platform/mgw-module-lib/util"
 )
 
 func GenVolumes(mfVs map[string][]model.VolumeTarget) map[string]struct{} {
@@ -38,8 +39,8 @@ func GenDependencies(mfMDs map[string]model.ModuleDependency) map[string]string 
 	return mDs
 }
 
-func GenResources(mfRs map[string]model.Resource) map[string]map[string]struct{} {
-	mRs := make(map[string]map[string]struct{})
+func GenResources(mfRs map[string]model.Resource) map[string]util.Set[string] {
+	mRs := make(map[string]util.Set[string])
 	for ref, mfR := range mfRs {
 		mRs[ref] = generic.GenStringSet(mfR.Tags)
 	}
