@@ -19,7 +19,6 @@ package v1gen
 import (
 	"github.com/SENERGY-Platform/mgw-modfile-lib/v1/model"
 	"github.com/SENERGY-Platform/mgw-module-lib/module"
-	"github.com/SENERGY-Platform/mgw-module-lib/util"
 	"reflect"
 	"testing"
 	"time"
@@ -84,6 +83,7 @@ func TestGenerator(t *testing.T) {
 					UserInput: &model.UserInput{
 						Group: &ig,
 					},
+					Required: true,
 				},
 				Targets: []model.ResourceTarget{
 					{
@@ -102,6 +102,7 @@ func TestGenerator(t *testing.T) {
 					UserInput: &model.UserInput{
 						Group: &ig,
 					},
+					Required: true,
 				},
 				Targets: []model.ResourceTargetBase{
 					{
@@ -117,6 +118,7 @@ func TestGenerator(t *testing.T) {
 				UserInput: &model.UserInput{
 					Group: &ig,
 				},
+				Required: true,
 				Targets: []model.ConfigTarget{
 					{
 						RefVar:   "rVar3",
@@ -130,7 +132,7 @@ func TestGenerator(t *testing.T) {
 		},
 	}
 	mc := make(module.Configs)
-	mc.SetString("cfg", nil, nil, false, "", nil)
+	mc.SetString("cfg", nil, nil, false, "", nil, true)
 	a := module.Module{
 		ID:             "id",
 		Name:           "nme",
@@ -196,9 +198,12 @@ func TestGenerator(t *testing.T) {
 		Dependencies: map[string]string{
 			"ext": "ver",
 		},
-		Resources: map[string]util.Set[string]{
+		Resources: map[string]module.Resource{
 			"res": {
-				"tag": {},
+				Tags: map[string]struct{}{
+					"tag": {},
+				},
+				Required: true,
 			},
 		},
 		Secrets: map[string]module.Secret{
@@ -206,6 +211,7 @@ func TestGenerator(t *testing.T) {
 				Tags: map[string]struct{}{
 					"tag": {},
 				},
+				Required: true,
 			},
 		},
 		Configs: mc,

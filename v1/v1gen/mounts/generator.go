@@ -20,7 +20,6 @@ import (
 	"github.com/SENERGY-Platform/mgw-modfile-lib/v1/model"
 	"github.com/SENERGY-Platform/mgw-modfile-lib/v1/v1gen/generic"
 	"github.com/SENERGY-Platform/mgw-module-lib/module"
-	"github.com/SENERGY-Platform/mgw-module-lib/util"
 )
 
 func GenVolumes(mfVs map[string][]model.VolumeTarget) map[string]struct{} {
@@ -39,10 +38,13 @@ func GenDependencies(mfMDs map[string]model.ModuleDependency) map[string]string 
 	return mDs
 }
 
-func GenResources(mfRs map[string]model.Resource) map[string]util.Set[string] {
-	mRs := make(map[string]util.Set[string])
+func GenResources(mfRs map[string]model.Resource) map[string]module.Resource {
+	mRs := make(map[string]module.Resource)
 	for ref, mfR := range mfRs {
-		mRs[ref] = generic.GenStringSet(mfR.Tags)
+		mRs[ref] = module.Resource{
+			Tags:     generic.GenStringSet(mfR.Tags),
+			Required: mfR.Required,
+		}
 	}
 	return mRs
 }
@@ -51,8 +53,9 @@ func GenSecrets(mfSs map[string]model.Secret) map[string]module.Secret {
 	mSs := make(map[string]module.Secret)
 	for ref, mfS := range mfSs {
 		mSs[ref] = module.Secret{
-			Type: mfS.Type,
-			Tags: generic.GenStringSet(mfS.Tags),
+			Type:     mfS.Type,
+			Tags:     generic.GenStringSet(mfS.Tags),
+			Required: mfS.Required,
 		}
 	}
 	return mSs
