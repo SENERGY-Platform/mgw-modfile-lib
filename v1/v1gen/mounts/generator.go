@@ -43,7 +43,7 @@ func GenResources(mfRs map[string]model.Resource) map[string]module.Resource {
 	for ref, mfR := range mfRs {
 		mRs[ref] = module.Resource{
 			Tags:     generic.GenStringSet(mfR.Tags),
-			Required: mfR.Required,
+			Required: !mfR.Optional,
 		}
 	}
 	return mRs
@@ -55,7 +55,7 @@ func GenSecrets(mfSs map[string]model.Secret) map[string]module.Secret {
 		mSs[ref] = module.Secret{
 			Type:     mfS.Type,
 			Tags:     generic.GenStringSet(mfS.Tags),
-			Required: mfS.Required,
+			Required: !mfS.Optional,
 		}
 	}
 	return mSs

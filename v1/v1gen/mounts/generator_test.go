@@ -61,7 +61,7 @@ func TestGenResources(t *testing.T) {
 	mfRs[str] = model.Resource{
 		ResourceBase: model.ResourceBase{
 			Tags:     []string{str},
-			Required: true,
+			Optional: false,
 		},
 	}
 	if m := GenResources(mfRs); len(m) != 1 {
@@ -87,7 +87,7 @@ func TestGenSecrets(t *testing.T) {
 	mfSs[str] = model.Secret{
 		ResourceBase: model.ResourceBase{
 			Tags:     []string{str},
-			Required: true,
+			Optional: false,
 		},
 		Type: str,
 	}
@@ -102,6 +102,6 @@ func TestGenSecrets(t *testing.T) {
 	} else if s.Type != str {
 		t.Errorf("%s != %s", s.Type, str)
 	} else if s.Required == false {
-		t.Error("mR.Required == false")
+		t.Error("s.Required == false")
 	}
 }

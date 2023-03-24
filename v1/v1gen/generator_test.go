@@ -83,7 +83,7 @@ func TestGenerator(t *testing.T) {
 					UserInput: &model.UserInput{
 						Group: &ig,
 					},
-					Required: true,
+					Optional: false,
 				},
 				Targets: []model.ResourceTarget{
 					{
@@ -102,7 +102,7 @@ func TestGenerator(t *testing.T) {
 					UserInput: &model.UserInput{
 						Group: &ig,
 					},
-					Required: true,
+					Optional: false,
 				},
 				Targets: []model.ResourceTargetBase{
 					{

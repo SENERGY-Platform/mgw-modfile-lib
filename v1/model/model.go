@@ -123,7 +123,7 @@ type ResourceTarget struct {
 type ResourceBase struct {
 	Tags      []string   `yaml:"tags"`      // tags for aiding resource identification (e.g. a vendor), unique type and tag combinations can be used to select resources without requiring user interaction
 	UserInput *UserInput `yaml:"userInput"` // meta info for user input via gui (if nil the type and tag combination must yield a unique resource)
-	Required  bool       `yaml:"required"`  // if true a user input or unique tags must be provided
+	Optional  bool       `yaml:"optional"`
 }
 
 type Resource struct {
