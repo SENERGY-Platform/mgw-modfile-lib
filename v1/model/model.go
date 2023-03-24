@@ -148,7 +148,7 @@ type ConfigValue struct {
 	Delimiter   *string        `yaml:"delimiter"`   // delimiter to be used for marshalling multiple configuration values (defaults to "," if nil)
 	UserInput   *UserInput     `yaml:"userInput"`   // meta info for user input via gui (if nil a default value must be set)
 	Targets     []ConfigTarget `yaml:"targets"`     // reference variables for the configuration value
-	Optional    bool           `yaml:"required"`
+	Optional    bool           `yaml:"optional"`
 }
 
 type ConfigTarget struct {
