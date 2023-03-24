@@ -158,7 +158,6 @@ type ConfigTarget struct {
 type UserInput struct {
 	Name        string  `yaml:"name"`        // input name (e.g. used as a label for input field)
 	Description *string `yaml:"description"` // short text describing the input
-	Required    bool    `yaml:"required"`    // if true a user interaction is required
 	Group       *string `yaml:"group"`       // group identifier as used in ModFile.InputGroups to assign the user input to an input group
 }
 
