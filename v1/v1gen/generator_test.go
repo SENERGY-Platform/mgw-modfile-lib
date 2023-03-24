@@ -118,7 +118,7 @@ func TestGenerator(t *testing.T) {
 				UserInput: &model.UserInput{
 					Group: &ig,
 				},
-				Required: true,
+				Optional: false,
 				Targets: []model.ConfigTarget{
 					{
 						RefVar:   "rVar3",

@@ -441,7 +441,7 @@ func testSetValue[T comparable](t *testing.T, value any, options []any, dataType
 		Type:        str,
 		TypeOptions: map[string]any{str: str},
 		DataType:    dataType,
-		Required:    true,
+		Optional:    false,
 	}
 	if err := SetValue(str, cv, mCs); err != nil {
 		t.Error("err != nil")
@@ -467,8 +467,8 @@ func testSetValue[T comparable](t *testing.T, value any, options []any, dataType
 		t.Errorf("%v != %v", cv.IsList, c.IsSlice)
 	} else if c.Delimiter != "" {
 		t.Errorf("%v != \"\"", c.Delimiter)
-	} else if cv.Required == false {
-		t.Error("cv.Required == false")
+	} else if c.Required == false {
+		t.Error("c.Required == false")
 	}
 }
 
@@ -525,7 +525,7 @@ func testSetSlice[T comparable](t *testing.T, value any, options []any, dataType
 		DataType:    dataType,
 		IsList:      true,
 		Delimiter:   &str,
-		Required:    true,
+		Optional:    false,
 	}
 	if err := SetSlice(str, cv, mCs); err != nil {
 		t.Error("err != nil")
@@ -553,7 +553,7 @@ func testSetSlice[T comparable](t *testing.T, value any, options []any, dataType
 		t.Errorf("%v != %v", cv.IsList, c.IsSlice)
 	} else if *cv.Delimiter != c.Delimiter {
 		t.Errorf("%v != %v", *cv.Delimiter, c.Delimiter)
-	} else if cv.Required == false {
-		t.Error("cv.Required == false")
+	} else if c.Required == false {
+		t.Error("c.Required == false")
 	}
 }
