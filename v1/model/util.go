@@ -128,7 +128,7 @@ func (m *FileMode) UnmarshalYAML(yn *yaml.Node) error {
 	return nil
 }
 
-func (r ResourceBase) GetUserInput() *UserInput {
+func (r Resource) GetUserInput() *UserInput {
 	return r.UserInput
 }
 

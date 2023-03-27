@@ -52,7 +52,7 @@ func generator(f any) (*module.Module, error) {
 	if err != nil {
 		return nil, err
 	}
-	err = services.SetHostResources(mf.Resources, mSs)
+	err = services.SetHostResources(mf.HostResources, mSs)
 	if err != nil {
 		return nil, err
 	}
@@ -78,11 +78,11 @@ func generator(f any) (*module.Module, error) {
 		Services:       mSs,
 		Volumes:        mounts.GenVolumes(mf.Volumes),
 		Dependencies:   mounts.GenDependencies(mf.Dependencies),
-		HostResources:  mounts.GenHostResources(mf.Resources),
+		HostResources:  mounts.GenHostResources(mf.HostResources),
 		Secrets:        mounts.GenSecrets(mf.Secrets),
 		Configs:        mCs,
 		Inputs: module.Inputs{
-			Resources: inputs.GenInputs(mf.Resources),
+			Resources: inputs.GenInputs(mf.HostResources),
 			Secrets:   inputs.GenInputs(mf.Secrets),
 			Configs:   inputs.GenInputs(mf.Configs),
 			Groups:    inputs.GenInputGroups(mf.InputGroups),

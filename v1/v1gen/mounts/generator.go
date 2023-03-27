@@ -38,7 +38,7 @@ func GenDependencies(mfMDs map[string]model.ModuleDependency) map[string]string 
 	return mDs
 }
 
-func GenHostResources(mfRs map[string]model.Resource) map[string]module.HostResource {
+func GenHostResources(mfRs map[string]model.HostResource) map[string]module.HostResource {
 	mRs := make(map[string]module.HostResource)
 	for ref, mfR := range mfRs {
 		mRs[ref] = module.HostResource{

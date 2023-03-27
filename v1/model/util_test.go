@@ -176,7 +176,7 @@ func TestConfigValue_GetUserInput(t *testing.T) {
 
 func TestResourceBase_GetUserInput(t *testing.T) {
 	str := "test"
-	rb := ResourceBase{UserInput: &UserInput{Name: str}}
+	rb := Resource{UserInput: &UserInput{Name: str}}
 	if ui := rb.GetUserInput(); ui.Name != str {
 		t.Error("wrong user input")
 	}

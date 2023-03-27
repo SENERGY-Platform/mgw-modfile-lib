@@ -279,19 +279,19 @@ func TestSetExtDependencies(t *testing.T) {
 
 func TestSetResources(t *testing.T) {
 	sRef := "a"
-	var mfRs map[string]model.Resource
+	var mfRs map[string]model.HostResource
 	mSs := map[string]*module.Service{sRef: {}}
 	if err := SetHostResources(mfRs, mSs); err != nil {
 		t.Error("err != nil")
 	}
 	// --------------------------------
-	mfRs = make(map[string]model.Resource)
+	mfRs = make(map[string]model.HostResource)
 	res := "res"
 	mp := "mp"
-	mfRs[res] = model.Resource{
-		Targets: []model.ResourceTarget{
+	mfRs[res] = model.HostResource{
+		Targets: []model.HostResourceTarget{
 			{
-				ResourceTargetBase: model.ResourceTargetBase{
+				ResourceMountTarget: model.ResourceMountTarget{
 					MountPoint: mp,
 					Services:   []string{sRef},
 				},
@@ -311,17 +311,17 @@ func TestSetResources(t *testing.T) {
 		t.Errorf("%v != %v", a, ms.HostResources)
 	}
 	// --------------------------------
-	mfRs[res] = model.Resource{
-		Targets: []model.ResourceTarget{
+	mfRs[res] = model.HostResource{
+		Targets: []model.HostResourceTarget{
 			{
-				ResourceTargetBase: model.ResourceTargetBase{
+				ResourceMountTarget: model.ResourceMountTarget{
 					MountPoint: mp,
 					Services:   []string{sRef},
 				},
 				ReadOnly: true,
 			},
 			{
-				ResourceTargetBase: model.ResourceTargetBase{
+				ResourceMountTarget: model.ResourceMountTarget{
 					MountPoint: mp,
 					Services:   []string{sRef},
 				},
@@ -335,17 +335,17 @@ func TestSetResources(t *testing.T) {
 		t.Errorf("%v != %v", a, ms.HostResources)
 	}
 	// --------------------------------
-	mfRs[res] = model.Resource{
-		Targets: []model.ResourceTarget{
+	mfRs[res] = model.HostResource{
+		Targets: []model.HostResourceTarget{
 			{
-				ResourceTargetBase: model.ResourceTargetBase{
+				ResourceMountTarget: model.ResourceMountTarget{
 					MountPoint: mp,
 					Services:   []string{sRef},
 				},
 				ReadOnly: false,
 			},
 			{
-				ResourceTargetBase: model.ResourceTargetBase{
+				ResourceMountTarget: model.ResourceMountTarget{
 					MountPoint: mp,
 					Services:   []string{sRef},
 				},
@@ -357,10 +357,10 @@ func TestSetResources(t *testing.T) {
 		t.Error("err == nil")
 	}
 	// --------------------------------
-	mfRs[res] = model.Resource{
-		Targets: []model.ResourceTarget{
+	mfRs[res] = model.HostResource{
+		Targets: []model.HostResourceTarget{
 			{
-				ResourceTargetBase: model.ResourceTargetBase{
+				ResourceMountTarget: model.ResourceMountTarget{
 					MountPoint: mp,
 					Services:   []string{"b"},
 				},
@@ -372,10 +372,10 @@ func TestSetResources(t *testing.T) {
 		t.Error("err == nil")
 	}
 	// --------------------------------
-	mfRs[res] = model.Resource{
-		Targets: []model.ResourceTarget{
+	mfRs[res] = model.HostResource{
+		Targets: []model.HostResourceTarget{
 			{
-				ResourceTargetBase: model.ResourceTargetBase{
+				ResourceMountTarget: model.ResourceMountTarget{
 					MountPoint: mp,
 					Services:   []string{sRef},
 				},
@@ -383,10 +383,10 @@ func TestSetResources(t *testing.T) {
 			},
 		},
 	}
-	mfRs["test"] = model.Resource{
-		Targets: []model.ResourceTarget{
+	mfRs["test"] = model.HostResource{
+		Targets: []model.HostResourceTarget{
 			{
-				ResourceTargetBase: model.ResourceTargetBase{
+				ResourceMountTarget: model.ResourceMountTarget{
 					MountPoint: mp,
 					Services:   []string{sRef},
 				},
@@ -411,7 +411,7 @@ func TestSetSecrets(t *testing.T) {
 	sec := "sec"
 	mp := "mp"
 	mfSCTs[sec] = model.Secret{
-		Targets: []model.ResourceTargetBase{
+		Targets: []model.ResourceMountTarget{
 			{
 				MountPoint: mp,
 				Services:   []string{sRef},
@@ -426,7 +426,7 @@ func TestSetSecrets(t *testing.T) {
 	}
 	// --------------------------------
 	mfSCTs[sec] = model.Secret{
-		Targets: []model.ResourceTargetBase{
+		Targets: []model.ResourceMountTarget{
 			{
 				MountPoint: mp,
 				Services:   []string{sRef},
@@ -444,7 +444,7 @@ func TestSetSecrets(t *testing.T) {
 	}
 	// --------------------------------
 	mfSCTs[sec] = model.Secret{
-		Targets: []model.ResourceTargetBase{
+		Targets: []model.ResourceMountTarget{
 			{
 				MountPoint: mp,
 				Services:   []string{"test"},
@@ -456,7 +456,7 @@ func TestSetSecrets(t *testing.T) {
 	}
 	// --------------------------------
 	mfSCTs[sec] = model.Secret{
-		Targets: []model.ResourceTargetBase{
+		Targets: []model.ResourceMountTarget{
 			{
 				MountPoint: mp,
 				Services:   []string{sRef},
@@ -464,7 +464,7 @@ func TestSetSecrets(t *testing.T) {
 		},
 	}
 	mfSCTs["test"] = model.Secret{
-		Targets: []model.ResourceTargetBase{
+		Targets: []model.ResourceMountTarget{
 			{
 				MountPoint: mp,
 				Services:   []string{sRef},

@@ -76,18 +76,18 @@ func TestGenerator(t *testing.T) {
 				},
 			},
 		},
-		Resources: map[string]model.Resource{
+		HostResources: map[string]model.HostResource{
 			"res": {
-				ResourceBase: model.ResourceBase{
+				Resource: model.Resource{
 					Tags: []string{"tag"},
 					UserInput: &model.UserInput{
 						Group: &ig,
 					},
 					Optional: false,
 				},
-				Targets: []model.ResourceTarget{
+				Targets: []model.HostResourceTarget{
 					{
-						ResourceTargetBase: model.ResourceTargetBase{
+						ResourceMountTarget: model.ResourceMountTarget{
 							MountPoint: "mnt2",
 							Services:   []string{sA},
 						},
@@ -97,14 +97,14 @@ func TestGenerator(t *testing.T) {
 		},
 		Secrets: map[string]model.Secret{
 			"sec": {
-				ResourceBase: model.ResourceBase{
+				Resource: model.Resource{
 					Tags: []string{"tag"},
 					UserInput: &model.UserInput{
 						Group: &ig,
 					},
 					Optional: false,
 				},
-				Targets: []model.ResourceTargetBase{
+				Targets: []model.ResourceMountTarget{
 					{
 						MountPoint: "mnt3",
 						Services:   []string{sA},
@@ -317,11 +317,11 @@ func TestGenerator(t *testing.T) {
 	}
 	// --------------------------------
 	mf = model.ModFile{
-		Resources: map[string]model.Resource{
+		HostResources: map[string]model.HostResource{
 			"": {
-				Targets: []model.ResourceTarget{
+				Targets: []model.HostResourceTarget{
 					{
-						ResourceTargetBase: model.ResourceTargetBase{
+						ResourceMountTarget: model.ResourceMountTarget{
 							Services: []string{""},
 						},
 					},
@@ -336,7 +336,7 @@ func TestGenerator(t *testing.T) {
 	mf = model.ModFile{
 		Secrets: map[string]model.Secret{
 			"": {
-				Targets: []model.ResourceTargetBase{
+				Targets: []model.ResourceMountTarget{
 					{
 						Services: []string{""},
 					},

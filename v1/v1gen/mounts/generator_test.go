@@ -52,14 +52,14 @@ func TestGenDependencies(t *testing.T) {
 }
 
 func TestGenResources(t *testing.T) {
-	var mfRs map[string]model.Resource
+	var mfRs map[string]model.HostResource
 	if m := GenHostResources(mfRs); len(m) != 0 {
 		t.Errorf("len(%v) != 0", m)
 	}
-	mfRs = make(map[string]model.Resource)
+	mfRs = make(map[string]model.HostResource)
 	str := "test"
-	mfRs[str] = model.Resource{
-		ResourceBase: model.ResourceBase{
+	mfRs[str] = model.HostResource{
+		Resource: model.Resource{
 			Tags:     []string{str},
 			Optional: false,
 		},
@@ -85,7 +85,7 @@ func TestGenSecrets(t *testing.T) {
 	mfSs = make(map[string]model.Secret)
 	str := "test"
 	mfSs[str] = model.Secret{
-		ResourceBase: model.ResourceBase{
+		Resource: model.Resource{
 			Tags:     []string{str},
 			Optional: false,
 		},

@@ -99,7 +99,7 @@ func SetExtDependencies(mfMDs map[string]model.ModuleDependency, mSs map[string]
 	return nil
 }
 
-func SetHostResources(mfRs map[string]model.Resource, mSs map[string]*module.Service) error {
+func SetHostResources(mfRs map[string]model.HostResource, mSs map[string]*module.Service) error {
 	for rRef, mfR := range mfRs {
 		for _, mfRT := range mfR.Targets {
 			for _, sRef := range mfRT.Services {

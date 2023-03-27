@@ -40,7 +40,7 @@ type ModFile struct {
 	ServiceReferences map[string][]DependencyTarget `yaml:"serviceReferences"` // map linking module services to reference variables (identifiers as defined in ModFile.Services serve as keys)
 	Volumes           map[string][]VolumeTarget     `yaml:"volumes"`           // map linking volumes to mount points (keys represent volume names)
 	Dependencies      map[string]ModuleDependency   `yaml:"dependencies"`      // external modules required by the module (keys represent module IDs)
-	Resources         map[string]Resource           `yaml:"resources"`         // host resources required by services (e.g. devices, sockets, ...)
+	HostResources     map[string]HostResource       `yaml:"hostResources"`     // host resources required by services (e.g. devices, sockets, ...)
 	Secrets           map[string]Secret             `yaml:"secrets"`           // secrets required by services (e.g. certs, keys, ...)
 	Configs           map[string]ConfigValue        `yaml:"configs"`           // configuration values required by services
 	InputGroups       map[string]InputGroup         `yaml:"inputGroups"`       // map of groups for categorising user inputs (keys serve as unique identifiers and can be reused elsewhere in the modfile to reference a group)
@@ -110,31 +110,31 @@ type DependencyTarget struct {
 	Services []string `yaml:"services"` // service identifiers as used in ModFile.Services to map the reference variable to a number of services
 }
 
-type ResourceTargetBase struct {
+type ResourceMountTarget struct {
 	MountPoint string   `yaml:"mountPoint"` // absolute path in container
 	Services   []string `yaml:"services"`   // service identifiers as used in ModFile.Services to map the mount point to a number of services
 }
 
-type ResourceTarget struct {
-	ResourceTargetBase `yaml:",inline"`
-	ReadOnly           bool `yaml:"readOnly"` // if true resource will be mounted as read only
-}
-
-type ResourceBase struct {
-	Tags      []string   `yaml:"tags"`      // tags for aiding resource identification (e.g. a vendor), unique type and tag combinations can be used to select resources without requiring user interaction
-	UserInput *UserInput `yaml:"userInput"` // meta info for user input via gui (if nil the type and tag combination must yield a unique resource)
-	Optional  bool       `yaml:"optional"`
+type HostResourceTarget struct {
+	ResourceMountTarget `yaml:",inline"`
+	ReadOnly            bool `yaml:"readOnly"` // if true resource will be mounted as read only
 }
 
 type Resource struct {
-	ResourceBase `yaml:",inline"`
-	Targets      []ResourceTarget `yaml:"targets"` // mount points for the resource
+	Tags      []string   `yaml:"tags"`      // tags for aiding resource identification (e.g. a vendor), unique type and tag combinations can be used to select resources without requiring user interaction
+	UserInput *UserInput `yaml:"userInput"` // meta info for user input via gui (if nil and not optional the tag combination must yield a unique resource)
+	Optional  bool       `yaml:"optional"`
+}
+
+type HostResource struct {
+	Resource `yaml:",inline"`
+	Targets  []HostResourceTarget `yaml:"targets"` // mount points for the resource
 }
 
 type Secret struct {
-	ResourceBase `yaml:",inline"`
-	Type         string               `yaml:"type"`    // resource type as defined by external services managing resources (e.g. serial-device, certificate, ...)
-	Targets      []ResourceTargetBase `yaml:"targets"` // mount points for the secret
+	Resource `yaml:",inline"`
+	Type     string                `yaml:"type"`    // resource type as defined by external services managing resources (e.g. serial-device, certificate, ...)
+	Targets  []ResourceMountTarget `yaml:"targets"` // mount points for the secret
 }
 
 type ConfigValue struct {
