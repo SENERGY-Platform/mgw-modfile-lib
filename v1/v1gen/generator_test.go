@@ -158,7 +158,7 @@ func TestGenerator(t *testing.T) {
 				Volumes: map[string]string{
 					"mnt1": "vol",
 				},
-				Resources: map[string]module.ResourceTarget{
+				HostResources: map[string]module.HostResTarget{
 					"mnt2": {
 						Ref:      "res",
 						ReadOnly: false,
@@ -198,20 +198,24 @@ func TestGenerator(t *testing.T) {
 		Dependencies: map[string]string{
 			"ext": "ver",
 		},
-		Resources: map[string]module.Resource{
+		HostResources: map[string]module.HostResource{
 			"res": {
-				Tags: map[string]struct{}{
-					"tag": {},
+				Resource: module.Resource{
+					Tags: map[string]struct{}{
+						"tag": {},
+					},
+					Required: true,
 				},
-				Required: true,
 			},
 		},
 		Secrets: map[string]module.Secret{
 			"sec": {
-				Tags: map[string]struct{}{
-					"tag": {},
+				Resource: module.Resource{
+					Tags: map[string]struct{}{
+						"tag": {},
+					},
+					Required: true,
 				},
-				Required: true,
 			},
 		},
 		Configs: mc,

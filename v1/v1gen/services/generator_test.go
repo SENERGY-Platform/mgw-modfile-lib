@@ -604,7 +604,7 @@ func TestGenServices(t *testing.T) {
 			},
 		},
 		Volumes:       nil,
-		Resources:     nil,
+		HostResources: nil,
 		Secrets:       nil,
 		Configs:       nil,
 		SrvReferences: nil,

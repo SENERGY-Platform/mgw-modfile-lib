@@ -281,7 +281,7 @@ func TestSetResources(t *testing.T) {
 	sRef := "a"
 	var mfRs map[string]model.Resource
 	mSs := map[string]*module.Service{sRef: {}}
-	if err := SetResources(mfRs, mSs); err != nil {
+	if err := SetHostResources(mfRs, mSs); err != nil {
 		t.Error("err != nil")
 	}
 	// --------------------------------
@@ -299,16 +299,16 @@ func TestSetResources(t *testing.T) {
 			},
 		},
 	}
-	a := map[string]module.ResourceTarget{
+	a := map[string]module.HostResTarget{
 		mp: {
 			Ref:      res,
 			ReadOnly: true,
 		},
 	}
-	if err := SetResources(mfRs, mSs); err != nil {
+	if err := SetHostResources(mfRs, mSs); err != nil {
 		t.Error("err != nil")
-	} else if ms := mSs[sRef]; reflect.DeepEqual(a, ms.Resources) == false {
-		t.Errorf("%v != %v", a, ms.Resources)
+	} else if ms := mSs[sRef]; reflect.DeepEqual(a, ms.HostResources) == false {
+		t.Errorf("%v != %v", a, ms.HostResources)
 	}
 	// --------------------------------
 	mfRs[res] = model.Resource{
@@ -329,10 +329,10 @@ func TestSetResources(t *testing.T) {
 			},
 		},
 	}
-	if err := SetResources(mfRs, mSs); err != nil {
+	if err := SetHostResources(mfRs, mSs); err != nil {
 		t.Error("err != nil")
-	} else if ms := mSs[sRef]; reflect.DeepEqual(a, ms.Resources) == false {
-		t.Errorf("%v != %v", a, ms.Resources)
+	} else if ms := mSs[sRef]; reflect.DeepEqual(a, ms.HostResources) == false {
+		t.Errorf("%v != %v", a, ms.HostResources)
 	}
 	// --------------------------------
 	mfRs[res] = model.Resource{
@@ -353,7 +353,7 @@ func TestSetResources(t *testing.T) {
 			},
 		},
 	}
-	if err := SetResources(mfRs, mSs); err == nil {
+	if err := SetHostResources(mfRs, mSs); err == nil {
 		t.Error("err == nil")
 	}
 	// --------------------------------
@@ -368,7 +368,7 @@ func TestSetResources(t *testing.T) {
 			},
 		},
 	}
-	if err := SetResources(mfRs, mSs); err == nil {
+	if err := SetHostResources(mfRs, mSs); err == nil {
 		t.Error("err == nil")
 	}
 	// --------------------------------
@@ -394,7 +394,7 @@ func TestSetResources(t *testing.T) {
 			},
 		},
 	}
-	if err := SetResources(mfRs, mSs); err == nil {
+	if err := SetHostResources(mfRs, mSs); err == nil {
 		t.Error("err == nil")
 	}
 }

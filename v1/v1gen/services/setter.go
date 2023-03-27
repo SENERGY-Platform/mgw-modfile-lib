@@ -99,21 +99,21 @@ func SetExtDependencies(mfMDs map[string]model.ModuleDependency, mSs map[string]
 	return nil
 }
 
-func SetResources(mfRs map[string]model.Resource, mSs map[string]*module.Service) error {
+func SetHostResources(mfRs map[string]model.Resource, mSs map[string]*module.Service) error {
 	for rRef, mfR := range mfRs {
 		for _, mfRT := range mfR.Targets {
 			for _, sRef := range mfRT.Services {
 				if mS, ok := mSs[sRef]; ok {
-					if mS.Resources == nil {
-						mS.Resources = make(map[string]module.ResourceTarget)
+					if mS.HostResources == nil {
+						mS.HostResources = make(map[string]module.HostResTarget)
 					}
-					if mRT, k := mS.Resources[mfRT.MountPoint]; k {
+					if mRT, k := mS.HostResources[mfRT.MountPoint]; k {
 						if mRT.Ref == rRef && mRT.ReadOnly == mfRT.ReadOnly {
 							continue
 						}
 						return fmt.Errorf("'%s' & '%s' -> '%s' -> '%s'", mRT.Ref, rRef, sRef, mfRT.MountPoint)
 					}
-					mS.Resources[mfRT.MountPoint] = module.ResourceTarget{
+					mS.HostResources[mfRT.MountPoint] = module.HostResTarget{
 						Ref:      rRef,
 						ReadOnly: mfRT.ReadOnly,
 					}

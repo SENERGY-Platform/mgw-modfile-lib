@@ -38,12 +38,14 @@ func GenDependencies(mfMDs map[string]model.ModuleDependency) map[string]string 
 	return mDs
 }
 
-func GenResources(mfRs map[string]model.Resource) map[string]module.Resource {
-	mRs := make(map[string]module.Resource)
+func GenHostResources(mfRs map[string]model.Resource) map[string]module.HostResource {
+	mRs := make(map[string]module.HostResource)
 	for ref, mfR := range mfRs {
-		mRs[ref] = module.Resource{
-			Tags:     generic.GenStringSet(mfR.Tags),
-			Required: !mfR.Optional,
+		mRs[ref] = module.HostResource{
+			Resource: module.Resource{
+				Tags:     generic.GenStringSet(mfR.Tags),
+				Required: !mfR.Optional,
+			},
 		}
 	}
 	return mRs
@@ -53,9 +55,11 @@ func GenSecrets(mfSs map[string]model.Secret) map[string]module.Secret {
 	mSs := make(map[string]module.Secret)
 	for ref, mfS := range mfSs {
 		mSs[ref] = module.Secret{
-			Type:     mfS.Type,
-			Tags:     generic.GenStringSet(mfS.Tags),
-			Required: !mfS.Optional,
+			Resource: module.Resource{
+				Tags:     generic.GenStringSet(mfS.Tags),
+				Required: !mfS.Optional,
+			},
+			Type: mfS.Type,
 		}
 	}
 	return mSs

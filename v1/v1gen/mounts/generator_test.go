@@ -53,7 +53,7 @@ func TestGenDependencies(t *testing.T) {
 
 func TestGenResources(t *testing.T) {
 	var mfRs map[string]model.Resource
-	if m := GenResources(mfRs); len(m) != 0 {
+	if m := GenHostResources(mfRs); len(m) != 0 {
 		t.Errorf("len(%v) != 0", m)
 	}
 	mfRs = make(map[string]model.Resource)
@@ -64,7 +64,7 @@ func TestGenResources(t *testing.T) {
 			Optional: false,
 		},
 	}
-	if m := GenResources(mfRs); len(m) != 1 {
+	if m := GenHostResources(mfRs); len(m) != 1 {
 		t.Errorf("len(%v) != 1", m)
 	} else if mR, ok := m[str]; !ok {
 		t.Errorf("mR, ok := m[%s]; !ok", str)
