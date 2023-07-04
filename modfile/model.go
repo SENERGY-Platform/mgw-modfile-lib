@@ -22,7 +22,7 @@ import (
 )
 
 type Base struct {
-	Version string `yaml:"modfileVersion"`
+	Version string `yaml:"modfileVersion" json:"modfileVersion"`
 }
 
 type MfWrapper struct {

@@ -24,7 +24,12 @@ import (
 )
 
 func main() {
-	t := jsonschema.Reflect(&model.ModFile{})
+	r := new(jsonschema.Reflector)
+	err := r.AddGoComments("github.com/SENERGY-Platform/mgw-modfile-lib/<keep-me-here>", "../") // keep this suffix for path operations!
+	if err != nil {
+		log.Fatal(err)
+	}
+	t := r.Reflect(&model.ModFile{})
 	b, err := t.MarshalJSON()
 	if err != nil {
 		log.Fatal(err)
