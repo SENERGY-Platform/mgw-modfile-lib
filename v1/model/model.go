@@ -29,7 +29,7 @@ type ByteFmt uint64
 type ModFile struct {
 	modfile.Base
 	// url without schema (e.g. github.com/user/repo)
-	ID string `yaml:"id" json:"id" json:"id"`
+	ID string `yaml:"id" json:"id"`
 	// module name
 	Name string `yaml:"name" json:"name,omitempty"`
 	// short text describing the module
