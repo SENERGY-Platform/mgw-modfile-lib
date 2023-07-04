@@ -31,7 +31,7 @@ type ModFile struct {
 	// url without schema (e.g. github.com/user/repo)
 	ID string `yaml:"id" json:"id"`
 	// module name
-	Name string `yaml:"name" json:"name,omitempty"`
+	Name string `yaml:"name" json:"name"`
 	// short text describing the module
 	Description string `yaml:"description" json:"description,omitempty"`
 	// module tags
@@ -49,7 +49,7 @@ type ModFile struct {
 	// supported cpu architectures
 	Architectures []string `yaml:"architectures" json:"architectures,omitempty"`
 	// map depicting the services the module consists of (keys serve as unique identifiers and can be reused elsewhere in the modfile to reference a service)
-	Services map[string]Service `yaml:"services" json:"services,omitempty"`
+	Services map[string]Service `yaml:"services" json:"services"`
 	// map linking module services to reference variables (identifiers as defined in ModFile.Services serve as keys)
 	ServiceReferences map[string][]DependencyTarget `yaml:"serviceReferences" json:"serviceReferences,omitempty"`
 	// map linking volumes to mount points (keys represent volume names)
@@ -90,7 +90,7 @@ type Duration time.Duration
 type RunConfig struct {
 	// defaults to 3 if nil
 	MaxRetries *int `yaml:"maxRetries" json:"maxRetries,omitempty"`
-	RunOnce    bool `yaml:"runOnce" json:"runOnce"`
+	RunOnce    bool `yaml:"runOnce" json:"runOnce,omitempty"`
 	// defaults to 5s if nil
 	StopTimeout *Duration `yaml:"stopTimeout" json:"stopTimeout,omitempty"`
 	StopSignal  *string   `yaml:"stopSignal" json:"stopSignal,omitempty"`
@@ -102,7 +102,7 @@ type BindMount struct {
 	MountPoint string `yaml:"mountPoint" json:"mountPoint"`
 	// relative path in module repo
 	Source   string `yaml:"source" json:"source"`
-	ReadOnly bool   `yaml:"readOnly" json:"readOnly"`
+	ReadOnly bool   `yaml:"readOnly" json:"readOnly,omitempty"`
 }
 
 type FileMode fs.FileMode
@@ -113,16 +113,16 @@ type TmpfsMount struct {
 	// tmpfs size in bytes provided as integer or in human-readable form (e.g. 64Mb)
 	Size ByteFmt `yaml:"size" json:"size"`
 	// linux file mode to be used for the tmpfs provided as string (e.g. 777, 0777; defaults to 770 if nil)
-	Mode *FileMode `yaml:"mode" json:"mode"`
+	Mode *FileMode `yaml:"mode" json:"mode,omitempty"`
 }
 
 type HttpEndpoint struct {
 	// endpoint name
-	Name string `yaml:"name" json:"name,omitempty"`
+	Name string `yaml:"name" json:"name"`
 	// internal endpoint path
 	Path string `yaml:"path" json:"path"`
 	// port the service is listening on
-	Port *int `yaml:"port" json:"port"`
+	Port *int `yaml:"port" json:"port,omitempty"`
 	// optional external path to be used by the api gateway
 	ExtPath *string `yaml:"extPath" json:"extPath,omitempty"`
 }
@@ -169,7 +169,7 @@ type ResourceMountTarget struct {
 type HostResourceTarget struct {
 	ResourceMountTarget `yaml:",inline"`
 	// if true resource will be mounted as read only
-	ReadOnly bool `yaml:"readOnly" json:"readOnly"`
+	ReadOnly bool `yaml:"readOnly" json:"readOnly,omitempty"`
 }
 
 type Resource struct {
@@ -177,7 +177,7 @@ type Resource struct {
 	Tags []string `yaml:"tags" json:"tags,omitempty"`
 	// meta info for user input via gui (if nil and not optional the tag combination must yield a unique resource)
 	UserInput *UserInput `yaml:"userInput" json:"userInput,omitempty"`
-	Optional  bool       `yaml:"optional" json:"optional"`
+	Optional  bool       `yaml:"optional" json:"optional,omitempty"`
 }
 
 type HostResource struct {
@@ -214,7 +214,7 @@ type ConfigValue struct {
 	// meta info for user input via gui (if nil a default value must be set)
 	UserInput *UserInput `yaml:"userInput" json:"userInput,omitempty"`
 	// reference variables for the configuration value
-	Targets  []ConfigTarget `yaml:"targets" json:"targets,omitempty"`
+	Targets  []ConfigTarget `yaml:"targets" json:"targets"`
 	Optional bool           `yaml:"optional" json:"optional,omitempty"`
 }
 
