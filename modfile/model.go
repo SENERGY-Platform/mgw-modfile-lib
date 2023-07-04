@@ -25,7 +25,7 @@ type Base struct {
 	Version string `yaml:"modfileVersion"`
 }
 
-type ModFile struct {
+type MfWrapper struct {
 	version    string
 	modFile    any
 	decoders   Decoders

@@ -122,7 +122,7 @@ func TestModFile_UnmarshalYAML(t *testing.T) {
 		}
 	}
 	// ------------------
-	var mf2 ModFile
+	var mf2 MfWrapper
 	if err := yaml.Unmarshal(genTestYml(ver, val), &mf2); err == nil {
 		t.Error("err == nil")
 	} else {
