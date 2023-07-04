@@ -31,7 +31,7 @@ func (mf *ModFile) UnmarshalYAML(yn *yaml.Node) error {
 	if len(mf.decoders) < 1 {
 		return errors.New("no decoders")
 	}
-	var mfb modFile
+	var mfb Base
 	if err := yn.Decode(&mfb); err != nil {
 		return err
 	}

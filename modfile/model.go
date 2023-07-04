@@ -21,7 +21,7 @@ import (
 	"gopkg.in/yaml.v3"
 )
 
-type modFile struct {
+type Base struct {
 	Version string `yaml:"modfileVersion"`
 }
 
