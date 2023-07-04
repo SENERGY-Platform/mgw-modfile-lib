@@ -188,7 +188,7 @@ type HostResource struct {
 
 type Secret struct {
 	Resource `yaml:",inline"`
-	// resource type as defined by external services managing resources (e.g. serial-device, certificate, ...)
+	// resource type as defined by external services managing resources (e.g. api-key, certificate, ...)
 	Type string `yaml:"type" json:"type"`
 	// mount points for the secret
 	Targets []ResourceMountTarget `yaml:"targets" json:"targets"`
