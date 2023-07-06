@@ -32,6 +32,7 @@ func TestGenerator(t *testing.T) {
 	sA := "a"
 	sB := "b"
 	ig := "ig"
+	sMnt := "mnt3"
 	strType := module.StringType
 	mf := model.ModFile{
 		ID:             "id",
@@ -88,10 +89,8 @@ func TestGenerator(t *testing.T) {
 				},
 				Targets: []model.HostResourceTarget{
 					{
-						ResourceMountTarget: model.ResourceMountTarget{
-							MountPoint: "mnt2",
-							Services:   []string{sA},
-						},
+						MountPoint: "mnt2",
+						Services:   []string{sA},
 					},
 				},
 			},
@@ -105,9 +104,9 @@ func TestGenerator(t *testing.T) {
 					},
 					Optional: false,
 				},
-				Targets: []model.ResourceMountTarget{
+				Targets: []model.SecretTarget{
 					{
-						MountPoint: "mnt3",
+						MountPoint: &sMnt,
 						Services:   []string{sA},
 					},
 				},
@@ -165,7 +164,7 @@ func TestGenerator(t *testing.T) {
 						ReadOnly: false,
 					},
 				},
-				Secrets:       map[string]string{"mnt3": "sec"},
+				SecretMounts:  map[string]module.SecretTarget{"mnt3": {Ref: "sec"}},
 				Configs:       map[string]string{"rVar3": "cfg"},
 				SrvReferences: map[string]string{"rVar1": sB},
 				HttpEndpoints: map[string]module.HttpEndpoint{},
@@ -322,9 +321,7 @@ func TestGenerator(t *testing.T) {
 			"": {
 				Targets: []model.HostResourceTarget{
 					{
-						ResourceMountTarget: model.ResourceMountTarget{
-							Services: []string{""},
-						},
+						Services: []string{""},
 					},
 				},
 			},
@@ -337,9 +334,10 @@ func TestGenerator(t *testing.T) {
 	mf = model.ModFile{
 		Secrets: map[string]model.Secret{
 			"": {
-				Targets: []model.ResourceMountTarget{
+				Targets: []model.SecretTarget{
 					{
-						Services: []string{""},
+						MountPoint: &sMnt,
+						Services:   []string{""},
 					},
 				},
 			},

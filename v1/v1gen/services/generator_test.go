@@ -605,7 +605,7 @@ func TestGenServices(t *testing.T) {
 		},
 		Volumes:       nil,
 		HostResources: nil,
-		Secrets:       nil,
+		SecretMounts:  nil,
 		Configs:       nil,
 		SrvReferences: nil,
 		HttpEndpoints: map[string]module.HttpEndpoint{

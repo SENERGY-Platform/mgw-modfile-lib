@@ -291,11 +291,9 @@ func TestSetResources(t *testing.T) {
 	mfRs[res] = model.HostResource{
 		Targets: []model.HostResourceTarget{
 			{
-				ResourceMountTarget: model.ResourceMountTarget{
-					MountPoint: mp,
-					Services:   []string{sRef},
-				},
-				ReadOnly: true,
+				MountPoint: mp,
+				Services:   []string{sRef},
+				ReadOnly:   true,
 			},
 		},
 	}
@@ -314,18 +312,14 @@ func TestSetResources(t *testing.T) {
 	mfRs[res] = model.HostResource{
 		Targets: []model.HostResourceTarget{
 			{
-				ResourceMountTarget: model.ResourceMountTarget{
-					MountPoint: mp,
-					Services:   []string{sRef},
-				},
-				ReadOnly: true,
+				MountPoint: mp,
+				Services:   []string{sRef},
+				ReadOnly:   true,
 			},
 			{
-				ResourceMountTarget: model.ResourceMountTarget{
-					MountPoint: mp,
-					Services:   []string{sRef},
-				},
-				ReadOnly: true,
+				MountPoint: mp,
+				Services:   []string{sRef},
+				ReadOnly:   true,
 			},
 		},
 	}
@@ -338,18 +332,14 @@ func TestSetResources(t *testing.T) {
 	mfRs[res] = model.HostResource{
 		Targets: []model.HostResourceTarget{
 			{
-				ResourceMountTarget: model.ResourceMountTarget{
-					MountPoint: mp,
-					Services:   []string{sRef},
-				},
-				ReadOnly: false,
+				MountPoint: mp,
+				Services:   []string{sRef},
+				ReadOnly:   false,
 			},
 			{
-				ResourceMountTarget: model.ResourceMountTarget{
-					MountPoint: mp,
-					Services:   []string{sRef},
-				},
-				ReadOnly: true,
+				MountPoint: mp,
+				Services:   []string{sRef},
+				ReadOnly:   true,
 			},
 		},
 	}
@@ -360,11 +350,9 @@ func TestSetResources(t *testing.T) {
 	mfRs[res] = model.HostResource{
 		Targets: []model.HostResourceTarget{
 			{
-				ResourceMountTarget: model.ResourceMountTarget{
-					MountPoint: mp,
-					Services:   []string{"b"},
-				},
-				ReadOnly: true,
+				MountPoint: mp,
+				Services:   []string{"b"},
+				ReadOnly:   true,
 			},
 		},
 	}
@@ -375,22 +363,18 @@ func TestSetResources(t *testing.T) {
 	mfRs[res] = model.HostResource{
 		Targets: []model.HostResourceTarget{
 			{
-				ResourceMountTarget: model.ResourceMountTarget{
-					MountPoint: mp,
-					Services:   []string{sRef},
-				},
-				ReadOnly: false,
+				MountPoint: mp,
+				Services:   []string{sRef},
+				ReadOnly:   false,
 			},
 		},
 	}
 	mfRs["test"] = model.HostResource{
 		Targets: []model.HostResourceTarget{
 			{
-				ResourceMountTarget: model.ResourceMountTarget{
-					MountPoint: mp,
-					Services:   []string{sRef},
-				},
-				ReadOnly: false,
+				MountPoint: mp,
+				Services:   []string{sRef},
+				ReadOnly:   false,
 			},
 		},
 	}
@@ -410,43 +394,49 @@ func TestSetSecrets(t *testing.T) {
 	mfSCTs = make(map[string]model.Secret)
 	sec := "sec"
 	mp := "mp"
+	rv := "rv"
 	mfSCTs[sec] = model.Secret{
-		Targets: []model.ResourceMountTarget{
+		Targets: []model.SecretTarget{
 			{
-				MountPoint: mp,
+				MountPoint:  &mp,
+				RefVar:      &rv,
+				TypeOptions: map[string]string{"test": "test"},
+				Services:    []string{sRef},
+			},
+		},
+	}
+	a := map[string]module.SecretTarget{mp: {Ref: sec, TypeOpt: map[string]string{"test": "test"}}}
+	a2 := map[string]module.SecretTarget{rv: {Ref: sec, TypeOpt: map[string]string{"test": "test"}}}
+	if err := SetSecrets(mfSCTs, mSs); err != nil {
+		t.Error("err != nil")
+	} else if ms := mSs[sRef]; reflect.DeepEqual(a, ms.SecretMounts) == false {
+		t.Errorf("%v != %v", a, ms.SecretMounts)
+	} else if reflect.DeepEqual(a2, ms.SecretVars) == false {
+		t.Errorf("%v != %v", a2, ms.SecretVars)
+	}
+	// --------------------------------
+	mfSCTs[sec] = model.Secret{
+		Targets: []model.SecretTarget{
+			{
+				MountPoint: &mp,
+				Services:   []string{sRef},
+			},
+			{
+				MountPoint: &mp,
 				Services:   []string{sRef},
 			},
 		},
 	}
-	a := map[string]string{mp: sec}
 	if err := SetSecrets(mfSCTs, mSs); err != nil {
 		t.Error("err != nil")
-	} else if ms := mSs[sRef]; reflect.DeepEqual(a, ms.Secrets) == false {
-		t.Errorf("%v != %v", a, ms.Secrets)
+	} else if ms := mSs[sRef]; reflect.DeepEqual(a, ms.SecretMounts) == false {
+		t.Errorf("%v != %v", a, ms.SecretMounts)
 	}
 	// --------------------------------
 	mfSCTs[sec] = model.Secret{
-		Targets: []model.ResourceMountTarget{
+		Targets: []model.SecretTarget{
 			{
-				MountPoint: mp,
-				Services:   []string{sRef},
-			},
-			{
-				MountPoint: mp,
-				Services:   []string{sRef},
-			},
-		},
-	}
-	if err := SetSecrets(mfSCTs, mSs); err != nil {
-		t.Error("err != nil")
-	} else if ms := mSs[sRef]; reflect.DeepEqual(a, ms.Secrets) == false {
-		t.Errorf("%v != %v", a, ms.Secrets)
-	}
-	// --------------------------------
-	mfSCTs[sec] = model.Secret{
-		Targets: []model.ResourceMountTarget{
-			{
-				MountPoint: mp,
+				MountPoint: &mp,
 				Services:   []string{"test"},
 			},
 		},
@@ -456,17 +446,17 @@ func TestSetSecrets(t *testing.T) {
 	}
 	// --------------------------------
 	mfSCTs[sec] = model.Secret{
-		Targets: []model.ResourceMountTarget{
+		Targets: []model.SecretTarget{
 			{
-				MountPoint: mp,
+				MountPoint: &mp,
 				Services:   []string{sRef},
 			},
 		},
 	}
 	mfSCTs["test"] = model.Secret{
-		Targets: []model.ResourceMountTarget{
+		Targets: []model.SecretTarget{
 			{
-				MountPoint: mp,
+				MountPoint: &mp,
 				Services:   []string{sRef},
 			},
 		},
