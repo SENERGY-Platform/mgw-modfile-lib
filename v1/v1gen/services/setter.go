@@ -126,23 +126,49 @@ func SetHostResources(mfRs map[string]model.HostResource, mSs map[string]*module
 	return nil
 }
 
-func SetSecrets(mfSCTs map[string]model.Secret, mSs map[string]*module.Service) error {
-	for sctRef, mfSCT := range mfSCTs {
-		for _, mfRTB := range mfSCT.Targets {
-			for _, sRef := range mfRTB.Services {
-				if mS, ok := mSs[sRef]; ok {
-					if mS.Secrets == nil {
-						mS.Secrets = make(map[string]string)
-					}
-					if r, k := mS.Secrets[mfRTB.MountPoint]; k {
-						if r == sctRef {
-							continue
+func SetSecrets(mfSecrets map[string]model.Secret, mServices map[string]*module.Service) error {
+	for secRef, mfSecret := range mfSecrets {
+		for _, mfSecretTarget := range mfSecret.Targets {
+			if mfSecretTarget.MountPoint != nil {
+				for _, mfSrvRef := range mfSecretTarget.Services {
+					if mService, ok := mServices[mfSrvRef]; ok {
+						if mService.SecretMounts == nil {
+							mService.SecretMounts = make(map[string]module.SecretTarget)
 						}
-						return fmt.Errorf("'%s' & '%s' -> '%s' -> '%s'", r, sctRef, sRef, mfRTB.MountPoint)
+						if mSecretTarget, k := mService.SecretMounts[*mfSecretTarget.MountPoint]; k {
+							if mSecretTarget.Ref == secRef {
+								continue
+							}
+							return fmt.Errorf("'%s' & '%s' -> '%s' -> '%s'", mSecretTarget, secRef, mfSrvRef, *mfSecretTarget.MountPoint)
+						}
+						mService.SecretMounts[*mfSecretTarget.MountPoint] = module.SecretTarget{
+							Ref:     secRef,
+							TypeOpt: mfSecretTarget.TypeOptions,
+						}
+					} else {
+						return fmt.Errorf("invalid secret: service '%s' not defined", mfSrvRef)
 					}
-					mS.Secrets[mfRTB.MountPoint] = sctRef
-				} else {
-					return fmt.Errorf("invalid secret: service '%s' not defined", sRef)
+				}
+			}
+			if mfSecretTarget.RefVar != nil {
+				for _, mfSrvRef := range mfSecretTarget.Services {
+					if mService, ok := mServices[mfSrvRef]; ok {
+						if mService.SecretVars == nil {
+							mService.SecretVars = make(map[string]module.SecretTarget)
+						}
+						if mSecretTarget, k := mService.SecretVars[*mfSecretTarget.RefVar]; k {
+							if mSecretTarget.Ref == secRef {
+								continue
+							}
+							return fmt.Errorf("'%s' & '%s' -> '%s' -> '%s'", mSecretTarget, secRef, mfSrvRef, *mfSecretTarget.RefVar)
+						}
+						mService.SecretVars[*mfSecretTarget.RefVar] = module.SecretTarget{
+							Ref:     secRef,
+							TypeOpt: mfSecretTarget.TypeOptions,
+						}
+					} else {
+						return fmt.Errorf("invalid secret: service '%s' not defined", mfSrvRef)
+					}
 				}
 			}
 		}

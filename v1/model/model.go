@@ -159,15 +159,11 @@ type DependencyTarget struct {
 	Services []string `yaml:"services" json:"services"`
 }
 
-type ResourceMountTarget struct {
+type HostResourceTarget struct {
 	// absolute path in container
 	MountPoint string `yaml:"mountPoint" json:"mountPoint"`
 	// service identifiers as used in ModFile.Services to map the mount point to a number of services
 	Services []string `yaml:"services" json:"services"`
-}
-
-type HostResourceTarget struct {
-	ResourceMountTarget `yaml:",inline"`
 	// if true resource will be mounted as read only
 	ReadOnly bool `yaml:"readOnly" json:"readOnly,omitempty"`
 }
@@ -186,12 +182,23 @@ type HostResource struct {
 	Targets []HostResourceTarget `yaml:"targets" json:"targets"`
 }
 
+type SecretTarget struct {
+	// type specific options
+	TypeOptions map[string]string `yaml:"typeOptions" json:"typeOptions,omitempty"`
+	// absolute path in container
+	MountPoint *string `yaml:"mountPoint" json:"mountPoint,omitempty"`
+	// container environment variable to hold the secret value
+	RefVar *string `yaml:"refVar" json:"refVar,omitempty"`
+	// service identifiers as used in ModFile.Services to map the mount point to a number of services
+	Services []string `yaml:"services" json:"services"`
+}
+
 type Secret struct {
 	Resource `yaml:",inline"`
 	// resource type as defined by external services managing resources (e.g. api-key, certificate, ...)
 	Type string `yaml:"type" json:"type"`
 	// mount points for the secret
-	Targets []ResourceMountTarget `yaml:"targets" json:"targets"`
+	Targets []SecretTarget `yaml:"targets" json:"targets"`
 }
 
 type ConfigValue struct {
