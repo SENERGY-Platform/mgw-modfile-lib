@@ -399,10 +399,10 @@ func TestParseConfigSlice(t *testing.T) {
 
 func TestSetValue(t *testing.T) {
 	mCs := make(module.Configs)
-	if err := SetValue("", model.ConfigValue{}, mCs); err == nil {
-		t.Error("err == nil")
-	} else if len(mCs) != 0 {
-		t.Errorf("len(%v) != 0", mCs)
+	if err := SetValue("", model.ConfigValue{}, mCs); err != nil {
+		t.Error("err != nil")
+	} else if len(mCs) == 0 {
+		t.Errorf("len(%v) == 0", mCs)
 	}
 }
 
@@ -428,7 +428,7 @@ func TestSetValueFloat64(t *testing.T) {
 
 func testSetValue[T comparable](t *testing.T, value any, options []any, dataType string, errVal any) {
 	mCs := make(module.Configs)
-	if err := SetValue("", model.ConfigValue{Value: errVal, DataType: dataType}, mCs); err == nil {
+	if err := SetValue("", model.ConfigValue{Value: errVal, DataType: &dataType}, mCs); err == nil {
 		t.Error("err == nil")
 	} else if len(mCs) != 0 {
 		t.Errorf("len(%v) != 0", mCs)
@@ -438,16 +438,16 @@ func testSetValue[T comparable](t *testing.T, value any, options []any, dataType
 		Value:       value,
 		Options:     options,
 		OptionsExt:  true,
-		Type:        str,
+		Type:        &str,
 		TypeOptions: map[string]any{str: str},
-		DataType:    dataType,
+		DataType:    &dataType,
 		Optional:    false,
 	}
 	if err := SetValue(str, cv, mCs); err != nil {
 		t.Error("err != nil")
 	} else if c, ok := mCs[str]; !ok {
 		t.Errorf("c, ok := mCs[%s]; !ok", str)
-	} else if cv.DataType != c.DataType {
+	} else if *cv.DataType != c.DataType {
 		t.Errorf("%v != %v", cv.DataType, c.DataType)
 	} else if reflect.DeepEqual(cv.Value, c.Default) == false {
 		t.Errorf("%v != %v", cv.Value, c.Default)
@@ -457,7 +457,7 @@ func testSetValue[T comparable](t *testing.T, value any, options []any, dataType
 		t.Errorf("%v != %v", cv.Options[0], c.Options.([]T)[0])
 	} else if cv.OptionsExt != c.OptExt {
 		t.Errorf("%v != %v", cv.OptionsExt, c.OptExt)
-	} else if cv.Type != c.Type {
+	} else if *cv.Type != c.Type {
 		t.Errorf("%v != %v", cv.Type, c.Type)
 	} else if to, k := c.TypeOpt[str]; !k {
 		t.Errorf("to, k := c.TypeOpt[%s]; !k", str)
@@ -474,10 +474,10 @@ func testSetValue[T comparable](t *testing.T, value any, options []any, dataType
 
 func TestSetSlice(t *testing.T) {
 	mCs := make(module.Configs)
-	if err := SetSlice("", model.ConfigValue{}, mCs); err == nil {
+	if err := SetSlice("", model.ConfigValue{}, mCs); err != nil {
 		t.Error("err == nil")
-	} else if len(mCs) != 0 {
-		t.Errorf("len(%v) != 0", mCs)
+	} else if len(mCs) == 0 {
+		t.Errorf("len(%v) == 0", mCs)
 	}
 }
 
@@ -503,13 +503,14 @@ func TestSetSliceFloat64(t *testing.T) {
 
 func testSetSlice[T comparable](t *testing.T, value any, options []any, dataType string, errVal any) {
 	mCs := make(module.Configs)
-	if err := SetSlice("", model.ConfigValue{Value: errVal, DataType: dataType}, mCs); err == nil {
+	if err := SetSlice("", model.ConfigValue{Value: errVal, DataType: &dataType}, mCs); err == nil {
 		t.Error("err == nil")
 	} else if len(mCs) != 0 {
 		t.Errorf("len(%v) != 0", mCs)
 	}
 	str := "test"
-	if err := SetSlice(str, model.ConfigValue{Value: []any{1}, DataType: module.Int64Type}, mCs); err != nil {
+	int64Type := module.Int64Type
+	if err := SetSlice(str, model.ConfigValue{Value: []any{1}, DataType: &int64Type}, mCs); err != nil {
 		t.Error("err != nil")
 	} else if c, ok := mCs[str]; !ok {
 		t.Errorf("c, ok := mCs[%s]; !ok", str)
@@ -520,9 +521,9 @@ func testSetSlice[T comparable](t *testing.T, value any, options []any, dataType
 		Value:       value,
 		Options:     options,
 		OptionsExt:  true,
-		Type:        str,
+		Type:        &str,
 		TypeOptions: map[string]any{str: str},
-		DataType:    dataType,
+		DataType:    &dataType,
 		IsList:      true,
 		Delimiter:   &str,
 		Optional:    false,
@@ -531,7 +532,7 @@ func testSetSlice[T comparable](t *testing.T, value any, options []any, dataType
 		t.Error("err != nil")
 	} else if c, ok := mCs[str]; !ok {
 		t.Errorf("c, ok := mCs[%s]; !ok", str)
-	} else if cv.DataType != c.DataType {
+	} else if *cv.DataType != c.DataType {
 		t.Errorf("%v != %v", cv.DataType, c.DataType)
 	} else if len(c.Default.([]T)) == 0 {
 		t.Errorf("len(%v) == 0", c.Default)
@@ -543,7 +544,7 @@ func testSetSlice[T comparable](t *testing.T, value any, options []any, dataType
 		t.Errorf("%v != %v", cv.Options[0], c.Options.([]T)[0])
 	} else if cv.OptionsExt != c.OptExt {
 		t.Errorf("%v != %v", cv.OptionsExt, c.OptExt)
-	} else if cv.Type != c.Type {
+	} else if *cv.Type != c.Type {
 		t.Errorf("%v != %v", cv.Type, c.Type)
 	} else if to, k := c.TypeOpt[str]; !k {
 		t.Errorf("to, k := c.TypeOpt[%s]; !k", str)

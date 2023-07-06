@@ -23,6 +23,7 @@ import (
 )
 
 func TestGenConfigs(t *testing.T) {
+	strType := module.StringType
 	var mfCVs map[string]model.ConfigValue
 	if mCs, err := GenConfigs(mfCVs); err != nil {
 		t.Error("err != nil")
@@ -37,14 +38,14 @@ func TestGenConfigs(t *testing.T) {
 	}
 	str := "test"
 	mfCVs[str] = model.ConfigValue{}
-	if _, err := GenConfigs(mfCVs); err == nil {
-		t.Error("err == nil")
+	if _, err := GenConfigs(mfCVs); err != nil {
+		t.Error("err != nil")
 	}
 	mfCVs[str] = model.ConfigValue{IsList: true}
-	if _, err := GenConfigs(mfCVs); err == nil {
-		t.Error("err == nil")
+	if _, err := GenConfigs(mfCVs); err != nil {
+		t.Error("err != nil")
 	}
-	mfCVs[str] = model.ConfigValue{DataType: module.StringType}
+	mfCVs[str] = model.ConfigValue{DataType: &strType}
 	if mCs, err := GenConfigs(mfCVs); err != nil {
 		t.Error("err != nil")
 	} else if mC, ok := mCs[str]; !ok {
@@ -52,7 +53,7 @@ func TestGenConfigs(t *testing.T) {
 	} else if mC.IsSlice == true {
 		t.Error("mC.IsSlice == true")
 	}
-	mfCVs[str] = model.ConfigValue{DataType: module.StringType, IsList: true}
+	mfCVs[str] = model.ConfigValue{DataType: &strType, IsList: true}
 	if mCs, err := GenConfigs(mfCVs); err != nil {
 		t.Error("err != nil")
 	} else if mC, ok := mCs[str]; !ok {

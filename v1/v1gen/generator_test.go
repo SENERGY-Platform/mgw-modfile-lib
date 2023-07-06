@@ -32,6 +32,7 @@ func TestGenerator(t *testing.T) {
 	sA := "a"
 	sB := "b"
 	ig := "ig"
+	strType := module.StringType
 	mf := model.ModFile{
 		ID:             "id",
 		Name:           "nme",
@@ -114,7 +115,7 @@ func TestGenerator(t *testing.T) {
 		},
 		Configs: map[string]model.ConfigValue{
 			"cfg": {
-				DataType: module.StringType,
+				DataType: &strType,
 				UserInput: &model.UserInput{
 					Group: &ig,
 				},
@@ -132,7 +133,7 @@ func TestGenerator(t *testing.T) {
 		},
 	}
 	mc := make(module.Configs)
-	mc.SetString("cfg", nil, nil, false, "", nil, true)
+	mc.SetString("cfg", nil, nil, false, "text", nil, true)
 	a := module.Module{
 		ID:             "id",
 		Name:           "nme",
@@ -251,8 +252,8 @@ func TestGenerator(t *testing.T) {
 			"cfg": {},
 		},
 	}
-	if _, err := generator(&mf); err == nil {
-		t.Error("err == nil")
+	if _, err := generator(&mf); err != nil {
+		t.Error("err != nil")
 	}
 	// --------------------------------
 	mf = model.ModFile{
@@ -351,7 +352,7 @@ func TestGenerator(t *testing.T) {
 	mf = model.ModFile{
 		Configs: map[string]model.ConfigValue{
 			"": {
-				DataType: module.StringType,
+				DataType: &strType,
 				Targets: []model.ConfigTarget{
 					{
 						Services: []string{""},
