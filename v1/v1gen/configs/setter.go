@@ -20,10 +20,18 @@ import (
 	"fmt"
 	"github.com/SENERGY-Platform/mgw-modfile-lib/v1/model"
 	"github.com/SENERGY-Platform/mgw-module-lib/module"
+	"strconv"
 )
 
 func SetSlice(ref string, mfCV model.ConfigValue, mCs module.Configs) error {
-	configType, dataType := getTypes(mfCV.Type, mfCV.DataType)
+	dataType := module.StringType
+	if mfCV.DataType != nil {
+		dataType = *mfCV.DataType
+	}
+	var configType string
+	if mfCV.UserInput != nil {
+		configType = mfCV.UserInput.Type
+	}
 	delimiter := ","
 	if mfCV.Delimiter != nil {
 		delimiter = *mfCV.Delimiter
@@ -60,7 +68,14 @@ func SetSlice(ref string, mfCV model.ConfigValue, mCs module.Configs) error {
 }
 
 func SetValue(ref string, mfCV model.ConfigValue, mCs module.Configs) error {
-	configType, dataType := getTypes(mfCV.Type, mfCV.DataType)
+	dataType := module.StringType
+	if mfCV.DataType != nil {
+		dataType = *mfCV.DataType
+	}
+	var configType string
+	if mfCV.UserInput != nil {
+		configType = mfCV.UserInput.Type
+	}
 	switch dataType {
 	case module.StringType:
 		d, o, co, err := parseConfig(mfCV.Value, mfCV.Options, mfCV.TypeOptions, parseConfigValueString)
@@ -90,18 +105,6 @@ func SetValue(ref string, mfCV model.ConfigValue, mCs module.Configs) error {
 		return fmt.Errorf("%s invalid data type '%s'", ref, dataType)
 	}
 	return nil
-}
-
-func getTypes(cType, dType *string) (string, string) {
-	ct := "text"
-	dt := module.StringType
-	if cType != nil {
-		ct = *cType
-	}
-	if dType != nil {
-		dt = *dType
-	}
-	return ct, dt
 }
 
 func parseConfig[T any](val any, opt []any, ctOpt map[string]any, valParser func(any) (T, error)) (p *T, o []T, to module.ConfigTypeOptions, err error) {

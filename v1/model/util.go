@@ -133,5 +133,8 @@ func (r Resource) GetUserInput() *UserInput {
 }
 
 func (c ConfigValue) GetUserInput() *UserInput {
-	return c.UserInput
+	if c.UserInput != nil {
+		return &c.UserInput.UserInput
+	}
+	return nil
 }

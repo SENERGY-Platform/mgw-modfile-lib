@@ -208,8 +208,6 @@ type ConfigValue struct {
 	Options []any `yaml:"options" json:"options,omitempty"`
 	// if true a value not defined in options can be set (only required if options are provided)
 	OptionsExt bool `yaml:"optionsExt" json:"optionsExt,omitempty"`
-	// type of the configuration value (e.g. text, number, date, ...) (defaults to "text" if nil)
-	Type *string `yaml:"type" json:"type,omitempty"`
 	// type specific options (e.g. number supports min, max values or step)
 	TypeOptions map[string]any `yaml:"typeOptions" json:"typeOptions,omitempty"`
 	// data type of the configuration value (e.g. string, int, ...) (defaults to "string" if nil)
@@ -219,7 +217,7 @@ type ConfigValue struct {
 	// delimiter to be used for marshalling multiple configuration values (defaults to "," if nil)
 	Delimiter *string `yaml:"delimiter" json:"delimiter,omitempty"`
 	// meta info for user input via gui (if nil a default value must be set)
-	UserInput *UserInput `yaml:"userInput" json:"userInput,omitempty"`
+	UserInput *ConfigUserInput `yaml:"userInput" json:"userInput,omitempty"`
 	// reference variables for the configuration value
 	Targets  []ConfigTarget `yaml:"targets" json:"targets"`
 	Optional bool           `yaml:"optional" json:"optional,omitempty"`
@@ -230,6 +228,12 @@ type ConfigTarget struct {
 	RefVar string `yaml:"refVar" json:"refVar"`
 	// service identifiers as used in ModFile.Services to map the reference variable to a number of services
 	Services []string `yaml:"services" json:"services"`
+}
+
+type ConfigUserInput struct {
+	UserInput
+	// type of the configuration value (e.g. text, number, date, ...) (defaults to "text" if nil)
+	Type string `yaml:"type" json:"type"`
 }
 
 type UserInput struct {
