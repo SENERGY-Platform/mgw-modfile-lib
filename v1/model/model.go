@@ -37,9 +37,9 @@ type ModFile struct {
 	// module tags
 	Tags []string `yaml:"tags" json:"tags,omitempty"`
 	// module license name (e.g. Apache License 2.0)
-	License string `yaml:"license" json:"license"`
+	License string `yaml:"license" json:"license,omitempty"`
 	// module author
-	Author string `yaml:"author" json:"author"`
+	Author string `yaml:"author" json:"author,omitempty"`
 	// module version (must be prefixed with 'v' and adhere to the semantic versioning guidelines, see https://semver.org/ for details)
 	Version string `yaml:"version" json:"version"`
 	// module type (e.g. device-connector specifies a module for integrating devices)
@@ -142,7 +142,7 @@ type VolumeTarget struct {
 	// absolute path in container
 	MountPoint string `yaml:"mountPoint" json:"mountPoint"`
 	// service identifiers as used in ModFile.Services to map the mount point to a number of services
-	Services []string `yaml:"services" json:"services"`
+	Services []string `yaml:"services" json:"services,omitempty"`
 }
 
 type ModuleDependency struct {
@@ -217,7 +217,7 @@ type ConfigValue struct {
 	// meta info for user input via gui (if nil a default value must be set)
 	UserInput *ConfigUserInput `yaml:"userInput" json:"userInput,omitempty"`
 	// reference variables for the configuration value
-	Targets  []ConfigTarget `yaml:"targets" json:"targets"`
+	Targets  []ConfigTarget `yaml:"targets" json:"targets,omitempty"`
 	Optional bool           `yaml:"optional" json:"optional,omitempty"`
 }
 
