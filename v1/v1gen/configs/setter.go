@@ -156,11 +156,28 @@ func parseConfigOptions[T any](opt []any, valParser func(any) (T, error)) ([]T, 
 }
 
 func parseConfigValueString(val any) (string, error) {
-	v, ok := val.(string)
-	if !ok {
+	var sVal string
+	switch v := val.(type) {
+	case string:
+		sVal = v
+	case float32:
+		sVal = strconv.FormatFloat(float64(v), 'f', -1, 32)
+	case float64:
+		sVal = strconv.FormatFloat(v, 'f', -1, 64)
+	case int:
+		sVal = strconv.FormatInt(int64(v), 10)
+	case int8:
+		sVal = strconv.FormatInt(int64(v), 10)
+	case int16:
+		sVal = strconv.FormatInt(int64(v), 10)
+	case int32:
+		sVal = strconv.FormatInt(int64(v), 10)
+	case int64:
+		sVal = strconv.FormatInt(v, 10)
+	default:
 		return "", fmt.Errorf("invalid data type '%T'", val)
 	}
-	return v, nil
+	return sVal, nil
 }
 
 func parseConfigValueBool(val any) (bool, error) {
