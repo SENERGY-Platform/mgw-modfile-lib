@@ -131,9 +131,9 @@ type SrvPort struct {
 	// port name
 	Name *string `yaml:"name" json:"name,omitempty"`
 	// port number or port range (e.g. 8080-8081)
-	Port Port `yaml:"port" json:"port"`
+	Port Port `yaml:"port" json:"port" jsonschema:"oneof_type=string;integer"`
 	// port number or port range (e.g. 8080-8081), can be overridden during deployment to avoid collisions (arbitrary ports are used if nil)
-	HostPort *Port `yaml:"hostPort" json:"hostPort,omitempty"`
+	HostPort *Port `yaml:"hostPort" json:"hostPort,omitempty" jsonschema:"oneof_type=string;integer"`
 	// specify port protocol (defaults to tcp if nil)
 	Protocol *string `yaml:"protocol" json:"protocol,omitempty" jsonschema:"enum=tcp,enum=udp"`
 }
@@ -203,7 +203,7 @@ type Secret struct {
 
 type ConfigValue struct {
 	// default configuration value or nil
-	Value any `yaml:"value" json:"value,omitempty"`
+	Value any `yaml:"value" json:"value,omitempty" jsonschema:"oneof_type=string;number;boolean;array"`
 	// list of possible configuration values
 	Options []any `yaml:"options" json:"options,omitempty"`
 	// if true a value not defined in options can be set (only required if options are provided)
