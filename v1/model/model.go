@@ -229,7 +229,7 @@ type ConfigTarget struct {
 }
 
 type ConfigUserInput struct {
-	UserInput
+	UserInput `yaml:",inline"`
 	// type of the configuration value (e.g. text, number, date, ...)
 	Type string `yaml:"type" json:"type" jsonschema:"enum=text,enum=number"`
 	// type specific options (e.g. number supports min, max values or step)
