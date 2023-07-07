@@ -121,7 +121,7 @@ type HttpEndpoint struct {
 	Name string `yaml:"name" json:"name"`
 	// internal endpoint path
 	Path string `yaml:"path" json:"path"`
-	// port the service is listening on
+	// port the service is listening on (set if not 80)
 	Port *int `yaml:"port" json:"port,omitempty"`
 	// optional external path to be used by the api gateway
 	ExtPath *string `yaml:"extPath" json:"extPath,omitempty"`
