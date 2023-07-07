@@ -54,13 +54,47 @@ func TestParseConfigOptions(t *testing.T) {
 }
 
 func TestParseConfigValueString(t *testing.T) {
-	str := "test"
-	if v, err := parseConfigValueString(str); err != nil {
+	if v, err := parseConfigValueString("test"); err != nil {
 		t.Error("err != nil")
-	} else if v != str {
-		t.Errorf("%s != %s", v, str)
+	} else if v != "test" {
+		t.Errorf("%s != %s", v, "test")
 	}
-	if _, err := parseConfigValueString(1); err == nil {
+	if v, err := parseConfigValueString(1); err != nil {
+		t.Error("err != nil")
+	} else if v != "1" {
+		t.Errorf("%s != %s", v, "1")
+	}
+	if v, err := parseConfigValueString(int8(1)); err != nil {
+		t.Error("err != nil")
+	} else if v != "1" {
+		t.Errorf("%s != %s", v, "1")
+	}
+	if v, err := parseConfigValueString(int16(1)); err != nil {
+		t.Error("err != nil")
+	} else if v != "1" {
+		t.Errorf("%s != %s", v, "1")
+	}
+	if v, err := parseConfigValueString(int32(1)); err != nil {
+		t.Error("err != nil")
+	} else if v != "1" {
+		t.Errorf("%s != %s", v, "1")
+	}
+	if v, err := parseConfigValueString(int64(1)); err != nil {
+		t.Error("err != nil")
+	} else if v != "1" {
+		t.Errorf("%s != %s", v, "1")
+	}
+	if v, err := parseConfigValueString(float32(1.1)); err != nil {
+		t.Error("err != nil")
+	} else if v != "1.1" {
+		t.Errorf("%s != %s", v, "1.1")
+	}
+	if v, err := parseConfigValueString(float64(1.1)); err != nil {
+		t.Error("err != nil")
+	} else if v != "1.1" {
+		t.Errorf("%s != %s", v, "1.1")
+	}
+	if _, err := parseConfigValueString(true); err == nil {
 		t.Error("err == nil")
 	}
 }
