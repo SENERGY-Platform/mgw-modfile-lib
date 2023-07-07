@@ -442,7 +442,7 @@ func TestSetValue(t *testing.T) {
 
 func TestSetValueStr(t *testing.T) {
 	str := "test"
-	testSetValue[string](t, str, []any{str}, module.StringType, 1)
+	testSetValue[string](t, str, []any{str}, module.StringType, uint(1))
 }
 
 func TestSetValueBool(t *testing.T) {
