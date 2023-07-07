@@ -208,8 +208,6 @@ type ConfigValue struct {
 	Options []any `yaml:"options" json:"options,omitempty"`
 	// if true a value not defined in options can be set (only required if options are provided)
 	OptionsExt bool `yaml:"optionsExt" json:"optionsExt,omitempty"`
-	// type specific options (e.g. number supports min, max values or step)
-	TypeOptions map[string]any `yaml:"typeOptions" json:"typeOptions,omitempty"`
 	// data type of the configuration value (e.g. string, int, ...) (defaults to "string" if nil)
 	DataType *string `yaml:"dataType" json:"dataType,omitempty"`
 	// set to true if multiple configuration values are required
@@ -234,6 +232,8 @@ type ConfigUserInput struct {
 	UserInput
 	// type of the configuration value (e.g. text, number, date, ...) (defaults to "text" if nil)
 	Type string `yaml:"type" json:"type"`
+	// type specific options (e.g. number supports min, max values or step)
+	TypeOptions map[string]any `yaml:"typeOptions" json:"typeOptions,omitempty"`
 }
 
 type UserInput struct {

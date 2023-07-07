@@ -29,34 +29,37 @@ func SetSlice(ref string, mfCV model.ConfigValue, mCs module.Configs) error {
 		dataType = *mfCV.DataType
 	}
 	var configType string
+	var cTypeOption map[string]any
 	if mfCV.UserInput != nil {
 		configType = mfCV.UserInput.Type
+		cTypeOption = mfCV.UserInput.TypeOptions
 	}
+
 	delimiter := ","
 	if mfCV.Delimiter != nil {
 		delimiter = *mfCV.Delimiter
 	}
 	switch dataType {
 	case module.StringType:
-		d, o, co, err := parseConfigSlice(mfCV.Value, mfCV.Options, mfCV.TypeOptions, parseConfigValueString)
+		d, o, co, err := parseConfigSlice(mfCV.Value, mfCV.Options, cTypeOption, parseConfigValueString)
 		if err != nil {
 			return fmt.Errorf("error parsing config '%s': %s", ref, err)
 		}
 		mCs.SetStringSlice(ref, d, o, mfCV.OptionsExt, configType, co, delimiter, !mfCV.Optional)
 	case module.BoolType:
-		d, o, co, err := parseConfigSlice(mfCV.Value, mfCV.Options, mfCV.TypeOptions, parseConfigValueBool)
+		d, o, co, err := parseConfigSlice(mfCV.Value, mfCV.Options, cTypeOption, parseConfigValueBool)
 		if err != nil {
 			return fmt.Errorf("error parsing config '%s': %s", ref, err)
 		}
 		mCs.SetBoolSlice(ref, d, o, mfCV.OptionsExt, configType, co, delimiter, !mfCV.Optional)
 	case module.Int64Type:
-		d, o, co, err := parseConfigSlice(mfCV.Value, mfCV.Options, mfCV.TypeOptions, parseConfigValueInt64)
+		d, o, co, err := parseConfigSlice(mfCV.Value, mfCV.Options, cTypeOption, parseConfigValueInt64)
 		if err != nil {
 			return fmt.Errorf("error parsing config '%s': %s", ref, err)
 		}
 		mCs.SetInt64Slice(ref, d, o, mfCV.OptionsExt, configType, co, delimiter, !mfCV.Optional)
 	case module.Float64Type:
-		d, o, co, err := parseConfigSlice(mfCV.Value, mfCV.Options, mfCV.TypeOptions, parseConfigValueFloat64)
+		d, o, co, err := parseConfigSlice(mfCV.Value, mfCV.Options, cTypeOption, parseConfigValueFloat64)
 		if err != nil {
 			return fmt.Errorf("error parsing config '%s': %s", ref, err)
 		}
@@ -73,30 +76,32 @@ func SetValue(ref string, mfCV model.ConfigValue, mCs module.Configs) error {
 		dataType = *mfCV.DataType
 	}
 	var configType string
+	var cTypeOption map[string]any
 	if mfCV.UserInput != nil {
 		configType = mfCV.UserInput.Type
+		cTypeOption = mfCV.UserInput.TypeOptions
 	}
 	switch dataType {
 	case module.StringType:
-		d, o, co, err := parseConfig(mfCV.Value, mfCV.Options, mfCV.TypeOptions, parseConfigValueString)
+		d, o, co, err := parseConfig(mfCV.Value, mfCV.Options, cTypeOption, parseConfigValueString)
 		if err != nil {
 			return fmt.Errorf("error parsing config '%s': %s", ref, err)
 		}
 		mCs.SetString(ref, d, o, mfCV.OptionsExt, configType, co, !mfCV.Optional)
 	case module.BoolType:
-		d, o, co, err := parseConfig(mfCV.Value, mfCV.Options, mfCV.TypeOptions, parseConfigValueBool)
+		d, o, co, err := parseConfig(mfCV.Value, mfCV.Options, cTypeOption, parseConfigValueBool)
 		if err != nil {
 			return fmt.Errorf("error parsing config '%s': %s", ref, err)
 		}
 		mCs.SetBool(ref, d, o, mfCV.OptionsExt, configType, co, !mfCV.Optional)
 	case module.Int64Type:
-		d, o, co, err := parseConfig(mfCV.Value, mfCV.Options, mfCV.TypeOptions, parseConfigValueInt64)
+		d, o, co, err := parseConfig(mfCV.Value, mfCV.Options, cTypeOption, parseConfigValueInt64)
 		if err != nil {
 			return fmt.Errorf("error parsing config '%s': %s", ref, err)
 		}
 		mCs.SetInt64(ref, d, o, mfCV.OptionsExt, configType, co, !mfCV.Optional)
 	case module.Float64Type:
-		d, o, co, err := parseConfig(mfCV.Value, mfCV.Options, mfCV.TypeOptions, parseConfigValueFloat64)
+		d, o, co, err := parseConfig(mfCV.Value, mfCV.Options, cTypeOption, parseConfigValueFloat64)
 		if err != nil {
 			return fmt.Errorf("error parsing config '%s': %s", ref, err)
 		}
