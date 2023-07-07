@@ -115,8 +115,10 @@ func TestGenerator(t *testing.T) {
 		Configs: map[string]model.ConfigValue{
 			"cfg": {
 				DataType: &strType,
-				UserInput: &model.UserInput{
-					Group: &ig,
+				UserInput: &model.ConfigUserInput{
+					UserInput: model.UserInput{
+						Group: &ig,
+					},
 				},
 				Optional: false,
 				Targets: []model.ConfigTarget{
@@ -132,7 +134,7 @@ func TestGenerator(t *testing.T) {
 		},
 	}
 	mc := make(module.Configs)
-	mc.SetString("cfg", nil, nil, false, "text", nil, true)
+	mc.SetString("cfg", nil, nil, false, "", nil, true)
 	a := module.Module{
 		ID:             "id",
 		Name:           "nme",

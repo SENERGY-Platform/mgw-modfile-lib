@@ -168,7 +168,7 @@ func TestPort_Parse(t *testing.T) {
 
 func TestConfigValue_GetUserInput(t *testing.T) {
 	str := "test"
-	cv := ConfigValue{UserInput: &UserInput{Name: str}}
+	cv := ConfigValue{UserInput: &ConfigUserInput{UserInput: UserInput{Name: str}}}
 	if ui := cv.GetUserInput(); ui.Name != str {
 		t.Error("wrong user input")
 	}

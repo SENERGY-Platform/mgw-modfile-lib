@@ -472,10 +472,12 @@ func testSetValue[T comparable](t *testing.T, value any, options []any, dataType
 		Value:       value,
 		Options:     options,
 		OptionsExt:  true,
-		Type:        &str,
 		TypeOptions: map[string]any{str: str},
 		DataType:    &dataType,
 		Optional:    false,
+		UserInput: &model.ConfigUserInput{
+			Type: str,
+		},
 	}
 	if err := SetValue(str, cv, mCs); err != nil {
 		t.Error("err != nil")
@@ -491,8 +493,8 @@ func testSetValue[T comparable](t *testing.T, value any, options []any, dataType
 		t.Errorf("%v != %v", cv.Options[0], c.Options.([]T)[0])
 	} else if cv.OptionsExt != c.OptExt {
 		t.Errorf("%v != %v", cv.OptionsExt, c.OptExt)
-	} else if *cv.Type != c.Type {
-		t.Errorf("%v != %v", cv.Type, c.Type)
+	} else if cv.UserInput.Type != c.Type {
+		t.Errorf("%v != %v", cv.UserInput.Type, c.Type)
 	} else if to, k := c.TypeOpt[str]; !k {
 		t.Errorf("to, k := c.TypeOpt[%s]; !k", str)
 	} else if reflect.DeepEqual(cv.TypeOptions[str], to.Value) == false {
@@ -555,12 +557,14 @@ func testSetSlice[T comparable](t *testing.T, value any, options []any, dataType
 		Value:       value,
 		Options:     options,
 		OptionsExt:  true,
-		Type:        &str,
 		TypeOptions: map[string]any{str: str},
 		DataType:    &dataType,
 		IsList:      true,
 		Delimiter:   &str,
 		Optional:    false,
+		UserInput: &model.ConfigUserInput{
+			Type: str,
+		},
 	}
 	if err := SetSlice(str, cv, mCs); err != nil {
 		t.Error("err != nil")
@@ -578,8 +582,8 @@ func testSetSlice[T comparable](t *testing.T, value any, options []any, dataType
 		t.Errorf("%v != %v", cv.Options[0], c.Options.([]T)[0])
 	} else if cv.OptionsExt != c.OptExt {
 		t.Errorf("%v != %v", cv.OptionsExt, c.OptExt)
-	} else if *cv.Type != c.Type {
-		t.Errorf("%v != %v", cv.Type, c.Type)
+	} else if cv.UserInput.Type != c.Type {
+		t.Errorf("%v != %v", cv.UserInput.Type, c.Type)
 	} else if to, k := c.TypeOpt[str]; !k {
 		t.Errorf("to, k := c.TypeOpt[%s]; !k", str)
 	} else if reflect.DeepEqual(cv.TypeOptions[str], to.Value) == false {
