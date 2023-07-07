@@ -43,11 +43,11 @@ type ModFile struct {
 	// module version (must be prefixed with 'v' and adhere to the semantic versioning guidelines, see https://semver.org/ for details)
 	Version string `yaml:"version" json:"version"`
 	// module type (e.g. device-connector specifies a module for integrating devices)
-	Type string `yaml:"type" json:"type"`
+	Type string `yaml:"type" json:"type" jsonschema:"enum=add-on,enum=device-connector"`
 	// specifies whether a module can only be deployed once or multiple times
-	DeploymentType string `yaml:"deploymentType" json:"deploymentType"`
+	DeploymentType string `yaml:"deploymentType" json:"deploymentType" jsonschema:"enum=single,enum=multiple"`
 	// supported cpu architectures
-	Architectures []string `yaml:"architectures" json:"architectures,omitempty"`
+	Architectures []string `yaml:"architectures" json:"architectures,omitempty" jsonschema:"enum=x86,enum=i386,enum=x86_64,enum=amd64,enum=aarch32,enum=arm32v5,enum=arm32v6,enum=arm32v7,enum=aarch64,enum=arm64v8"`
 	// map depicting the services the module consists of (keys serve as unique identifiers and can be reused elsewhere in the modfile to reference a service)
 	Services map[string]Service `yaml:"services" json:"services"`
 	// map linking module services to reference variables (identifiers as defined in ModFile.Services serve as keys)
@@ -135,7 +135,7 @@ type SrvPort struct {
 	// port number or port range (e.g. 8080-8081), can be overridden during deployment to avoid collisions (arbitrary ports are used if nil)
 	HostPort *Port `yaml:"hostPort" json:"hostPort,omitempty"`
 	// specify port protocol (defaults to tcp if nil)
-	Protocol *string `yaml:"protocol" json:"protocol,omitempty"`
+	Protocol *string `yaml:"protocol" json:"protocol,omitempty" jsonschema:"enum=tcp,enum=udp"`
 }
 
 type VolumeTarget struct {
@@ -196,8 +196,8 @@ type SecretTarget struct {
 type Secret struct {
 	Resource `yaml:",inline"`
 	// resource type as defined by external services managing resources (e.g. api-key, certificate, ...)
-	Type string `yaml:"type" json:"type"`
-	// mount points for the secret
+	Type string `yaml:"type" json:"type" jsonschema:"enum=certificate,enum=basic-auth,enum=api-key"`
+	// mount points or environment variables for the secret
 	Targets []SecretTarget `yaml:"targets" json:"targets"`
 }
 
@@ -209,7 +209,7 @@ type ConfigValue struct {
 	// if true a value not defined in options can be set (only required if options are provided)
 	OptionsExt bool `yaml:"optionsExt" json:"optionsExt,omitempty"`
 	// data type of the configuration value (e.g. string, int, ...) (defaults to "string" if nil)
-	DataType *string `yaml:"dataType" json:"dataType,omitempty"`
+	DataType *string `yaml:"dataType" json:"dataType,omitempty" jsonschema:"enum=string,enum=float,enum=int,enum=bool"`
 	// set to true if multiple configuration values are required
 	IsList bool `yaml:"isList" json:"isList,omitempty"`
 	// delimiter to be used for marshalling multiple configuration values (defaults to "," if nil)
@@ -230,8 +230,8 @@ type ConfigTarget struct {
 
 type ConfigUserInput struct {
 	UserInput
-	// type of the configuration value (e.g. text, number, date, ...) (defaults to "text" if nil)
-	Type string `yaml:"type" json:"type"`
+	// type of the configuration value (e.g. text, number, date, ...)
+	Type string `yaml:"type" json:"type" jsonschema:"enum=text,enum=number"`
 	// type specific options (e.g. number supports min, max values or step)
 	TypeOptions map[string]any `yaml:"typeOptions" json:"typeOptions,omitempty"`
 }
