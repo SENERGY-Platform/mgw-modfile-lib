@@ -469,14 +469,14 @@ func testSetValue[T comparable](t *testing.T, value any, options []any, dataType
 	}
 	str := "test"
 	cv := model.ConfigValue{
-		Value:       value,
-		Options:     options,
-		OptionsExt:  true,
-		TypeOptions: map[string]any{str: str},
-		DataType:    &dataType,
-		Optional:    false,
+		Value:      value,
+		Options:    options,
+		OptionsExt: true,
+		DataType:   &dataType,
+		Optional:   false,
 		UserInput: &model.ConfigUserInput{
-			Type: str,
+			Type:        str,
+			TypeOptions: map[string]any{str: str},
 		},
 	}
 	if err := SetValue(str, cv, mCs); err != nil {
@@ -497,8 +497,8 @@ func testSetValue[T comparable](t *testing.T, value any, options []any, dataType
 		t.Errorf("%v != %v", cv.UserInput.Type, c.Type)
 	} else if to, k := c.TypeOpt[str]; !k {
 		t.Errorf("to, k := c.TypeOpt[%s]; !k", str)
-	} else if reflect.DeepEqual(cv.TypeOptions[str], to.Value) == false {
-		t.Errorf("%v != %v", cv.TypeOptions[str], to.Value)
+	} else if reflect.DeepEqual(cv.UserInput.TypeOptions[str], to.Value) == false {
+		t.Errorf("%v != %v", cv.UserInput.TypeOptions[str], to.Value)
 	} else if cv.IsList != c.IsSlice {
 		t.Errorf("%v != %v", cv.IsList, c.IsSlice)
 	} else if c.Delimiter != "" {
@@ -554,16 +554,16 @@ func testSetSlice[T comparable](t *testing.T, value any, options []any, dataType
 		t.Error("c.Delimiter != \",\"")
 	}
 	cv := model.ConfigValue{
-		Value:       value,
-		Options:     options,
-		OptionsExt:  true,
-		TypeOptions: map[string]any{str: str},
-		DataType:    &dataType,
-		IsList:      true,
-		Delimiter:   &str,
-		Optional:    false,
+		Value:      value,
+		Options:    options,
+		OptionsExt: true,
+		DataType:   &dataType,
+		IsList:     true,
+		Delimiter:  &str,
+		Optional:   false,
 		UserInput: &model.ConfigUserInput{
-			Type: str,
+			Type:        str,
+			TypeOptions: map[string]any{str: str},
 		},
 	}
 	if err := SetSlice(str, cv, mCs); err != nil {
@@ -586,8 +586,8 @@ func testSetSlice[T comparable](t *testing.T, value any, options []any, dataType
 		t.Errorf("%v != %v", cv.UserInput.Type, c.Type)
 	} else if to, k := c.TypeOpt[str]; !k {
 		t.Errorf("to, k := c.TypeOpt[%s]; !k", str)
-	} else if reflect.DeepEqual(cv.TypeOptions[str], to.Value) == false {
-		t.Errorf("%v != %v", cv.TypeOptions[str], to.Value)
+	} else if reflect.DeepEqual(cv.UserInput.TypeOptions[str], to.Value) == false {
+		t.Errorf("%v != %v", cv.UserInput.TypeOptions[str], to.Value)
 	} else if cv.IsList != c.IsSlice {
 		t.Errorf("%v != %v", cv.IsList, c.IsSlice)
 	} else if *cv.Delimiter != c.Delimiter {
