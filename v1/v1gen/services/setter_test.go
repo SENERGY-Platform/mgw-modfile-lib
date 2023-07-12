@@ -395,18 +395,19 @@ func TestSetSecrets(t *testing.T) {
 	sec := "sec"
 	mp := "mp"
 	rv := "rv"
+	si := "si"
 	mfSCTs[sec] = model.Secret{
 		Targets: []model.SecretTarget{
 			{
-				MountPoint:  &mp,
-				RefVar:      &rv,
-				TypeOptions: map[string]string{"test": "test"},
-				Services:    []string{sRef},
+				MountPoint: &mp,
+				RefVar:     &rv,
+				Item:       &si,
+				Services:   []string{sRef},
 			},
 		},
 	}
-	a := map[string]module.SecretTarget{mp: {Ref: sec, TypeOpt: map[string]string{"test": "test"}}}
-	a2 := map[string]module.SecretTarget{rv: {Ref: sec, TypeOpt: map[string]string{"test": "test"}}}
+	a := map[string]module.SecretTarget{mp: {Ref: sec, Item: &si}}
+	a2 := map[string]module.SecretTarget{rv: {Ref: sec, Item: &si}}
 	if err := SetSecrets(mfSCTs, mSs); err != nil {
 		t.Error("err != nil")
 	} else if ms := mSs[sRef]; reflect.DeepEqual(a, ms.SecretMounts) == false {
