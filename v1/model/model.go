@@ -183,12 +183,12 @@ type HostResource struct {
 }
 
 type SecretTarget struct {
-	// type specific options
-	TypeOptions map[string]string `yaml:"typeOptions" json:"typeOptions,omitempty"`
 	// absolute path in container
 	MountPoint *string `yaml:"mountPoint" json:"mountPoint,omitempty"`
 	// container environment variable to hold the secret value
 	RefVar *string `yaml:"refVar" json:"refVar,omitempty"`
+	// optional item reference as defined by the secret type
+	Item *string `yaml:"item" json:"item,omitempty"`
 	// service identifiers as used in ModFile.Services to map the mount point to a number of services
 	Services []string `yaml:"services" json:"services"`
 }
