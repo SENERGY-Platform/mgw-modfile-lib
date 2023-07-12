@@ -139,11 +139,11 @@ func SetSecrets(mfSecrets map[string]model.Secret, mServices map[string]*module.
 							if mSecretTarget.Ref == secRef {
 								continue
 							}
-							return fmt.Errorf("'%s' & '%s' -> '%s' -> '%s'", mSecretTarget, secRef, mfSrvRef, *mfSecretTarget.MountPoint)
+							return fmt.Errorf("'%s' & '%s' -> '%s' -> '%s'", mSecretTarget.Ref, secRef, mfSrvRef, *mfSecretTarget.MountPoint)
 						}
 						mService.SecretMounts[*mfSecretTarget.MountPoint] = module.SecretTarget{
-							Ref:     secRef,
-							TypeOpt: mfSecretTarget.TypeOptions,
+							Ref:  secRef,
+							Item: mfSecretTarget.Item,
 						}
 					} else {
 						return fmt.Errorf("invalid secret: service '%s' not defined", mfSrvRef)
@@ -160,11 +160,11 @@ func SetSecrets(mfSecrets map[string]model.Secret, mServices map[string]*module.
 							if mSecretTarget.Ref == secRef {
 								continue
 							}
-							return fmt.Errorf("'%s' & '%s' -> '%s' -> '%s'", mSecretTarget, secRef, mfSrvRef, *mfSecretTarget.RefVar)
+							return fmt.Errorf("'%s' & '%s' -> '%s' -> '%s'", mSecretTarget.Ref, secRef, mfSrvRef, *mfSecretTarget.RefVar)
 						}
 						mService.SecretVars[*mfSecretTarget.RefVar] = module.SecretTarget{
-							Ref:     secRef,
-							TypeOpt: mfSecretTarget.TypeOptions,
+							Ref:  secRef,
+							Item: mfSecretTarget.Item,
 						}
 					} else {
 						return fmt.Errorf("invalid secret: service '%s' not defined", mfSrvRef)
