@@ -89,8 +89,9 @@ func SetExtDependencies(mfMDs map[string]model.ModuleDependency, mSs map[string]
 							return fmt.Errorf("service '%s' invalid module dependency: duplicate '%s'", ref, mfDT.RefVar)
 						}
 						mS.ExtDependencies[mfDT.RefVar] = module.ExtDependencyTarget{
-							ID:      extId,
-							Service: extRef,
+							ID:       extId,
+							Service:  extRef,
+							Template: mfDT.Template,
 						}
 					} else {
 						return fmt.Errorf("invalid module dependency: service '%s' not defined", ref)

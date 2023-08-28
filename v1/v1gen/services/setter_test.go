@@ -172,12 +172,14 @@ func TestSetExtDependencies(t *testing.T) {
 	mVer := "ver"
 	dRef := "b"
 	rVar := "var"
+	tmp := "test"
 	mfMDs[mID] = model.ModuleDependency{
 		Version: mVer,
 		RequiredServices: map[string][]model.DependencyTarget{
 			dRef: {
 				{
 					RefVar:   rVar,
+					Template: &tmp,
 					Services: []string{ref},
 				},
 			},
@@ -185,8 +187,9 @@ func TestSetExtDependencies(t *testing.T) {
 	}
 	a := map[string]module.ExtDependencyTarget{
 		rVar: {
-			ID:      mID,
-			Service: dRef,
+			ID:       mID,
+			Service:  dRef,
+			Template: &tmp,
 		},
 	}
 	if err := SetExtDependencies(mfMDs, mSs); err != nil {
