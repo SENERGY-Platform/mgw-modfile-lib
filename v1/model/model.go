@@ -88,7 +88,7 @@ type Service struct {
 type Duration time.Duration
 
 type RunConfig struct {
-	// defaults to 3 if nil
+	// defaults to 5 if nil
 	MaxRetries *int `yaml:"maxRetries" json:"maxRetries,omitempty"`
 	RunOnce    bool `yaml:"runOnce" json:"runOnce,omitempty"`
 	// defaults to 5s if nil

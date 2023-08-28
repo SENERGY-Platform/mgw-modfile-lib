@@ -61,7 +61,7 @@ func GenServices(mfSs map[string]model.Service) (map[string]*module.Service, err
 
 func GenRunConfig(mfRC model.RunConfig) module.RunConfig {
 	mRC := module.RunConfig{
-		MaxRetries:  3,
+		MaxRetries:  5,
 		RunOnce:     mfRC.RunOnce,
 		StopTimeout: 5 * time.Second,
 		StopSignal:  mfRC.StopSignal,
