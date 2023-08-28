@@ -28,15 +28,18 @@ func SetSrvReferences(mfSRs map[string][]model.DependencyTarget, mSs map[string]
 			for _, tRef := range mfDT.Services {
 				if mS, ok := mSs[tRef]; ok {
 					if mS.SrvReferences == nil {
-						mS.SrvReferences = make(map[string]string)
+						mS.SrvReferences = make(map[string]module.SrvRefTarget)
 					}
 					if r, k := mS.SrvReferences[mfDT.RefVar]; k {
-						if r == ref {
+						if r.Ref == ref {
 							continue
 						}
 						return fmt.Errorf("service '%s' invalid service reference: duplicate '%s'", tRef, mfDT.RefVar)
 					}
-					mS.SrvReferences[mfDT.RefVar] = ref
+					mS.SrvReferences[mfDT.RefVar] = module.SrvRefTarget{
+						Ref:      ref,
+						Template: mfDT.Template,
+					}
 				} else {
 					return fmt.Errorf("invalid service reference: service '%s' not defined", tRef)
 				}

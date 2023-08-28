@@ -155,6 +155,8 @@ type ModuleDependency struct {
 type DependencyTarget struct {
 	// container environment variable to hold the addressable reference of the service
 	RefVar string `yaml:"refVar" json:"refVar"`
+	// string with '{ref}' placeholder if additional information is required (e.g. http://{ref}/api)
+	Template *string `yaml:"template" json:"template,omitempty"`
 	// service identifiers as used in ModFile.Services to map the reference variable to a number of services
 	Services []string `yaml:"services" json:"services"`
 }

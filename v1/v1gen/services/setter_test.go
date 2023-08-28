@@ -34,13 +34,15 @@ func TestSetSrvReferences(t *testing.T) {
 	mfSRs = make(map[string][]model.DependencyTarget)
 	dRef := "b"
 	rVar := "var"
+	tmp := "test"
 	mfSRs[dRef] = []model.DependencyTarget{
 		{
 			RefVar:   rVar,
+			Template: &tmp,
 			Services: []string{ref},
 		},
 	}
-	a := map[string]string{rVar: dRef}
+	a := map[string]module.SrvRefTarget{rVar: {Ref: dRef, Template: &tmp}}
 	if err := SetSrvReferences(mfSRs, mSs); err != nil {
 		t.Error("err != nil")
 	} else if ms := mSs[ref]; reflect.DeepEqual(a, ms.SrvReferences) == false {

@@ -168,7 +168,7 @@ func TestGenerator(t *testing.T) {
 				},
 				SecretMounts:  map[string]module.SecretTarget{"mnt3": {Ref: "sec"}},
 				Configs:       map[string]string{"rVar3": "cfg"},
-				SrvReferences: map[string]string{"rVar1": sB},
+				SrvReferences: map[string]module.SrvRefTarget{"rVar1": {Ref: sB}},
 				HttpEndpoints: map[string]module.HttpEndpoint{},
 				RequiredSrv:   map[string]struct{}{},
 				RequiredBySrv: nil,
