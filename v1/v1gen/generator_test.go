@@ -149,7 +149,7 @@ func TestGenerator(t *testing.T) {
 		Services: map[string]*module.Service{
 			sA: {
 				RunConfig: module.RunConfig{
-					MaxRetries:  3,
+					MaxRetries:  5,
 					RunOnce:     false,
 					StopTimeout: 5 * time.Second,
 					StopSignal:  nil,
@@ -182,7 +182,7 @@ func TestGenerator(t *testing.T) {
 			},
 			sB: {
 				RunConfig: module.RunConfig{
-					MaxRetries:  3,
+					MaxRetries:  5,
 					RunOnce:     false,
 					StopTimeout: 5 * time.Second,
 					StopSignal:  nil,

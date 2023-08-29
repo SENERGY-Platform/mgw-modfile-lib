@@ -26,7 +26,7 @@ import (
 
 func TestGenRunConfig(t *testing.T) {
 	a := module.RunConfig{
-		MaxRetries:  3,
+		MaxRetries:  5,
 		RunOnce:     false,
 		StopTimeout: 5 * time.Second,
 		StopSignal:  nil,
@@ -585,7 +585,7 @@ func TestGenServices(t *testing.T) {
 		Name:  str,
 		Image: str2,
 		RunConfig: module.RunConfig{
-			MaxRetries:  3,
+			MaxRetries:  5,
 			RunOnce:     false,
 			StopTimeout: 5 * time.Second,
 			StopSignal:  nil,
