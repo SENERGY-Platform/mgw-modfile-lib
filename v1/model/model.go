@@ -198,7 +198,7 @@ type SecretTarget struct {
 type Secret struct {
 	Resource `yaml:",inline"`
 	// resource type as defined by external services managing resources (e.g. api-key, certificate, ...)
-	Type string `yaml:"type" json:"type" jsonschema:"enum=certificate,enum=basic-auth,enum=api-key"`
+	Type string `yaml:"type" json:"type" jsonschema:"enum=certificate,enum=basic-auth,enum=api-key,enum=client-id,enum=private-key"`
 	// mount points or environment variables for the secret
 	Targets []SecretTarget `yaml:"targets" json:"targets"`
 }
