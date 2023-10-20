@@ -49,6 +49,33 @@ func SetSrvReferences(mfSRs map[string][]model.DependencyTarget, mSs map[string]
 	return nil
 }
 
+func SetAuxSrvReferences(mfSRs map[string][]model.DependencyTarget, mAs map[string]*module.AuxService) error {
+	for ref, mfDTs := range mfSRs {
+		for _, mfDT := range mfDTs {
+			for _, tRef := range mfDT.AuxServices {
+				if mA, ok := mAs[tRef]; ok {
+					if mA.SrvReferences == nil {
+						mA.SrvReferences = make(map[string]module.SrvRefTarget)
+					}
+					if r, k := mA.SrvReferences[mfDT.RefVar]; k {
+						if r.Ref == ref {
+							continue
+						}
+						return fmt.Errorf("aux service '%s' invalid service reference: duplicate '%s'", tRef, mfDT.RefVar)
+					}
+					mA.SrvReferences[mfDT.RefVar] = module.SrvRefTarget{
+						Ref:      ref,
+						Template: mfDT.Template,
+					}
+				} else {
+					return fmt.Errorf("invalid service reference: aux service '%s' not defined", tRef)
+				}
+			}
+		}
+	}
+	return nil
+}
+
 func SetVolumes(mfVs map[string][]model.VolumeTarget, mSs map[string]*module.Service) error {
 	for mfV, mfVTs := range mfVs {
 		for _, mfVT := range mfVTs {
@@ -66,6 +93,30 @@ func SetVolumes(mfVs map[string][]model.VolumeTarget, mSs map[string]*module.Ser
 					mS.Volumes[mfVT.MountPoint] = mfV
 				} else {
 					return fmt.Errorf("invalid volume: service '%s' not defined", ref)
+				}
+			}
+		}
+	}
+	return nil
+}
+
+func SetAuxVolumes(mfVs map[string][]model.VolumeTarget, mAs map[string]*module.AuxService) error {
+	for mfV, mfVTs := range mfVs {
+		for _, mfVT := range mfVTs {
+			for _, ref := range mfVT.AuxServices {
+				if mA, ok := mAs[ref]; ok {
+					if mA.Volumes == nil {
+						mA.Volumes = make(map[string]string)
+					}
+					if v, k := mA.Volumes[mfVT.MountPoint]; k {
+						if v == mfV {
+							continue
+						}
+						return fmt.Errorf("aux service '%s' invalid volume: duplicate '%s'", ref, mfVT.MountPoint)
+					}
+					mA.Volumes[mfVT.MountPoint] = mfV
+				} else {
+					return fmt.Errorf("invalid volume: aux service '%s' not defined", ref)
 				}
 			}
 		}
@@ -95,6 +146,36 @@ func SetExtDependencies(mfMDs map[string]model.ModuleDependency, mSs map[string]
 						}
 					} else {
 						return fmt.Errorf("invalid module dependency: service '%s' not defined", ref)
+					}
+				}
+			}
+		}
+	}
+	return nil
+}
+
+func SetAuxExtDependencies(mfMDs map[string]model.ModuleDependency, mAs map[string]*module.AuxService) error {
+	for extId, mfMD := range mfMDs {
+		for extRef, mfDTs := range mfMD.RequiredServices {
+			for _, mfDT := range mfDTs {
+				for _, ref := range mfDT.AuxServices {
+					if mA, ok := mAs[ref]; ok {
+						if mA.ExtDependencies == nil {
+							mA.ExtDependencies = make(map[string]module.ExtDependencyTarget)
+						}
+						if etd, k := mA.ExtDependencies[mfDT.RefVar]; k {
+							if etd.ID == extId && etd.Service == extRef {
+								continue
+							}
+							return fmt.Errorf("aux service '%s' invalid module dependency: duplicate '%s'", ref, mfDT.RefVar)
+						}
+						mA.ExtDependencies[mfDT.RefVar] = module.ExtDependencyTarget{
+							ID:       extId,
+							Service:  extRef,
+							Template: mfDT.Template,
+						}
+					} else {
+						return fmt.Errorf("invalid module dependency: aux service '%s' not defined", ref)
 					}
 				}
 			}
@@ -197,6 +278,30 @@ func SetConfigs(mfCVs map[string]model.ConfigValue, mSs map[string]*module.Servi
 					mS.Configs[mfCT.RefVar] = cRef
 				} else {
 					return fmt.Errorf("invalid config: service '%s' not defined", sRef)
+				}
+			}
+		}
+	}
+	return nil
+}
+
+func SetAuxConfigs(mfCVs map[string]model.ConfigValue, mAs map[string]*module.AuxService) error {
+	for cRef, mfCV := range mfCVs {
+		for _, mfCT := range mfCV.Targets {
+			for _, sRef := range mfCT.AuxServices {
+				if mA, ok := mAs[sRef]; ok {
+					if mA.Configs == nil {
+						mA.Configs = make(map[string]string)
+					}
+					if r, k := mA.Configs[mfCT.RefVar]; k {
+						if r == cRef {
+							continue
+						}
+						return fmt.Errorf("'%s' & '%s' -> '%s' -> '%s'", r, cRef, sRef, mfCT.RefVar)
+					}
+					mA.Configs[mfCT.RefVar] = cRef
+				} else {
+					return fmt.Errorf("invalid config: aux service '%s' not defined", sRef)
 				}
 			}
 		}

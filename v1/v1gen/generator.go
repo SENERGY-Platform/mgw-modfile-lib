@@ -48,11 +48,23 @@ func generator(f any) (*module.Module, error) {
 	if err != nil {
 		return nil, err
 	}
+	err = services.SetAuxSrvReferences(mf.ServiceReferences, mAs)
+	if err != nil {
+		return nil, err
+	}
 	err = services.SetVolumes(mf.Volumes, mSs)
 	if err != nil {
 		return nil, err
 	}
+	err = services.SetAuxVolumes(mf.Volumes, mAs)
+	if err != nil {
+		return nil, err
+	}
 	err = services.SetExtDependencies(mf.Dependencies, mSs)
+	if err != nil {
+		return nil, err
+	}
+	err = services.SetAuxExtDependencies(mf.Dependencies, mAs)
 	if err != nil {
 		return nil, err
 	}
@@ -65,6 +77,10 @@ func generator(f any) (*module.Module, error) {
 		return nil, err
 	}
 	err = services.SetConfigs(mf.Configs, mSs)
+	if err != nil {
+		return nil, err
+	}
+	err = services.SetAuxConfigs(mf.Configs, mAs)
 	if err != nil {
 		return nil, err
 	}
