@@ -59,6 +59,27 @@ func GenServices(mfSs map[string]model.Service) (map[string]*module.Service, err
 	return mSs, nil
 }
 
+func GenAuxServices(mfSs map[string]model.AuxService) (map[string]*module.AuxService, error) {
+	mAs := make(map[string]*module.AuxService)
+	for ref, mfS := range mfSs {
+		mBMs, err := GenBindMounts(mfS.Include)
+		if err != nil {
+			return nil, fmt.Errorf("aux service '%s' invalid bind mount: %s", ref, err)
+		}
+		mTMs, err := GenTmpfsMounts(mfS.Tmpfs)
+		if err != nil {
+			return nil, fmt.Errorf("aux service '%s' invalid tmpfsMount: %s", ref, err)
+		}
+		mAs[ref] = &module.AuxService{
+			Name:       mfS.Name,
+			RunConfig:  GenRunConfig(mfS.RunConfig),
+			BindMounts: mBMs,
+			Tmpfs:      mTMs,
+		}
+	}
+	return mAs, nil
+}
+
 func GenRunConfig(mfRC model.RunConfig) module.RunConfig {
 	mRC := module.RunConfig{
 		MaxRetries:  5,

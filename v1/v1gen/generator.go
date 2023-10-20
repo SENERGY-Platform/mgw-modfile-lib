@@ -40,6 +40,10 @@ func generator(f any) (*module.Module, error) {
 	if err != nil {
 		return nil, err
 	}
+	mAs, err := services.GenAuxServices(mf.AuxServices)
+	if err != nil {
+		return nil, err
+	}
 	err = services.SetSrvReferences(mf.ServiceReferences, mSs)
 	if err != nil {
 		return nil, err
@@ -76,6 +80,8 @@ func generator(f any) (*module.Module, error) {
 		DeploymentType: mf.DeploymentType,
 		Architectures:  generic.GenStringSet(mf.Architectures),
 		Services:       mSs,
+		AuxServices:    mAs,
+		AuxImgSrc:      generic.GenStringSet(mf.AuxImageSources),
 		Volumes:        mounts.GenVolumes(mf.Volumes),
 		Dependencies:   mounts.GenDependencies(mf.Dependencies),
 		HostResources:  mounts.GenHostResources(mf.HostResources),
