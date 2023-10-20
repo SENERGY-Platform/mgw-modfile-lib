@@ -31,6 +31,8 @@ func TestGenerator(t *testing.T) {
 	// --------------------------------
 	sA := "a"
 	sB := "b"
+	aA := "a"
+	aB := "b"
 	ig := "ig"
 	sMnt := "mnt3"
 	strType := module.StringType
@@ -49,19 +51,26 @@ func TestGenerator(t *testing.T) {
 			sA: {},
 			sB: {},
 		},
+		AuxServices: map[string]model.AuxService{
+			aA: {},
+			aB: {},
+		},
+		AuxImageSources: []string{"test"},
 		ServiceReferences: map[string][]model.DependencyTarget{
 			sB: {
 				{
-					RefVar:   "rVar1",
-					Services: []string{sA},
+					RefVar:      "rVar1",
+					Services:    []string{sA},
+					AuxServices: []string{aA},
 				},
 			},
 		},
 		Volumes: map[string][]model.VolumeTarget{
 			"vol": {
 				{
-					MountPoint: "mnt1",
-					Services:   []string{sA},
+					MountPoint:  "mnt1",
+					Services:    []string{sA},
+					AuxServices: []string{aA},
 				},
 			},
 		},
@@ -71,8 +80,9 @@ func TestGenerator(t *testing.T) {
 				RequiredServices: map[string][]model.DependencyTarget{
 					"c": {
 						{
-							RefVar:   "rVar2",
-							Services: []string{sA},
+							RefVar:      "rVar2",
+							Services:    []string{sA},
+							AuxServices: []string{aA},
 						},
 					},
 				},
@@ -123,8 +133,9 @@ func TestGenerator(t *testing.T) {
 				Optional: false,
 				Targets: []model.ConfigTarget{
 					{
-						RefVar:   "rVar3",
-						Services: []string{sA},
+						RefVar:      "rVar3",
+						Services:    []string{sA},
+						AuxServices: []string{aA},
 					},
 				},
 			},
@@ -194,6 +205,46 @@ func TestGenerator(t *testing.T) {
 				RequiredSrv:   map[string]struct{}{},
 			},
 		},
+		AuxServices: map[string]*module.AuxService{
+			aA: {
+				RunConfig: module.RunConfig{
+					MaxRetries:  5,
+					RunOnce:     false,
+					StopTimeout: 5 * time.Second,
+					StopSignal:  nil,
+					PseudoTTY:   false,
+				},
+				BindMounts: map[string]module.BindMount{},
+				Tmpfs:      map[string]module.TmpfsMount{},
+				Volumes: map[string]string{
+					"mnt1": "vol",
+				},
+				Configs:       map[string]string{"rVar3": "cfg"},
+				SrvReferences: map[string]module.SrvRefTarget{"rVar1": {Ref: sB}},
+				ExtDependencies: map[string]module.ExtDependencyTarget{
+					"rVar2": {
+						ID:      "ext",
+						Service: "c",
+					},
+				},
+			},
+			aB: {
+				RunConfig: module.RunConfig{
+					MaxRetries:  5,
+					RunOnce:     false,
+					StopTimeout: 5 * time.Second,
+					StopSignal:  nil,
+					PseudoTTY:   false,
+				},
+				BindMounts:      map[string]module.BindMount{},
+				Tmpfs:           map[string]module.TmpfsMount{},
+				Volumes:         nil,
+				Configs:         nil,
+				SrvReferences:   nil,
+				ExtDependencies: nil,
+			},
+		},
+		AuxImgSrc: map[string]struct{}{"test": {}},
 		Volumes: map[string]struct{}{
 			"vol": {},
 		},

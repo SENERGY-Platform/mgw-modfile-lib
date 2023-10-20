@@ -736,3 +736,111 @@ func TestGenServices(t *testing.T) {
 		t.Error("err == nil")
 	}
 }
+
+func TestGenAuxServices(t *testing.T) {
+	var mfAs map[string]model.AuxService
+	if sm, err := GenAuxServices(mfAs); err != nil {
+		t.Error("err != nil")
+	} else if len(sm) != 0 {
+		t.Errorf("len(%v) != 0", sm)
+	}
+	// --------------------------------
+	mfAs = make(map[string]model.AuxService)
+	str := "test"
+	str2 := "test2"
+	mfAs[str] = model.AuxService{
+		Name:      str,
+		RunConfig: model.RunConfig{},
+		Include: []model.BindMount{
+			{
+				MountPoint: str,
+				Source:     str2,
+				ReadOnly:   true,
+			},
+		},
+		Tmpfs: []model.TmpfsMount{
+			{
+				MountPoint: str,
+				Size:       64,
+				Mode:       nil,
+			},
+		},
+	}
+	a := module.AuxService{
+		Name: str,
+		RunConfig: module.RunConfig{
+			MaxRetries:  5,
+			RunOnce:     false,
+			StopTimeout: 5 * time.Second,
+			StopSignal:  nil,
+			PseudoTTY:   false,
+		},
+		BindMounts: map[string]module.BindMount{
+			str: {
+				Source:   str2,
+				ReadOnly: true,
+			},
+		},
+		Tmpfs: map[string]module.TmpfsMount{
+			str: {
+				Size: 64,
+				Mode: 504,
+			},
+		},
+		Volumes:         nil,
+		Configs:         nil,
+		SrvReferences:   nil,
+		ExtDependencies: nil,
+	}
+	if sm, err := GenAuxServices(mfAs); err != nil {
+		t.Error("err != nil")
+	} else if len(sm) != 1 {
+		t.Errorf("len(%v) != 1", sm)
+	} else if b, ok := sm[str]; !ok {
+		t.Errorf("b, ok := sm[%v]; !ok", str)
+	} else if reflect.DeepEqual(a, *b) == false {
+		t.Errorf("%+v != %+v", a, *b)
+	}
+	// --------------------------------
+	mfAs[str] = model.AuxService{
+		Name:      "",
+		RunConfig: model.RunConfig{},
+		Include: []model.BindMount{
+			{
+				MountPoint: str,
+				Source:     str2,
+				ReadOnly:   true,
+			},
+			{
+				MountPoint: str,
+				Source:     "",
+				ReadOnly:   true,
+			},
+		},
+		Tmpfs: nil,
+	}
+	if _, err := GenAuxServices(mfAs); err == nil {
+		t.Error("err == nil")
+	}
+	// --------------------------------
+	mfAs[str] = model.AuxService{
+		Name:      "",
+		RunConfig: model.RunConfig{},
+		Include:   nil,
+		Tmpfs: []model.TmpfsMount{
+			{
+				MountPoint: str,
+				Size:       64,
+				Mode:       nil,
+			},
+			{
+				MountPoint: str,
+				Size:       32,
+				Mode:       nil,
+			},
+		},
+	}
+	if _, err := GenAuxServices(mfAs); err == nil {
+		t.Error("err == nil")
+	}
+}
