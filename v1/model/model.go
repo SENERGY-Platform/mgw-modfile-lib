@@ -50,6 +50,10 @@ type ModFile struct {
 	Architectures []string `yaml:"architectures" json:"architectures,omitempty" jsonschema:"enum=x86,enum=i386,enum=x86_64,enum=amd64,enum=aarch32,enum=arm32v5,enum=arm32v6,enum=arm32v7,enum=aarch64,enum=arm64v8"`
 	// map depicting the services the module consists of (keys serve as unique identifiers and can be reused elsewhere in the modfile to reference a service)
 	Services map[string]Service `yaml:"services" json:"services"`
+	// map containing auxiliary services that can be deployed by module services (keys serve as unique identifiers and can be reused elsewhere in the modfile to reference an aux service)
+	AuxServices map[string]AuxService `yaml:"auxServices" json:"auxServices,omitempty"`
+	// list of image sources for aux services (e.g. ghcr.io/senergy-platform/*)
+	AuxImageSources []string `yaml:"auxImageSources" json:"auxImageSources,omitempty"`
 	// map linking module services to reference variables (identifiers as defined in ModFile.Services serve as keys)
 	ServiceReferences map[string][]DependencyTarget `yaml:"serviceReferences" json:"serviceReferences,omitempty"`
 	// map linking volumes to mount points (keys represent volume names)
@@ -83,6 +87,17 @@ type Service struct {
 	Ports []SrvPort `yaml:"ports" json:"ports,omitempty"`
 	// identifiers of internal services that must be running before this service is started
 	RequiredServices []string `yaml:"requiredServices" json:"requiredServices,omitempty"`
+}
+
+type AuxService struct {
+	// service name
+	Name string `yaml:"name" json:"name"`
+	// configurations for running the service container (e.g. restart strategy, stop timeout, ...)
+	RunConfig RunConfig `yaml:"runConfig" json:"runConfig,omitempty"`
+	// files or dictionaries to be mounted from module repository
+	Include []BindMount `yaml:"include" json:"include,omitempty"`
+	// temporary file systems (in memory) required by the service
+	Tmpfs []TmpfsMount `yaml:"tmpfs" json:"tmpfs,omitempty"`
 }
 
 type Duration time.Duration
@@ -143,6 +158,8 @@ type VolumeTarget struct {
 	MountPoint string `yaml:"mountPoint" json:"mountPoint"`
 	// service identifiers as used in ModFile.Services to map the mount point to a number of services
 	Services []string `yaml:"services" json:"services,omitempty"`
+	// aux service identifiers as used in ModFile.AuxServices to map the mount point to a number of services
+	AuxServices []string `yaml:"auxServices" json:"auxServices,omitempty"`
 }
 
 type ModuleDependency struct {
@@ -158,7 +175,9 @@ type DependencyTarget struct {
 	// string with '{ref}' placeholder if additional information is required (e.g. http://{ref}/api)
 	Template *string `yaml:"template" json:"template,omitempty"`
 	// service identifiers as used in ModFile.Services to map the reference variable to a number of services
-	Services []string `yaml:"services" json:"services"`
+	Services []string `yaml:"services" json:"services,omitempty"`
+	// aux service identifiers as used in ModFile.AuxServices to map the reference variable to a number of services
+	AuxServices []string `yaml:"auxServices" json:"auxServices,omitempty"`
 }
 
 type HostResourceTarget struct {
@@ -227,7 +246,9 @@ type ConfigTarget struct {
 	// container environment variable to hold the configuration value
 	RefVar string `yaml:"refVar" json:"refVar"`
 	// service identifiers as used in ModFile.Services to map the reference variable to a number of services
-	Services []string `yaml:"services" json:"services"`
+	Services []string `yaml:"services" json:"services,omitempty"`
+	// aux service identifiers as used in ModFile.AuxServices to map the reference variable to a number of services
+	AuxServices []string `yaml:"auxServices" json:"auxServices,omitempty"`
 }
 
 type ConfigUserInput struct {
