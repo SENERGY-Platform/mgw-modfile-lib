@@ -138,17 +138,10 @@ func GenTmpfsMounts(mfTMs []model.TmpfsMount) (map[string]module.TmpfsMount, err
 func GenHttpEndpoints(mfHEs []model.HttpEndpoint) (map[string]module.HttpEndpoint, error) {
 	mHEs := make(map[string]module.HttpEndpoint)
 	for _, mfHE := range mfHEs {
-		p := mfHE.Path
-		if mfHE.ExtPath != nil {
-			p = *mfHE.ExtPath
+		if _, ok := mHEs[mfHE.ExtPath]; ok {
+			return nil, fmt.Errorf("duplicate '%s'", mfHE.ExtPath)
 		}
-		if v, ok := mHEs[p]; ok {
-			if v.Name == mfHE.Name && v.Port == mfHE.Port && v.Path == mfHE.Path {
-				continue
-			}
-			return nil, fmt.Errorf("duplicate '%s'", mfHE.Path)
-		}
-		mHEs[p] = module.HttpEndpoint{
+		mHEs[mfHE.ExtPath] = module.HttpEndpoint{
 			Name: mfHE.Name,
 			Port: mfHE.Port,
 			Path: mfHE.Path,

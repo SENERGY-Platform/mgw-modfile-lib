@@ -133,13 +133,13 @@ type TmpfsMount struct {
 
 type HttpEndpoint struct {
 	// endpoint name
-	Name string `yaml:"name" json:"name"`
+	Name *string `yaml:"name" json:"name"`
 	// internal endpoint path
-	Path string `yaml:"path" json:"path"`
+	Path *string `yaml:"path" json:"path,omitempty"`
 	// port the service is listening on (set if not 80)
 	Port *int `yaml:"port" json:"port,omitempty"`
-	// optional external path to be used by the api gateway
-	ExtPath *string `yaml:"extPath" json:"extPath,omitempty"`
+	// external path to be used by the api gateway
+	ExtPath string `yaml:"extPath" json:"extPath"`
 }
 
 type SrvPort struct {

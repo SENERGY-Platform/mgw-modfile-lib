@@ -224,69 +224,30 @@ func TestGenHttpEndpoints(t *testing.T) {
 	// --------------------------------
 	str := "test"
 	str2 := "test2"
+	p := 8080
 	mfHEs = append(mfHEs, model.HttpEndpoint{
-		Name:    str,
-		Path:    str2,
-		Port:    nil,
-		ExtPath: nil,
+		Name:    &str,
+		Path:    &str2,
+		Port:    &p,
+		ExtPath: str,
 	})
 	a := module.HttpEndpoint{
-		Name: str,
-		Port: nil,
-		Path: str2,
+		Name: &str,
+		Port: &p,
+		Path: &str2,
 	}
 	if ep, err := GenHttpEndpoints(mfHEs); err != nil {
 		t.Error("err != nil")
 	} else if len(ep) != 1 {
 		t.Errorf("len(%v) != 1", ep)
-	} else if b, ok := ep[str2]; !ok {
+	} else if b, ok := ep[str]; !ok {
 		t.Errorf("b, ok := ep[%s]; !ok", str2)
 	} else if reflect.DeepEqual(a, b) == false {
 		t.Errorf("%v != %v", a, b)
 	}
 	// --------------------------------
 	mfHEs = append(mfHEs, model.HttpEndpoint{
-		Name:    str,
-		Path:    str2,
-		Port:    nil,
-		ExtPath: nil,
-	})
-	if ep, err := GenHttpEndpoints(mfHEs); err != nil {
-		t.Error("err != nil")
-	} else if len(ep) != 1 {
-		t.Errorf("len(%v) != 1", ep)
-	}
-	mfHEs = mfHEs[:len(mfHEs)-1]
-	// --------------------------------
-	str3 := "test3"
-	i := 80
-	mfHEs = append(mfHEs, model.HttpEndpoint{
-		Name:    str,
-		Path:    str2,
-		Port:    &i,
-		ExtPath: &str3,
-	})
-	a = module.HttpEndpoint{
-		Name: str,
-		Port: &i,
-		Path: str2,
-	}
-	if ep, err := GenHttpEndpoints(mfHEs); err != nil {
-		t.Error("err != nil")
-	} else if len(ep) != 2 {
-		t.Errorf("len(%v) != 2", ep)
-	} else if b, ok := ep[str3]; !ok {
-		t.Errorf("b, ok := ep[%s]; !ok", str3)
-	} else if reflect.DeepEqual(a, b) == false {
-		t.Errorf("%v != %v", a, b)
-	}
-	mfHEs = mfHEs[:len(mfHEs)-1]
-	// --------------------------------
-	mfHEs = append(mfHEs, model.HttpEndpoint{
-		Name:    str,
-		Path:    str2,
-		Port:    &i,
-		ExtPath: nil,
+		ExtPath: "test",
 	})
 	if _, err := GenHttpEndpoints(mfHEs); err == nil {
 		t.Error("err == nil")
@@ -565,10 +526,10 @@ func TestGenServices(t *testing.T) {
 		},
 		HttpEndpoints: []model.HttpEndpoint{
 			{
-				Name:    str,
-				Path:    str2,
+				Name:    &str,
+				Path:    &str2,
 				Port:    nil,
-				ExtPath: nil,
+				ExtPath: str,
 			},
 		},
 		Ports: []model.SrvPort{
@@ -609,10 +570,10 @@ func TestGenServices(t *testing.T) {
 		Configs:       nil,
 		SrvReferences: nil,
 		HttpEndpoints: map[string]module.HttpEndpoint{
-			str2: {
-				Name: str,
+			str: {
+				Name: &str,
 				Port: nil,
-				Path: str2,
+				Path: &str2,
 			},
 		},
 		RequiredSrv:     map[string]struct{}{str: {}},
@@ -696,16 +657,16 @@ func TestGenServices(t *testing.T) {
 		Tmpfs:     nil,
 		HttpEndpoints: []model.HttpEndpoint{
 			{
-				Name:    str,
-				Path:    str2,
+				Name:    &str,
+				Path:    &str2,
 				Port:    nil,
-				ExtPath: nil,
+				ExtPath: str,
 			},
 			{
-				Name:    str,
-				Path:    str2,
+				Name:    &str,
+				Path:    &str2,
 				Port:    &i,
-				ExtPath: nil,
+				ExtPath: str,
 			},
 		},
 		Ports:            nil,
