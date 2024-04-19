@@ -31,6 +31,7 @@ func TestGenRunConfig(t *testing.T) {
 		StopTimeout: 5 * time.Second,
 		StopSignal:  nil,
 		PseudoTTY:   false,
+		Command:     nil,
 	}
 	if b := GenRunConfig(model.RunConfig{}); reflect.DeepEqual(a, b) == false {
 		t.Errorf("%+v != %+v", a, b)
@@ -38,12 +39,14 @@ func TestGenRunConfig(t *testing.T) {
 	str := "test"
 	i := 1
 	d := model.Duration(1 * time.Second)
+	cmd := []string{str}
 	c := model.RunConfig{
 		MaxRetries:  &i,
 		RunOnce:     true,
 		StopTimeout: &d,
 		StopSignal:  &str,
 		PseudoTTY:   true,
+		Command:     cmd,
 	}
 	a = module.RunConfig{
 		MaxRetries:  1,
@@ -51,6 +54,7 @@ func TestGenRunConfig(t *testing.T) {
 		StopTimeout: 1 * time.Second,
 		StopSignal:  &str,
 		PseudoTTY:   true,
+		Command:     cmd,
 	}
 	if b := GenRunConfig(c); reflect.DeepEqual(a, b) == false {
 		t.Errorf("%+v != %+v", a, b)

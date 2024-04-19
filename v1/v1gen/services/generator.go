@@ -87,6 +87,7 @@ func GenRunConfig(mfRC model.RunConfig) module.RunConfig {
 		StopTimeout: 5 * time.Second,
 		StopSignal:  mfRC.StopSignal,
 		PseudoTTY:   mfRC.PseudoTTY,
+		Command:     mfRC.Command,
 	}
 	if mfRC.MaxRetries != nil {
 		mRC.MaxRetries = uint(*mfRC.MaxRetries)
