@@ -110,7 +110,7 @@ type RunConfig struct {
 	StopTimeout *Duration `yaml:"stopTimeout" json:"stopTimeout,omitempty"`
 	StopSignal  *string   `yaml:"stopSignal" json:"stopSignal,omitempty"`
 	PseudoTTY   bool      `yaml:"pseudoTTY" json:"pseudoTTY,omitempty"`
-	Command     []string  `yaml:"command" json:"command,omitempty"`
+	Command     *string   `yaml:"command" json:"command,omitempty"`
 }
 
 type BindMount struct {
