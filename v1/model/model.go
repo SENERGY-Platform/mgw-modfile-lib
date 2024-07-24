@@ -141,6 +141,17 @@ type HttpEndpoint struct {
 	Port *int `yaml:"port" json:"port,omitempty"`
 	// external path to be used by the api gateway
 	ExtPath string `yaml:"extPath" json:"extPath"`
+	// substitute strings in responses
+	StringSub HttpEndpointStrSub `yaml:"stringSub" json:"stringSub,omitempty"`
+}
+
+type HttpEndpointStrSub struct {
+	//  control if string is replaced once or repeatedly
+	ReplaceOnce bool `yaml:"replaceOnce" json:"replaceOnce,omitempty"`
+	// only modify responses with the provided MIME types
+	MimeTypes []string `yaml:"mimeTypes" json:"mimeTypes,omitempty"`
+	// set string to be replaced as key and replacement string containing the {loc} parameter as value (e.g. key=href="/ value=href="{loc}/)
+	Filters map[string]string `yaml:"filters" json:"filters,omitempty"`
 }
 
 type SrvPort struct {

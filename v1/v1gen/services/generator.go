@@ -149,6 +149,11 @@ func GenHttpEndpoints(mfHEs []model.HttpEndpoint) (map[string]module.HttpEndpoin
 			Name: mfHE.Name,
 			Port: mfHE.Port,
 			Path: mfHE.Path,
+			StringSub: module.HttpEndpointStrSub{
+				ReplaceOnce: mfHE.StringSub.ReplaceOnce,
+				MimeTypes:   mfHE.StringSub.MimeTypes,
+				Filters:     mfHE.StringSub.Filters,
+			},
 		}
 	}
 	return mHEs, nil
