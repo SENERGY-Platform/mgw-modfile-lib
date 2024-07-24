@@ -9,7 +9,7 @@ require (
 
 require (
 	code.cloudfoundry.org/bytefmt v0.0.0-20230612151507-41ef4d1f67a4 // indirect
-	github.com/SENERGY-Platform/mgw-module-lib v0.19.0 // indirect
+	github.com/SENERGY-Platform/mgw-module-lib v0.20.0 // indirect
 	github.com/iancoleman/orderedmap v0.3.0 // indirect
 	github.com/stretchr/testify v1.8.4 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
