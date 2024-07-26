@@ -141,6 +141,8 @@ type HttpEndpoint struct {
 	Port *int `yaml:"port" json:"port,omitempty"`
 	// external path to be used by the api gateway
 	ExtPath string `yaml:"extPath" json:"extPath"`
+	// set reverse proxy config options
+	ProxyConf HttpEndpointProxyConf `yaml:"proxyConf" json:"proxyConf,omitempty"`
 	// substitute strings in responses
 	StringSub HttpEndpointStrSub `yaml:"stringSub" json:"stringSub,omitempty"`
 }
@@ -152,6 +154,15 @@ type HttpEndpointStrSub struct {
 	MimeTypes []string `yaml:"mimeTypes" json:"mimeTypes,omitempty"`
 	// set string to be replaced as key and replacement string containing the {loc} parameter as value (e.g. key=href="/ value=href="{loc}/)
 	Filters map[string]string `yaml:"filters" json:"filters,omitempty"`
+}
+
+type HttpEndpointProxyConf struct {
+	// append or overwrite downstream request headers
+	Headers map[string]string `yaml:"headers" json:"headers,omitempty"`
+	// enable to allow a connection to be upgraded to websocket
+	WebSocket bool `yaml:"websocket" json:"websocket,omitempty"`
+	// defines the timeout for reading a response from downstream
+	ReadTimeout *Duration `yaml:"readTimeout" json:"readTimeout,omitempty"`
 }
 
 type SrvPort struct {

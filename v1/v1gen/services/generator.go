@@ -145,16 +145,24 @@ func GenHttpEndpoints(mfHEs []model.HttpEndpoint) (map[string]module.HttpEndpoin
 		if _, ok := mHEs[mfHE.ExtPath]; ok {
 			return nil, fmt.Errorf("duplicate '%s'", mfHE.ExtPath)
 		}
-		mHEs[mfHE.ExtPath] = module.HttpEndpoint{
+		mHE := module.HttpEndpoint{
 			Name: mfHE.Name,
 			Port: mfHE.Port,
 			Path: mfHE.Path,
+			ProxyConf: module.HttpEndpointProxyConf{
+				Headers:   mfHE.ProxyConf.Headers,
+				WebSocket: mfHE.ProxyConf.WebSocket,
+			},
 			StringSub: module.HttpEndpointStrSub{
 				ReplaceOnce: mfHE.StringSub.ReplaceOnce,
 				MimeTypes:   mfHE.StringSub.MimeTypes,
 				Filters:     mfHE.StringSub.Filters,
 			},
 		}
+		if mfHE.ProxyConf.ReadTimeout != nil {
+			mHE.ProxyConf.ReadTimeout = time.Duration(*mfHE.ProxyConf.ReadTimeout)
+		}
+		mHEs[mfHE.ExtPath] = mHE
 	}
 	return mHEs, nil
 }
