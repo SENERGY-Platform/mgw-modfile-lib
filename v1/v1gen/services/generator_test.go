@@ -37,7 +37,6 @@ func TestGenRunConfig(t *testing.T) {
 		t.Errorf("%+v != %+v", a, b)
 	}
 	str := "test"
-	strCmd := "test test"
 	i := 1
 	d := model.Duration(1 * time.Second)
 	cmd := []string{str, str}
@@ -47,7 +46,7 @@ func TestGenRunConfig(t *testing.T) {
 		StopTimeout: &d,
 		StopSignal:  &str,
 		PseudoTTY:   true,
-		Command:     &strCmd,
+		Command:     cmd,
 	}
 	a = module.RunConfig{
 		MaxRetries:  1,
