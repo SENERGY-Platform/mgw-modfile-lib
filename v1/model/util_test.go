@@ -181,3 +181,24 @@ func TestResourceBase_GetUserInput(t *testing.T) {
 		t.Error("wrong user input")
 	}
 }
+
+func TestStrOrSlice_UnmarshalYAML(t *testing.T) {
+	t.Run("string", func(t *testing.T) {
+		a := StrOrSlice{"test"}
+		var b StrOrSlice
+		if err := yaml.Unmarshal([]byte("test"), &b); err != nil {
+			t.Error("err != nil")
+		} else if !reflect.DeepEqual(a, b) {
+			t.Errorf("%v != %v", a, b)
+		}
+	})
+	t.Run("slice", func(t *testing.T) {
+		a := StrOrSlice{"test", "test"}
+		var b StrOrSlice
+		if err := yaml.Unmarshal([]byte("[test, test]"), &b); err != nil {
+			t.Error("err != nil")
+		} else if !reflect.DeepEqual(a, b) {
+			t.Errorf("%v != %v", a, b)
+		}
+	})
+}
