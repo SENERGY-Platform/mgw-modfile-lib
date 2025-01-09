@@ -138,3 +138,16 @@ func (c ConfigValue) GetUserInput() *UserInput {
 	}
 	return nil
 }
+
+func (t *StrOrSlice) UnmarshalYAML(yn *yaml.Node) error {
+	var sl []string
+	if err := yn.Decode(&sl); err != nil {
+		var s string
+		if err := yn.Decode(&s); err != nil {
+			return err
+		}
+		sl = append(sl, s)
+	}
+	*t = sl
+	return nil
+}

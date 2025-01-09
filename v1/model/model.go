@@ -102,15 +102,17 @@ type AuxService struct {
 
 type Duration time.Duration
 
+type StrOrSlice []string
+
 type RunConfig struct {
 	// defaults to 5 if nil
 	MaxRetries *int `yaml:"maxRetries" json:"maxRetries,omitempty"`
 	RunOnce    bool `yaml:"runOnce" json:"runOnce,omitempty"`
 	// defaults to 5s if nil
-	StopTimeout *Duration `yaml:"stopTimeout" json:"stopTimeout,omitempty" jsonschema:"type=string"`
-	StopSignal  *string   `yaml:"stopSignal" json:"stopSignal,omitempty"`
-	PseudoTTY   bool      `yaml:"pseudoTTY" json:"pseudoTTY,omitempty"`
-	Command     *string   `yaml:"command" json:"command,omitempty"`
+	StopTimeout *Duration  `yaml:"stopTimeout" json:"stopTimeout,omitempty" jsonschema:"type=string"`
+	StopSignal  *string    `yaml:"stopSignal" json:"stopSignal,omitempty"`
+	PseudoTTY   bool       `yaml:"pseudoTTY" json:"pseudoTTY,omitempty"`
+	Command     StrOrSlice `yaml:"command" json:"command,omitempty"`
 }
 
 type BindMount struct {

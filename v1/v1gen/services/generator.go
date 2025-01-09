@@ -23,7 +23,6 @@ import (
 	"github.com/SENERGY-Platform/mgw-modfile-lib/v1/v1gen/generic"
 	"github.com/SENERGY-Platform/mgw-module-lib/module"
 	"io/fs"
-	"strings"
 	"time"
 )
 
@@ -89,8 +88,8 @@ func GenRunConfig(mfRC model.RunConfig) module.RunConfig {
 		StopSignal:  mfRC.StopSignal,
 		PseudoTTY:   mfRC.PseudoTTY,
 	}
-	if mfRC.Command != nil {
-		mRC.Command = strings.Split(*mfRC.Command, " ")
+	if len(mfRC.Command) > 0 {
+		mRC.Command = mfRC.Command
 	}
 	if mfRC.MaxRetries != nil {
 		mRC.MaxRetries = uint(*mfRC.MaxRetries)
