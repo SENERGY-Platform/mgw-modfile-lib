@@ -18,7 +18,7 @@ package v1gen
 
 import (
 	"github.com/SENERGY-Platform/mgw-modfile-lib/v1/model"
-	"github.com/SENERGY-Platform/mgw-module-lib/module"
+	module_lib "github.com/SENERGY-Platform/mgw-module-lib/model"
 	"reflect"
 	"testing"
 	"time"
@@ -35,7 +35,7 @@ func TestGenerator(t *testing.T) {
 	aB := "b"
 	ig := "ig"
 	sMnt := "mnt3"
-	strType := module.StringType
+	strType := module_lib.StringType
 	mf := model.ModFile{
 		ID:             "id",
 		Name:           "nme",
@@ -144,9 +144,9 @@ func TestGenerator(t *testing.T) {
 			ig: {},
 		},
 	}
-	mc := make(module.Configs)
+	mc := make(module_lib.Configs)
 	mc.SetString("cfg", nil, nil, false, "", nil, true)
-	a := module.Module{
+	a := module_lib.Module{
 		ID:             "id",
 		Name:           "nme",
 		Description:    "dsc",
@@ -156,34 +156,34 @@ func TestGenerator(t *testing.T) {
 		Version:        "ver",
 		Type:           "typ",
 		DeploymentType: "dtp",
-		Architectures:  map[module.CPUArch]struct{}{"arch": {}},
-		Services: map[string]*module.Service{
+		Architectures:  map[module_lib.CPUArch]struct{}{"arch": {}},
+		Services: map[string]*module_lib.Service{
 			sA: {
-				RunConfig: module.RunConfig{
+				RunConfig: module_lib.RunConfig{
 					MaxRetries:  5,
 					RunOnce:     false,
 					StopTimeout: 5 * time.Second,
 					StopSignal:  nil,
 					PseudoTTY:   false,
 				},
-				BindMounts: map[string]module.BindMount{},
-				Tmpfs:      map[string]module.TmpfsMount{},
+				BindMounts: map[string]module_lib.BindMount{},
+				Tmpfs:      map[string]module_lib.TmpfsMount{},
 				Volumes: map[string]string{
 					"mnt1": "vol",
 				},
-				HostResources: map[string]module.HostResTarget{
+				HostResources: map[string]module_lib.HostResTarget{
 					"mnt2": {
 						Ref:      "res",
 						ReadOnly: false,
 					},
 				},
-				SecretMounts:  map[string]module.SecretTarget{"mnt3": {Ref: "sec"}},
+				SecretMounts:  map[string]module_lib.SecretTarget{"mnt3": {Ref: "sec"}},
 				Configs:       map[string]string{"rVar3": "cfg"},
-				SrvReferences: map[string]module.SrvRefTarget{"rVar1": {Ref: sB}},
-				HttpEndpoints: map[string]module.HttpEndpoint{},
+				SrvReferences: map[string]module_lib.SrvRefTarget{"rVar1": {Ref: sB}},
+				HttpEndpoints: map[string]module_lib.HttpEndpoint{},
 				RequiredSrv:   map[string]struct{}{},
 				RequiredBySrv: nil,
-				ExtDependencies: map[string]module.ExtDependencyTarget{
+				ExtDependencies: map[string]module_lib.ExtDependencyTarget{
 					"rVar2": {
 						ID:      "ext",
 						Service: "c",
@@ -192,36 +192,36 @@ func TestGenerator(t *testing.T) {
 				Ports: nil,
 			},
 			sB: {
-				RunConfig: module.RunConfig{
+				RunConfig: module_lib.RunConfig{
 					MaxRetries:  5,
 					RunOnce:     false,
 					StopTimeout: 5 * time.Second,
 					StopSignal:  nil,
 					PseudoTTY:   false,
 				},
-				BindMounts:    map[string]module.BindMount{},
-				Tmpfs:         map[string]module.TmpfsMount{},
-				HttpEndpoints: map[string]module.HttpEndpoint{},
+				BindMounts:    map[string]module_lib.BindMount{},
+				Tmpfs:         map[string]module_lib.TmpfsMount{},
+				HttpEndpoints: map[string]module_lib.HttpEndpoint{},
 				RequiredSrv:   map[string]struct{}{},
 			},
 		},
-		AuxServices: map[string]*module.AuxService{
+		AuxServices: map[string]*module_lib.AuxService{
 			aA: {
-				RunConfig: module.RunConfig{
+				RunConfig: module_lib.RunConfig{
 					MaxRetries:  5,
 					RunOnce:     false,
 					StopTimeout: 5 * time.Second,
 					StopSignal:  nil,
 					PseudoTTY:   false,
 				},
-				BindMounts: map[string]module.BindMount{},
-				Tmpfs:      map[string]module.TmpfsMount{},
+				BindMounts: map[string]module_lib.BindMount{},
+				Tmpfs:      map[string]module_lib.TmpfsMount{},
 				Volumes: map[string]string{
 					"mnt1": "vol",
 				},
 				Configs:       map[string]string{"rVar3": "cfg"},
-				SrvReferences: map[string]module.SrvRefTarget{"rVar1": {Ref: sB}},
-				ExtDependencies: map[string]module.ExtDependencyTarget{
+				SrvReferences: map[string]module_lib.SrvRefTarget{"rVar1": {Ref: sB}},
+				ExtDependencies: map[string]module_lib.ExtDependencyTarget{
 					"rVar2": {
 						ID:      "ext",
 						Service: "c",
@@ -229,15 +229,15 @@ func TestGenerator(t *testing.T) {
 				},
 			},
 			aB: {
-				RunConfig: module.RunConfig{
+				RunConfig: module_lib.RunConfig{
 					MaxRetries:  5,
 					RunOnce:     false,
 					StopTimeout: 5 * time.Second,
 					StopSignal:  nil,
 					PseudoTTY:   false,
 				},
-				BindMounts:      map[string]module.BindMount{},
-				Tmpfs:           map[string]module.TmpfsMount{},
+				BindMounts:      map[string]module_lib.BindMount{},
+				Tmpfs:           map[string]module_lib.TmpfsMount{},
 				Volumes:         nil,
 				Configs:         nil,
 				SrvReferences:   nil,
@@ -251,9 +251,9 @@ func TestGenerator(t *testing.T) {
 		Dependencies: map[string]string{
 			"ext": "ver",
 		},
-		HostResources: map[string]module.HostResource{
+		HostResources: map[string]module_lib.HostResource{
 			"res": {
-				Resource: module.Resource{
+				Resource: module_lib.Resource{
 					Tags: map[string]struct{}{
 						"tag": {},
 					},
@@ -261,9 +261,9 @@ func TestGenerator(t *testing.T) {
 				},
 			},
 		},
-		Secrets: map[string]module.Secret{
+		Secrets: map[string]module_lib.Secret{
 			"sec": {
-				Resource: module.Resource{
+				Resource: module_lib.Resource{
 					Tags: map[string]struct{}{
 						"tag": {},
 					},
@@ -272,23 +272,23 @@ func TestGenerator(t *testing.T) {
 			},
 		},
 		Configs: mc,
-		Inputs: module.Inputs{
-			Resources: map[string]module.Input{
+		Inputs: module_lib.Inputs{
+			Resources: map[string]module_lib.Input{
 				"res": {
 					Group: &ig,
 				},
 			},
-			Secrets: map[string]module.Input{
+			Secrets: map[string]module_lib.Input{
 				"sec": {
 					Group: &ig,
 				},
 			},
-			Configs: map[string]module.Input{
+			Configs: map[string]module_lib.Input{
 				"cfg": {
 					Group: &ig,
 				},
 			},
-			Groups: map[string]module.InputGroup{
+			Groups: map[string]module_lib.InputGroup{
 				ig: {},
 			},
 		},

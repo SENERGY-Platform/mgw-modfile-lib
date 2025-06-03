@@ -24,10 +24,10 @@ import (
 	"github.com/SENERGY-Platform/mgw-modfile-lib/v1/v1gen/inputs"
 	"github.com/SENERGY-Platform/mgw-modfile-lib/v1/v1gen/mounts"
 	"github.com/SENERGY-Platform/mgw-modfile-lib/v1/v1gen/services"
-	"github.com/SENERGY-Platform/mgw-module-lib/module"
+	module_lib "github.com/SENERGY-Platform/mgw-module-lib/model"
 )
 
-func generator(f any) (*module.Module, error) {
+func generator(f any) (*module_lib.Module, error) {
 	mf, ok := f.(*model.ModFile)
 	if !ok {
 		return nil, errors.New("invalid type")
@@ -84,7 +84,7 @@ func generator(f any) (*module.Module, error) {
 	if err != nil {
 		return nil, err
 	}
-	return &module.Module{
+	return &module_lib.Module{
 		ID:             mf.ID,
 		Name:           mf.Name,
 		Description:    mf.Description,
@@ -103,7 +103,7 @@ func generator(f any) (*module.Module, error) {
 		HostResources:  mounts.GenHostResources(mf.HostResources),
 		Secrets:        mounts.GenSecrets(mf.Secrets),
 		Configs:        mCs,
-		Inputs: module.Inputs{
+		Inputs: module_lib.Inputs{
 			Resources: inputs.GenInputs(mf.HostResources),
 			Secrets:   inputs.GenInputs(mf.Secrets),
 			Configs:   inputs.GenInputs(mf.Configs),
@@ -112,6 +112,6 @@ func generator(f any) (*module.Module, error) {
 	}, nil
 }
 
-func GetGenerator() (string, func(any) (*module.Module, error)) {
+func GetGenerator() (string, func(any) (*module_lib.Module, error)) {
 	return model.Version, generator
 }

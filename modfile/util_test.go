@@ -19,7 +19,7 @@ package modfile
 import (
 	"errors"
 	"fmt"
-	"github.com/SENERGY-Platform/mgw-module-lib/module"
+	module_lib "github.com/SENERGY-Platform/mgw-module-lib/model"
 	"gopkg.in/yaml.v3"
 	"reflect"
 	"testing"
@@ -29,12 +29,12 @@ type testFile struct {
 	Field string `yaml:"field"`
 }
 
-func testGen(mf any) (*module.Module, error) {
+func testGen(mf any) (*module_lib.Module, error) {
 	tf, ok := mf.(*testFile)
 	if !ok {
 		return nil, errors.New("test")
 	}
-	return &module.Module{Name: tf.Field}, nil
+	return &module_lib.Module{Name: tf.Field}, nil
 }
 
 func testDecode(yn *yaml.Node) (any, error) {
@@ -185,7 +185,7 @@ func TestDecoders_Add(t *testing.T) {
 func TestGenerators_Add(t *testing.T) {
 	g := make(Generators)
 	ver := "vTest"
-	g.Add(func() (string, func(any) (*module.Module, error)) {
+	g.Add(func() (string, func(any) (*module_lib.Module, error)) {
 		return ver, testGen
 	})
 	if gn, ok := g[ver]; !ok {

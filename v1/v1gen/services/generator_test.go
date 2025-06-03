@@ -18,14 +18,14 @@ package services
 
 import (
 	"github.com/SENERGY-Platform/mgw-modfile-lib/v1/model"
-	"github.com/SENERGY-Platform/mgw-module-lib/module"
+	module_lib "github.com/SENERGY-Platform/mgw-module-lib/model"
 	"reflect"
 	"testing"
 	"time"
 )
 
 func TestGenRunConfig(t *testing.T) {
-	a := module.RunConfig{
+	a := module_lib.RunConfig{
 		MaxRetries:  5,
 		RunOnce:     false,
 		StopTimeout: 5 * time.Second,
@@ -48,7 +48,7 @@ func TestGenRunConfig(t *testing.T) {
 		PseudoTTY:   true,
 		Command:     cmd,
 	}
-	a = module.RunConfig{
+	a = module_lib.RunConfig{
 		MaxRetries:  1,
 		RunOnce:     true,
 		StopTimeout: 1 * time.Second,
@@ -76,7 +76,7 @@ func TestGenBindMounts(t *testing.T) {
 		Source:     str2,
 		ReadOnly:   true,
 	})
-	a := module.BindMount{
+	a := module_lib.BindMount{
 		Source:   str2,
 		ReadOnly: true,
 	}
@@ -136,7 +136,7 @@ func TestGenTmpfsMounts(t *testing.T) {
 		Size:       64,
 		Mode:       nil,
 	})
-	a := module.TmpfsMount{
+	a := module_lib.TmpfsMount{
 		Size: 64,
 		Mode: 504,
 	}
@@ -203,7 +203,7 @@ func TestGenTmpfsMounts(t *testing.T) {
 		Size:       64,
 		Mode:       &fm2,
 	})
-	a = module.TmpfsMount{
+	a = module_lib.TmpfsMount{
 		Size: 64,
 		Mode: 511,
 	}
@@ -235,7 +235,7 @@ func TestGenHttpEndpoints(t *testing.T) {
 		Port:    &p,
 		ExtPath: str,
 	})
-	a := module.HttpEndpoint{
+	a := module_lib.HttpEndpoint{
 		Name: &str,
 		Port: &p,
 		Path: &str2,
@@ -274,10 +274,10 @@ func TestGenPorts(t *testing.T) {
 			Protocol: nil,
 		},
 	}
-	a := module.Port{
+	a := module_lib.Port{
 		Name:     nil,
 		Number:   80,
-		Protocol: module.TcpPort,
+		Protocol: module_lib.TcpPort,
 		Bindings: nil,
 	}
 	if p, err := GenPorts(mfSPs); err != nil {
@@ -297,7 +297,7 @@ func TestGenPorts(t *testing.T) {
 			Protocol: &str,
 		},
 	}
-	a = module.Port{
+	a = module_lib.Port{
 		Name:     &str,
 		Number:   80,
 		Protocol: str,
@@ -319,17 +319,17 @@ func TestGenPorts(t *testing.T) {
 			Protocol: nil,
 		},
 	}
-	a2 := []module.Port{
+	a2 := []module_lib.Port{
 		{
 			Name:     nil,
 			Number:   80,
-			Protocol: module.TcpPort,
+			Protocol: module_lib.TcpPort,
 			Bindings: nil,
 		},
 		{
 			Name:     nil,
 			Number:   81,
-			Protocol: module.TcpPort,
+			Protocol: module_lib.TcpPort,
 			Bindings: nil,
 		},
 	}
@@ -349,7 +349,7 @@ func TestGenPorts(t *testing.T) {
 			Protocol: &str,
 		},
 	}
-	a2 = []module.Port{
+	a2 = []module_lib.Port{
 		{
 			Name:     &str,
 			Number:   80,
@@ -380,10 +380,10 @@ func TestGenPorts(t *testing.T) {
 			Protocol: nil,
 		},
 	}
-	a = module.Port{
+	a = module_lib.Port{
 		Name:     nil,
 		Number:   80,
-		Protocol: module.TcpPort,
+		Protocol: module_lib.TcpPort,
 		Bindings: []uint{80},
 	}
 	if p, err := GenPorts(mfSPs); err != nil {
@@ -403,10 +403,10 @@ func TestGenPorts(t *testing.T) {
 			Protocol: nil,
 		},
 	}
-	a = module.Port{
+	a = module_lib.Port{
 		Name:     nil,
 		Number:   80,
-		Protocol: module.TcpPort,
+		Protocol: module_lib.TcpPort,
 		Bindings: []uint{80, 81},
 	}
 	if p, err := GenPorts(mfSPs); err != nil {
@@ -425,17 +425,17 @@ func TestGenPorts(t *testing.T) {
 			Protocol: nil,
 		},
 	}
-	a2 = []module.Port{
+	a2 = []module_lib.Port{
 		{
 			Name:     nil,
 			Number:   80,
-			Protocol: module.TcpPort,
+			Protocol: module_lib.TcpPort,
 			Bindings: []uint{80},
 		},
 		{
 			Name:     nil,
 			Number:   81,
-			Protocol: module.TcpPort,
+			Protocol: module_lib.TcpPort,
 			Bindings: []uint{81},
 		},
 	}
@@ -546,23 +546,23 @@ func TestGenServices(t *testing.T) {
 		},
 		RequiredServices: []string{str},
 	}
-	a := module.Service{
+	a := module_lib.Service{
 		Name:  str,
 		Image: str2,
-		RunConfig: module.RunConfig{
+		RunConfig: module_lib.RunConfig{
 			MaxRetries:  5,
 			RunOnce:     false,
 			StopTimeout: 5 * time.Second,
 			StopSignal:  nil,
 			PseudoTTY:   false,
 		},
-		BindMounts: map[string]module.BindMount{
+		BindMounts: map[string]module_lib.BindMount{
 			str: {
 				Source:   str2,
 				ReadOnly: true,
 			},
 		},
-		Tmpfs: map[string]module.TmpfsMount{
+		Tmpfs: map[string]module_lib.TmpfsMount{
 			str: {
 				Size: 64,
 				Mode: 504,
@@ -573,7 +573,7 @@ func TestGenServices(t *testing.T) {
 		SecretMounts:  nil,
 		Configs:       nil,
 		SrvReferences: nil,
-		HttpEndpoints: map[string]module.HttpEndpoint{
+		HttpEndpoints: map[string]module_lib.HttpEndpoint{
 			str: {
 				Name: &str,
 				Port: nil,
@@ -583,11 +583,11 @@ func TestGenServices(t *testing.T) {
 		RequiredSrv:     map[string]struct{}{str: {}},
 		RequiredBySrv:   nil,
 		ExtDependencies: nil,
-		Ports: []module.Port{
+		Ports: []module_lib.Port{
 			{
 				Name:     nil,
 				Number:   80,
-				Protocol: module.TcpPort,
+				Protocol: module_lib.TcpPort,
 				Bindings: nil,
 			},
 		},
@@ -731,22 +731,22 @@ func TestGenAuxServices(t *testing.T) {
 			},
 		},
 	}
-	a := module.AuxService{
+	a := module_lib.AuxService{
 		Name: str,
-		RunConfig: module.RunConfig{
+		RunConfig: module_lib.RunConfig{
 			MaxRetries:  5,
 			RunOnce:     false,
 			StopTimeout: 5 * time.Second,
 			StopSignal:  nil,
 			PseudoTTY:   false,
 		},
-		BindMounts: map[string]module.BindMount{
+		BindMounts: map[string]module_lib.BindMount{
 			str: {
 				Source:   str2,
 				ReadOnly: true,
 			},
 		},
-		Tmpfs: map[string]module.TmpfsMount{
+		Tmpfs: map[string]module_lib.TmpfsMount{
 			str: {
 				Size: 64,
 				Mode: 504,

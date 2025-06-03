@@ -18,11 +18,11 @@ package configs
 
 import (
 	"github.com/SENERGY-Platform/mgw-modfile-lib/v1/model"
-	"github.com/SENERGY-Platform/mgw-module-lib/module"
+	module_lib "github.com/SENERGY-Platform/mgw-module-lib/model"
 )
 
-func GenConfigs(mfCVs map[string]model.ConfigValue) (module.Configs, error) {
-	mCs := make(module.Configs)
+func GenConfigs(mfCVs map[string]model.ConfigValue) (module_lib.Configs, error) {
+	mCs := make(module_lib.Configs)
 	for ref, mfCV := range mfCVs {
 		if mfCV.IsList {
 			if err := SetSlice(ref, mfCV, mCs); err != nil {

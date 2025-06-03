@@ -19,7 +19,7 @@ package modfile
 import (
 	"errors"
 	"fmt"
-	"github.com/SENERGY-Platform/mgw-module-lib/module"
+	module_lib "github.com/SENERGY-Platform/mgw-module-lib/model"
 	"gopkg.in/yaml.v3"
 )
 
@@ -51,7 +51,7 @@ func (w *MfWrapper) UnmarshalYAML(yn *yaml.Node) error {
 	return nil
 }
 
-func (w *MfWrapper) GetModule() (*module.Module, error) {
+func (w *MfWrapper) GetModule() (*module_lib.Module, error) {
 	if len(w.generators) < 1 {
 		return nil, errors.New("no generators")
 	}
@@ -67,7 +67,7 @@ func (d Decoders) Add(f func() (string, func(*yaml.Node) (any, error))) {
 	d[key] = df
 }
 
-func (g Generators) Add(f func() (string, func(any) (*module.Module, error))) {
+func (g Generators) Add(f func() (string, func(any) (*module_lib.Module, error))) {
 	key, gf := f()
 	g[key] = gf
 }

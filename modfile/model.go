@@ -17,7 +17,7 @@
 package modfile
 
 import (
-	"github.com/SENERGY-Platform/mgw-module-lib/module"
+	module_lib "github.com/SENERGY-Platform/mgw-module-lib/model"
 	"gopkg.in/yaml.v3"
 )
 
@@ -34,4 +34,4 @@ type MfWrapper struct {
 
 type Decoders map[string]func(*yaml.Node) (any, error)
 
-type Generators map[string]func(any) (*module.Module, error)
+type Generators map[string]func(any) (*module_lib.Module, error)

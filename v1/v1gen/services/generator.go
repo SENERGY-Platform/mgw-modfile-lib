@@ -21,13 +21,13 @@ import (
 	"fmt"
 	"github.com/SENERGY-Platform/mgw-modfile-lib/v1/model"
 	"github.com/SENERGY-Platform/mgw-modfile-lib/v1/v1gen/generic"
-	"github.com/SENERGY-Platform/mgw-module-lib/module"
+	module_lib "github.com/SENERGY-Platform/mgw-module-lib/model"
 	"io/fs"
 	"time"
 )
 
-func GenServices(mfSs map[string]model.Service) (map[string]*module.Service, error) {
-	mSs := make(map[string]*module.Service)
+func GenServices(mfSs map[string]model.Service) (map[string]*module_lib.Service, error) {
+	mSs := make(map[string]*module_lib.Service)
 	for ref, mfS := range mfSs {
 		mBMs, err := GenBindMounts(mfS.Include)
 		if err != nil {
@@ -45,7 +45,7 @@ func GenServices(mfSs map[string]model.Service) (map[string]*module.Service, err
 		if err != nil {
 			return nil, fmt.Errorf("service '%s' invalid port mapping: %s", ref, err)
 		}
-		mSs[ref] = &module.Service{
+		mSs[ref] = &module_lib.Service{
 			Name:          mfS.Name,
 			Image:         mfS.Image,
 			RunConfig:     GenRunConfig(mfS.RunConfig),
@@ -59,8 +59,8 @@ func GenServices(mfSs map[string]model.Service) (map[string]*module.Service, err
 	return mSs, nil
 }
 
-func GenAuxServices(mfSs map[string]model.AuxService) (map[string]*module.AuxService, error) {
-	mAs := make(map[string]*module.AuxService)
+func GenAuxServices(mfSs map[string]model.AuxService) (map[string]*module_lib.AuxService, error) {
+	mAs := make(map[string]*module_lib.AuxService)
 	for ref, mfS := range mfSs {
 		mBMs, err := GenBindMounts(mfS.Include)
 		if err != nil {
@@ -70,7 +70,7 @@ func GenAuxServices(mfSs map[string]model.AuxService) (map[string]*module.AuxSer
 		if err != nil {
 			return nil, fmt.Errorf("aux service '%s' invalid tmpfsMount: %s", ref, err)
 		}
-		mAs[ref] = &module.AuxService{
+		mAs[ref] = &module_lib.AuxService{
 			Name:       mfS.Name,
 			RunConfig:  GenRunConfig(mfS.RunConfig),
 			BindMounts: mBMs,
@@ -80,8 +80,8 @@ func GenAuxServices(mfSs map[string]model.AuxService) (map[string]*module.AuxSer
 	return mAs, nil
 }
 
-func GenRunConfig(mfRC model.RunConfig) module.RunConfig {
-	mRC := module.RunConfig{
+func GenRunConfig(mfRC model.RunConfig) module_lib.RunConfig {
+	mRC := module_lib.RunConfig{
 		MaxRetries:  5,
 		RunOnce:     mfRC.RunOnce,
 		StopTimeout: 5 * time.Second,
@@ -100,8 +100,8 @@ func GenRunConfig(mfRC model.RunConfig) module.RunConfig {
 	return mRC
 }
 
-func GenBindMounts(mfBMs []model.BindMount) (map[string]module.BindMount, error) {
-	mBMs := make(map[string]module.BindMount)
+func GenBindMounts(mfBMs []model.BindMount) (map[string]module_lib.BindMount, error) {
+	mBMs := make(map[string]module_lib.BindMount)
 	for _, mfBM := range mfBMs {
 		if v, ok := mBMs[mfBM.MountPoint]; ok {
 			if v.Source == mfBM.Source && v.ReadOnly == mfBM.ReadOnly {
@@ -109,7 +109,7 @@ func GenBindMounts(mfBMs []model.BindMount) (map[string]module.BindMount, error)
 			}
 			return nil, fmt.Errorf("duplicate '%s'", mfBM.MountPoint)
 		}
-		mBMs[mfBM.MountPoint] = module.BindMount{
+		mBMs[mfBM.MountPoint] = module_lib.BindMount{
 			Source:   mfBM.Source,
 			ReadOnly: mfBM.ReadOnly,
 		}
@@ -117,8 +117,8 @@ func GenBindMounts(mfBMs []model.BindMount) (map[string]module.BindMount, error)
 	return mBMs, nil
 }
 
-func GenTmpfsMounts(mfTMs []model.TmpfsMount) (map[string]module.TmpfsMount, error) {
-	mTMs := make(map[string]module.TmpfsMount)
+func GenTmpfsMounts(mfTMs []model.TmpfsMount) (map[string]module_lib.TmpfsMount, error) {
+	mTMs := make(map[string]module_lib.TmpfsMount)
 	for _, mfTM := range mfTMs {
 		if v, ok := mTMs[mfTM.MountPoint]; ok {
 			if v.Size == uint64(mfTM.Size) && (mfTM.Mode == nil || v.Mode == fs.FileMode(*mfTM.Mode)) {
@@ -126,7 +126,7 @@ func GenTmpfsMounts(mfTMs []model.TmpfsMount) (map[string]module.TmpfsMount, err
 			}
 			return nil, fmt.Errorf("duplicate '%s'", mfTM.MountPoint)
 		}
-		mTM := module.TmpfsMount{
+		mTM := module_lib.TmpfsMount{
 			Size: uint64(mfTM.Size),
 			Mode: fs.FileMode(504),
 		}
@@ -138,21 +138,21 @@ func GenTmpfsMounts(mfTMs []model.TmpfsMount) (map[string]module.TmpfsMount, err
 	return mTMs, nil
 }
 
-func GenHttpEndpoints(mfHEs []model.HttpEndpoint) (map[string]module.HttpEndpoint, error) {
-	mHEs := make(map[string]module.HttpEndpoint)
+func GenHttpEndpoints(mfHEs []model.HttpEndpoint) (map[string]module_lib.HttpEndpoint, error) {
+	mHEs := make(map[string]module_lib.HttpEndpoint)
 	for _, mfHE := range mfHEs {
 		if _, ok := mHEs[mfHE.ExtPath]; ok {
 			return nil, fmt.Errorf("duplicate '%s'", mfHE.ExtPath)
 		}
-		mHE := module.HttpEndpoint{
+		mHE := module_lib.HttpEndpoint{
 			Name: mfHE.Name,
 			Port: mfHE.Port,
 			Path: mfHE.Path,
-			ProxyConf: module.HttpEndpointProxyConf{
+			ProxyConf: module_lib.HttpEndpointProxyConf{
 				Headers:   mfHE.ProxyConf.Headers,
 				WebSocket: mfHE.ProxyConf.WebSocket,
 			},
-			StringSub: module.HttpEndpointStrSub{
+			StringSub: module_lib.HttpEndpointStrSub{
 				ReplaceOnce: mfHE.StringSub.ReplaceOnce,
 				MimeTypes:   mfHE.StringSub.MimeTypes,
 				Filters:     mfHE.StringSub.Filters,
@@ -166,10 +166,10 @@ func GenHttpEndpoints(mfHEs []model.HttpEndpoint) (map[string]module.HttpEndpoin
 	return mHEs, nil
 }
 
-func GenPorts(mfSPs []model.SrvPort) ([]module.Port, error) {
-	var mPs []module.Port
+func GenPorts(mfSPs []model.SrvPort) ([]module_lib.Port, error) {
+	var mPs []module_lib.Port
 	for _, mfSP := range mfSPs {
-		proto := module.TcpPort
+		proto := module_lib.TcpPort
 		if mfSP.Protocol != nil {
 			proto = *mfSP.Protocol
 		}
@@ -195,7 +195,7 @@ func GenPorts(mfSPs []model.SrvPort) ([]module.Port, error) {
 			}
 		}
 		if lep == 1 {
-			mPs = append(mPs, module.Port{
+			mPs = append(mPs, module_lib.Port{
 				Name:     mfSP.Name,
 				Number:   ep[0],
 				Protocol: proto,
@@ -203,7 +203,7 @@ func GenPorts(mfSPs []model.SrvPort) ([]module.Port, error) {
 			})
 		} else {
 			for i, n := range ep {
-				mP := module.Port{
+				mP := module_lib.Port{
 					Name:     mfSP.Name,
 					Number:   n,
 					Protocol: proto,

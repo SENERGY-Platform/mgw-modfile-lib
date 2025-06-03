@@ -18,12 +18,12 @@ package configs
 
 import (
 	"github.com/SENERGY-Platform/mgw-modfile-lib/v1/model"
-	"github.com/SENERGY-Platform/mgw-module-lib/module"
+	module_lib "github.com/SENERGY-Platform/mgw-module-lib/model"
 	"testing"
 )
 
 func TestGenConfigs(t *testing.T) {
-	strType := module.StringType
+	strType := module_lib.StringType
 	var mfCVs map[string]model.ConfigValue
 	if mCs, err := GenConfigs(mfCVs); err != nil {
 		t.Error("err != nil")

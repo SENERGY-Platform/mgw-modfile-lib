@@ -18,7 +18,7 @@ package services
 
 import (
 	"github.com/SENERGY-Platform/mgw-modfile-lib/v1/model"
-	"github.com/SENERGY-Platform/mgw-module-lib/module"
+	module_lib "github.com/SENERGY-Platform/mgw-module-lib/model"
 	"reflect"
 	"testing"
 )
@@ -26,7 +26,7 @@ import (
 func TestSetSrvReferences(t *testing.T) {
 	ref := "a"
 	var mfSRs map[string][]model.DependencyTarget
-	mSs := map[string]*module.Service{ref: {}}
+	mSs := map[string]*module_lib.Service{ref: {}}
 	if err := SetSrvReferences(mfSRs, mSs); err != nil {
 		t.Error("err != nil")
 	}
@@ -42,7 +42,7 @@ func TestSetSrvReferences(t *testing.T) {
 			Services: []string{ref},
 		},
 	}
-	a := map[string]module.SrvRefTarget{rVar: {Ref: dRef, Template: &tmp}}
+	a := map[string]module_lib.SrvRefTarget{rVar: {Ref: dRef, Template: &tmp}}
 	if err := SetSrvReferences(mfSRs, mSs); err != nil {
 		t.Error("err != nil")
 	} else if ms := mSs[ref]; reflect.DeepEqual(a, ms.SrvReferences) == false {
@@ -95,7 +95,7 @@ func TestSetSrvReferences(t *testing.T) {
 func TestSetVolumes(t *testing.T) {
 	sRef := "a"
 	var mfVs map[string][]model.VolumeTarget
-	mSs := map[string]*module.Service{sRef: {}}
+	mSs := map[string]*module_lib.Service{sRef: {}}
 	if err := SetVolumes(mfVs, mSs); err != nil {
 		t.Error("err != nil")
 	}
@@ -162,7 +162,7 @@ func TestSetVolumes(t *testing.T) {
 func TestSetExtDependencies(t *testing.T) {
 	ref := "a"
 	var mfMDs map[string]model.ModuleDependency
-	mSs := map[string]*module.Service{ref: {}}
+	mSs := map[string]*module_lib.Service{ref: {}}
 	if err := SetExtDependencies(mfMDs, mSs); err != nil {
 		t.Error("err != nil")
 	}
@@ -185,7 +185,7 @@ func TestSetExtDependencies(t *testing.T) {
 			},
 		},
 	}
-	a := map[string]module.ExtDependencyTarget{
+	a := map[string]module_lib.ExtDependencyTarget{
 		rVar: {
 			ID:       mID,
 			Service:  dRef,
@@ -285,7 +285,7 @@ func TestSetExtDependencies(t *testing.T) {
 func TestSetResources(t *testing.T) {
 	sRef := "a"
 	var mfRs map[string]model.HostResource
-	mSs := map[string]*module.Service{sRef: {}}
+	mSs := map[string]*module_lib.Service{sRef: {}}
 	if err := SetHostResources(mfRs, mSs); err != nil {
 		t.Error("err != nil")
 	}
@@ -302,7 +302,7 @@ func TestSetResources(t *testing.T) {
 			},
 		},
 	}
-	a := map[string]module.HostResTarget{
+	a := map[string]module_lib.HostResTarget{
 		mp: {
 			Ref:      res,
 			ReadOnly: true,
@@ -391,7 +391,7 @@ func TestSetResources(t *testing.T) {
 func TestSetSecrets(t *testing.T) {
 	sRef := "a"
 	var mfSCTs map[string]model.Secret
-	mSs := map[string]*module.Service{sRef: {}}
+	mSs := map[string]*module_lib.Service{sRef: {}}
 	if err := SetSecrets(mfSCTs, mSs); err != nil {
 		t.Error("err != nil")
 	}
@@ -411,8 +411,8 @@ func TestSetSecrets(t *testing.T) {
 			},
 		},
 	}
-	a := map[string]module.SecretTarget{mp: {Ref: sec, Item: &si}}
-	a2 := map[string]module.SecretTarget{rv: {Ref: sec, Item: &si}}
+	a := map[string]module_lib.SecretTarget{mp: {Ref: sec, Item: &si}}
+	a2 := map[string]module_lib.SecretTarget{rv: {Ref: sec, Item: &si}}
 	if err := SetSecrets(mfSCTs, mSs); err != nil {
 		t.Error("err != nil")
 	} else if ms := mSs[sRef]; reflect.DeepEqual(a, ms.SecretMounts) == false {
@@ -475,7 +475,7 @@ func TestSetSecrets(t *testing.T) {
 func TestSetConfigs(t *testing.T) {
 	sRef := "a"
 	var mfCVs map[string]model.ConfigValue
-	mSs := map[string]*module.Service{sRef: {}}
+	mSs := map[string]*module_lib.Service{sRef: {}}
 	if err := SetConfigs(mfCVs, mSs); err != nil {
 		t.Error("err != nil")
 	}

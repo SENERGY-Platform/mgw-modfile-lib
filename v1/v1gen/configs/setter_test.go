@@ -19,7 +19,7 @@ package configs
 import (
 	"errors"
 	"github.com/SENERGY-Platform/mgw-modfile-lib/v1/model"
-	"github.com/SENERGY-Platform/mgw-module-lib/module"
+	module_lib "github.com/SENERGY-Platform/mgw-module-lib/model"
 	"reflect"
 	"testing"
 )
@@ -181,8 +181,8 @@ func TestParseConfigTypeOptions(t *testing.T) {
 		t.Error("err != nil")
 	} else if o, ok := cto[str]; !ok {
 		t.Errorf("o, ok := cto[%s]; !ok", str)
-	} else if o.DataType != module.StringType {
-		t.Errorf("%s != %s", o.DataType, module.StringType)
+	} else if o.DataType != module_lib.StringType {
+		t.Errorf("%s != %s", o.DataType, module_lib.StringType)
 	} else if reflect.DeepEqual(o.Value, str) == false {
 		t.Errorf("%v != %s", o.Value, str)
 	}
@@ -193,8 +193,8 @@ func TestParseConfigTypeOptions(t *testing.T) {
 		t.Error("err != nil")
 	} else if o, ok := cto[str]; !ok {
 		t.Errorf("o, ok := cto[%s]; !ok", str)
-	} else if o.DataType != module.Int64Type {
-		t.Errorf("%s != %s", o.DataType, module.Int64Type)
+	} else if o.DataType != module_lib.Int64Type {
+		t.Errorf("%s != %s", o.DataType, module_lib.Int64Type)
 	} else if reflect.DeepEqual(o.Value, i) == false {
 		t.Errorf("%v != %d", o.Value, i)
 	}
@@ -204,8 +204,8 @@ func TestParseConfigTypeOptions(t *testing.T) {
 		t.Error("err != nil")
 	} else if o, ok := cto[str]; !ok {
 		t.Errorf("o, ok := cto[%s]; !ok", str)
-	} else if o.DataType != module.Int64Type {
-		t.Errorf("%s != %s", o.DataType, module.Int64Type)
+	} else if o.DataType != module_lib.Int64Type {
+		t.Errorf("%s != %s", o.DataType, module_lib.Int64Type)
 	} else if reflect.DeepEqual(o.Value, i) == false {
 		t.Errorf("%v != %d", o.Value, i)
 	}
@@ -215,8 +215,8 @@ func TestParseConfigTypeOptions(t *testing.T) {
 		t.Error("err != nil")
 	} else if o, ok := cto[str]; !ok {
 		t.Errorf("o, ok := cto[%s]; !ok", str)
-	} else if o.DataType != module.Int64Type {
-		t.Errorf("%s != %s", o.DataType, module.Int64Type)
+	} else if o.DataType != module_lib.Int64Type {
+		t.Errorf("%s != %s", o.DataType, module_lib.Int64Type)
 	} else if reflect.DeepEqual(o.Value, i) == false {
 		t.Errorf("%v != %d", o.Value, i)
 	}
@@ -226,8 +226,8 @@ func TestParseConfigTypeOptions(t *testing.T) {
 		t.Error("err != nil")
 	} else if o, ok := cto[str]; !ok {
 		t.Errorf("o, ok := cto[%s]; !ok", str)
-	} else if o.DataType != module.Int64Type {
-		t.Errorf("%s != %s", o.DataType, module.Int64Type)
+	} else if o.DataType != module_lib.Int64Type {
+		t.Errorf("%s != %s", o.DataType, module_lib.Int64Type)
 	} else if reflect.DeepEqual(o.Value, i) == false {
 		t.Errorf("%v != %d", o.Value, i)
 	}
@@ -237,8 +237,8 @@ func TestParseConfigTypeOptions(t *testing.T) {
 		t.Error("err != nil")
 	} else if o, ok := cto[str]; !ok {
 		t.Errorf("o, ok := cto[%s]; !ok", str)
-	} else if o.DataType != module.Int64Type {
-		t.Errorf("%s != %s", o.DataType, module.Float64Type)
+	} else if o.DataType != module_lib.Int64Type {
+		t.Errorf("%s != %s", o.DataType, module_lib.Float64Type)
 	} else if reflect.DeepEqual(o.Value, i) == false {
 		t.Errorf("%v != %d", o.Value, i)
 	}
@@ -249,8 +249,8 @@ func TestParseConfigTypeOptions(t *testing.T) {
 		t.Error("err != nil")
 	} else if o, ok := cto[str]; !ok {
 		t.Errorf("o, ok := cto[%s]; !ok", str)
-	} else if o.DataType != module.Float64Type {
-		t.Errorf("%s != %s", o.DataType, module.Float64Type)
+	} else if o.DataType != module_lib.Float64Type {
+		t.Errorf("%s != %s", o.DataType, module_lib.Float64Type)
 	} else if reflect.DeepEqual(o.Value, f) == false {
 		t.Errorf("%v != %f", o.Value, f)
 	}
@@ -260,8 +260,8 @@ func TestParseConfigTypeOptions(t *testing.T) {
 		t.Error("err != nil")
 	} else if o, ok := cto[str]; !ok {
 		t.Errorf("o, ok := cto[%s]; !ok", str)
-	} else if o.DataType != module.Float64Type {
-		t.Errorf("%s != %s", o.DataType, module.Float64Type)
+	} else if o.DataType != module_lib.Float64Type {
+		t.Errorf("%s != %s", o.DataType, module_lib.Float64Type)
 	} else if reflect.DeepEqual(o.Value, f) == false {
 		t.Errorf("%v != %f", o.Value, f)
 	}
@@ -272,8 +272,8 @@ func TestParseConfigTypeOptions(t *testing.T) {
 		t.Error("err != nil")
 	} else if o, ok := cto[str]; !ok {
 		t.Errorf("o, ok := cto[%s]; !ok", str)
-	} else if o.DataType != module.BoolType {
-		t.Errorf("%s != %s", o.DataType, module.BoolType)
+	} else if o.DataType != module_lib.BoolType {
+		t.Errorf("%s != %s", o.DataType, module_lib.BoolType)
 	} else if reflect.DeepEqual(o.Value, b) == false {
 		t.Errorf("%v != %v", o.Value, b)
 	}
@@ -432,7 +432,7 @@ func TestParseConfigSlice(t *testing.T) {
 }
 
 func TestSetValue(t *testing.T) {
-	mCs := make(module.Configs)
+	mCs := make(module_lib.Configs)
 	if err := SetValue("", model.ConfigValue{}, mCs); err != nil {
 		t.Error("err != nil")
 	} else if len(mCs) == 0 {
@@ -442,26 +442,26 @@ func TestSetValue(t *testing.T) {
 
 func TestSetValueStr(t *testing.T) {
 	str := "test"
-	testSetValue[string](t, str, []any{str}, module.StringType, uint(1))
+	testSetValue[string](t, str, []any{str}, module_lib.StringType, uint(1))
 }
 
 func TestSetValueBool(t *testing.T) {
 	b := true
-	testSetValue[bool](t, b, []any{b}, module.BoolType, "")
+	testSetValue[bool](t, b, []any{b}, module_lib.BoolType, "")
 }
 
 func TestSetValueInt64(t *testing.T) {
 	i := int64(1)
-	testSetValue[int64](t, i, []any{i}, module.Int64Type, "")
+	testSetValue[int64](t, i, []any{i}, module_lib.Int64Type, "")
 }
 
 func TestSetValueFloat64(t *testing.T) {
 	f := 1.0
-	testSetValue[float64](t, f, []any{f}, module.Float64Type, "")
+	testSetValue[float64](t, f, []any{f}, module_lib.Float64Type, "")
 }
 
 func testSetValue[T comparable](t *testing.T, value any, options []any, dataType string, errVal any) {
-	mCs := make(module.Configs)
+	mCs := make(module_lib.Configs)
 	if err := SetValue("", model.ConfigValue{Value: errVal, DataType: &dataType}, mCs); err == nil {
 		t.Error("err == nil")
 	} else if len(mCs) != 0 {
@@ -509,7 +509,7 @@ func testSetValue[T comparable](t *testing.T, value any, options []any, dataType
 }
 
 func TestSetSlice(t *testing.T) {
-	mCs := make(module.Configs)
+	mCs := make(module_lib.Configs)
 	if err := SetSlice("", model.ConfigValue{}, mCs); err != nil {
 		t.Error("err == nil")
 	} else if len(mCs) == 0 {
@@ -519,33 +519,33 @@ func TestSetSlice(t *testing.T) {
 
 func TestSetSliceStr(t *testing.T) {
 	str := "test"
-	testSetSlice[string](t, []any{str}, []any{str}, module.StringType, 1)
+	testSetSlice[string](t, []any{str}, []any{str}, module_lib.StringType, 1)
 }
 
 func TestSetSliceBool(t *testing.T) {
 	b := true
-	testSetSlice[bool](t, []any{b}, []any{b}, module.BoolType, "")
+	testSetSlice[bool](t, []any{b}, []any{b}, module_lib.BoolType, "")
 }
 
 func TestSetSliceInt64(t *testing.T) {
 	i := int64(1)
-	testSetSlice[int64](t, []any{i}, []any{i}, module.Int64Type, "")
+	testSetSlice[int64](t, []any{i}, []any{i}, module_lib.Int64Type, "")
 }
 
 func TestSetSliceFloat64(t *testing.T) {
 	f := 1.0
-	testSetSlice[float64](t, []any{f}, []any{f}, module.Float64Type, "")
+	testSetSlice[float64](t, []any{f}, []any{f}, module_lib.Float64Type, "")
 }
 
 func testSetSlice[T comparable](t *testing.T, value any, options []any, dataType string, errVal any) {
-	mCs := make(module.Configs)
+	mCs := make(module_lib.Configs)
 	if err := SetSlice("", model.ConfigValue{Value: errVal, DataType: &dataType}, mCs); err == nil {
 		t.Error("err == nil")
 	} else if len(mCs) != 0 {
 		t.Errorf("len(%v) != 0", mCs)
 	}
 	str := "test"
-	int64Type := module.Int64Type
+	int64Type := module_lib.Int64Type
 	if err := SetSlice(str, model.ConfigValue{Value: []any{1}, DataType: &int64Type}, mCs); err != nil {
 		t.Error("err != nil")
 	} else if c, ok := mCs[str]; !ok {

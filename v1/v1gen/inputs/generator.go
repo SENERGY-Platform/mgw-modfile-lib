@@ -18,24 +18,24 @@ package inputs
 
 import (
 	"github.com/SENERGY-Platform/mgw-modfile-lib/v1/model"
-	"github.com/SENERGY-Platform/mgw-module-lib/module"
+	module_lib "github.com/SENERGY-Platform/mgw-module-lib/model"
 )
 
-func GenInputs[T model.Configurable](mfCs map[string]T) map[string]module.Input {
-	mIs := make(map[string]module.Input)
+func GenInputs[T model.Configurable](mfCs map[string]T) map[string]module_lib.Input {
+	mIs := make(map[string]module_lib.Input)
 	for ref, mfC := range mfCs {
 		mfUI := mfC.GetUserInput()
 		if mfUI != nil {
-			mIs[ref] = module.Input(*mfUI)
+			mIs[ref] = module_lib.Input(*mfUI)
 		}
 	}
 	return mIs
 }
 
-func GenInputGroups(mfIGs map[string]model.InputGroup) map[string]module.InputGroup {
-	mIGs := make(map[string]module.InputGroup)
+func GenInputGroups(mfIGs map[string]model.InputGroup) map[string]module_lib.InputGroup {
+	mIGs := make(map[string]module_lib.InputGroup)
 	for ref, mfIG := range mfIGs {
-		mIGs[ref] = module.InputGroup(mfIG)
+		mIGs[ref] = module_lib.InputGroup(mfIG)
 	}
 	return mIGs
 }

@@ -19,7 +19,7 @@ package mounts
 import (
 	"github.com/SENERGY-Platform/mgw-modfile-lib/v1/model"
 	"github.com/SENERGY-Platform/mgw-modfile-lib/v1/v1gen/generic"
-	"github.com/SENERGY-Platform/mgw-module-lib/module"
+	module_lib "github.com/SENERGY-Platform/mgw-module-lib/model"
 )
 
 func GenVolumes(mfVs map[string][]model.VolumeTarget) map[string]struct{} {
@@ -38,11 +38,11 @@ func GenDependencies(mfMDs map[string]model.ModuleDependency) map[string]string 
 	return mDs
 }
 
-func GenHostResources(mfRs map[string]model.HostResource) map[string]module.HostResource {
-	mRs := make(map[string]module.HostResource)
+func GenHostResources(mfRs map[string]model.HostResource) map[string]module_lib.HostResource {
+	mRs := make(map[string]module_lib.HostResource)
 	for ref, mfR := range mfRs {
-		mRs[ref] = module.HostResource{
-			Resource: module.Resource{
+		mRs[ref] = module_lib.HostResource{
+			Resource: module_lib.Resource{
 				Tags:     generic.GenStringSet(mfR.Tags),
 				Required: !mfR.Optional,
 			},
@@ -51,11 +51,11 @@ func GenHostResources(mfRs map[string]model.HostResource) map[string]module.Host
 	return mRs
 }
 
-func GenSecrets(mfSs map[string]model.Secret) map[string]module.Secret {
-	mSs := make(map[string]module.Secret)
+func GenSecrets(mfSs map[string]model.Secret) map[string]module_lib.Secret {
+	mSs := make(map[string]module_lib.Secret)
 	for ref, mfS := range mfSs {
-		mSs[ref] = module.Secret{
-			Resource: module.Resource{
+		mSs[ref] = module_lib.Secret{
+			Resource: module_lib.Resource{
 				Tags:     generic.GenStringSet(mfS.Tags),
 				Required: !mfS.Optional,
 			},
