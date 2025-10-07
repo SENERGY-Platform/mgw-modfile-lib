@@ -87,7 +87,7 @@ type Service struct {
 	Ports []SrvPort `yaml:"ports" json:"ports,omitempty"`
 	// identifiers of internal services that must be running before this service is started
 	RequiredServices  []string `yaml:"requiredServices" json:"requiredServices,omitempty"`
-	DeviceCGroupRules []string `yaml:"deviceCGroupRules" json:"device_cgroup_rules,omitempty"`
+	DeviceCGroupRules []string `yaml:"deviceCGroupRules" json:"deviceCGroupRules,omitempty"`
 }
 
 type AuxService struct {
