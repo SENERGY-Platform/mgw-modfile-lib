@@ -46,14 +46,15 @@ func GenServices(mfSs map[string]model.Service) (map[string]*module_lib.Service,
 			return nil, fmt.Errorf("service '%s' invalid port mapping: %s", ref, err)
 		}
 		mSs[ref] = &module_lib.Service{
-			Name:          mfS.Name,
-			Image:         mfS.Image,
-			RunConfig:     GenRunConfig(mfS.RunConfig),
-			BindMounts:    mBMs,
-			Tmpfs:         mTMs,
-			HttpEndpoints: mHEs,
-			RequiredSrv:   generic.GenStringSet(mfS.RequiredServices),
-			Ports:         mPs,
+			Name:              mfS.Name,
+			Image:             mfS.Image,
+			RunConfig:         GenRunConfig(mfS.RunConfig),
+			BindMounts:        mBMs,
+			Tmpfs:             mTMs,
+			HttpEndpoints:     mHEs,
+			RequiredSrv:       generic.GenStringSet(mfS.RequiredServices),
+			Ports:             mPs,
+			DeviceCGroupRules: mfS.DeviceCGroupRules,
 		}
 	}
 	return mSs, nil
