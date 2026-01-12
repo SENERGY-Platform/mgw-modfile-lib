@@ -1,7 +1,7 @@
 code.cloudfoundry.org/bytefmt v0.31.0 h1:7Vh8P2Vnz7W89QgtArF1kaS5DS7RnktTCZ7eUKyEzF8=
 code.cloudfoundry.org/bytefmt v0.31.0/go.mod h1:HIz0xOci24hA/16xtQ6aeIT9yXP7KxokFlaJ0Orfs/8=
-github.com/SENERGY-Platform/mgw-module-lib v0.25.2 h1:7JCI5+TxnICoLVUPfSTkvuikCMAkY1UZ90GeNZ3rjfs=
-github.com/SENERGY-Platform/mgw-module-lib v0.25.2/go.mod h1:Md++IxARoVsyZzfEUf4u7EIG79Cng0/1HVY/x4y5GyU=
+github.com/SENERGY-Platform/mgw-module-lib v0.25.3 h1:WTZUJh5wbNNV+o+GGjIBsK/z/U0UW+BaCdvRzND8+Dk=
+github.com/SENERGY-Platform/mgw-module-lib v0.25.3/go.mod h1:Md++IxARoVsyZzfEUf4u7EIG79Cng0/1HVY/x4y5GyU=
 github.com/go-logr/logr v1.4.2 h1:6pFjapn8bFcIbiKo3XT4j/BhANplGihG6tvd+8rYgrY=
 github.com/go-logr/logr v1.4.2/go.mod h1:9T104GzyrTigFIr8wt5mBrctHMim0Nb2HLGrmQ40KvY=
 github.com/go-task/slim-sprig/v3 v3.0.0 h1:sUs3vkvUymDpBKi3qH1YSqBQk9+9D/8M2mN1vB6EwHI=

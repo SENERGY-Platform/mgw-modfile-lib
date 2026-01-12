@@ -9,7 +9,7 @@ require (
 
 require (
 	code.cloudfoundry.org/bytefmt v0.31.0 // indirect
-	github.com/SENERGY-Platform/mgw-module-lib v0.25.2 // indirect
+	github.com/SENERGY-Platform/mgw-module-lib v0.25.3 // indirect
 	github.com/bahlo/generic-list-go v0.2.0 // indirect
 	github.com/buger/jsonparser v1.1.1 // indirect
 	github.com/mailru/easyjson v0.7.7 // indirect
