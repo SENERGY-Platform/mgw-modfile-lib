@@ -1,7 +1,7 @@
 code.cloudfoundry.org/bytefmt v0.31.0 h1:7Vh8P2Vnz7W89QgtArF1kaS5DS7RnktTCZ7eUKyEzF8=
 code.cloudfoundry.org/bytefmt v0.31.0/go.mod h1:HIz0xOci24hA/16xtQ6aeIT9yXP7KxokFlaJ0Orfs/8=
-github.com/SENERGY-Platform/mgw-module-lib v0.24.0 h1:Hqzoa4l8rv761Xi0qyxZNd219vAbglvdQCRt0buupmc=
-github.com/SENERGY-Platform/mgw-module-lib v0.24.0/go.mod h1:Md++IxARoVsyZzfEUf4u7EIG79Cng0/1HVY/x4y5GyU=
+github.com/SENERGY-Platform/mgw-module-lib v0.25.2 h1:7JCI5+TxnICoLVUPfSTkvuikCMAkY1UZ90GeNZ3rjfs=
+github.com/SENERGY-Platform/mgw-module-lib v0.25.2/go.mod h1:Md++IxARoVsyZzfEUf4u7EIG79Cng0/1HVY/x4y5GyU=
 github.com/bahlo/generic-list-go v0.2.0 h1:5sz/EEAK+ls5wF+NeqDpk5+iNdMDXrh3z3nPnH1Wvgk=
 github.com/bahlo/generic-list-go v0.2.0/go.mod h1:2KvAjgMlE5NNynlg/5iLrrCCZ2+5xWbdbCW3pNTGyYg=
 github.com/buger/jsonparser v1.1.1 h1:2PnMjfWD7wBILjqQbt530v576A/cAbQvEW9gGIpYMUs=
