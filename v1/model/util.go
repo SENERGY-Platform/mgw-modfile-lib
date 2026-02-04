@@ -17,13 +17,14 @@
 package model
 
 import (
-	"code.cloudfoundry.org/bytefmt"
 	"errors"
 	"fmt"
-	"gopkg.in/yaml.v3"
 	"strconv"
 	"strings"
 	"time"
+
+	"code.cloudfoundry.org/bytefmt"
+	"gopkg.in/yaml.v3"
 )
 
 const Version = "v1"
@@ -55,20 +56,20 @@ func (p *Port) UnmarshalYAML(yn *yaml.Node) error {
 	return nil
 }
 
-func (p Port) Parse() ([]uint, error) {
-	var r []uint
+func (p Port) Parse() ([]int, error) {
+	var r []int
 	parts := strings.Split(string(p), "-")
 	pl := len(parts)
 	if pl < 1 || pl > 2 {
 		return nil, errors.New("invalid format")
 	} else {
-		var tmp []uint
+		var tmp []int
 		for _, part := range parts {
 			n, err := strconv.ParseInt(part, 10, 64)
 			if err != nil {
 				return nil, err
 			}
-			tmp = append(tmp, uint(n))
+			tmp = append(tmp, int(n))
 		}
 		if len(tmp) > 1 {
 			if tmp[0] >= tmp[1] {

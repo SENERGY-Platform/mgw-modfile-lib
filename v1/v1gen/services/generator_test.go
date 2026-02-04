@@ -17,11 +17,12 @@
 package services
 
 import (
-	"github.com/SENERGY-Platform/mgw-modfile-lib/v1/model"
-	module_lib "github.com/SENERGY-Platform/mgw-module-lib/model"
 	"reflect"
 	"testing"
 	"time"
+
+	"github.com/SENERGY-Platform/mgw-modfile-lib/v1/model"
+	module_lib "github.com/SENERGY-Platform/mgw-module-lib/model"
 )
 
 func TestGenRunConfig(t *testing.T) {
@@ -29,7 +30,7 @@ func TestGenRunConfig(t *testing.T) {
 		MaxRetries:  5,
 		RunOnce:     false,
 		StopTimeout: 5 * time.Second,
-		StopSignal:  nil,
+		StopSignal:  "",
 		PseudoTTY:   false,
 		Command:     nil,
 	}
@@ -44,7 +45,7 @@ func TestGenRunConfig(t *testing.T) {
 		MaxRetries:  &i,
 		RunOnce:     true,
 		StopTimeout: &d,
-		StopSignal:  &str,
+		StopSignal:  str,
 		PseudoTTY:   true,
 		Command:     cmd,
 	}
@@ -52,7 +53,7 @@ func TestGenRunConfig(t *testing.T) {
 		MaxRetries:  1,
 		RunOnce:     true,
 		StopTimeout: 1 * time.Second,
-		StopSignal:  &str,
+		StopSignal:  str,
 		PseudoTTY:   true,
 		Command:     cmd,
 	}
@@ -230,15 +231,15 @@ func TestGenHttpEndpoints(t *testing.T) {
 	str2 := "test2"
 	p := 8080
 	mfHEs = append(mfHEs, model.HttpEndpoint{
-		Name:    &str,
-		Path:    &str2,
-		Port:    &p,
+		Name:    str,
+		Path:    str2,
+		Port:    p,
 		ExtPath: str,
 	})
 	a := module_lib.HttpEndpoint{
-		Name: &str,
-		Port: &p,
-		Path: &str2,
+		Name: str,
+		Port: p,
+		Path: str2,
 	}
 	if ep, err := GenHttpEndpoints(mfHEs); err != nil {
 		t.Error("err != nil")
@@ -268,14 +269,14 @@ func TestGenPorts(t *testing.T) {
 	// --------------------------------
 	mfSPs = []model.SrvPort{
 		{
-			Name:     nil,
+			Name:     "",
 			Port:     "80",
-			HostPort: nil,
-			Protocol: nil,
+			HostPort: "",
+			Protocol: "",
 		},
 	}
 	a := module_lib.Port{
-		Name:     nil,
+		Name:     "",
 		Number:   80,
 		Protocol: module_lib.TcpPort,
 		Bindings: nil,
@@ -291,14 +292,14 @@ func TestGenPorts(t *testing.T) {
 	str := "test"
 	mfSPs = []model.SrvPort{
 		{
-			Name:     &str,
+			Name:     str,
 			Port:     "80",
-			HostPort: nil,
-			Protocol: &str,
+			HostPort: "",
+			Protocol: str,
 		},
 	}
 	a = module_lib.Port{
-		Name:     &str,
+		Name:     str,
 		Number:   80,
 		Protocol: str,
 		Bindings: nil,
@@ -313,21 +314,21 @@ func TestGenPorts(t *testing.T) {
 	// --------------------------------
 	mfSPs = []model.SrvPort{
 		{
-			Name:     nil,
+			Name:     "",
 			Port:     "80-81",
-			HostPort: nil,
-			Protocol: nil,
+			HostPort: "",
+			Protocol: "",
 		},
 	}
 	a2 := []module_lib.Port{
 		{
-			Name:     nil,
+			Name:     "",
 			Number:   80,
 			Protocol: module_lib.TcpPort,
 			Bindings: nil,
 		},
 		{
-			Name:     nil,
+			Name:     "",
 			Number:   81,
 			Protocol: module_lib.TcpPort,
 			Bindings: nil,
@@ -343,21 +344,21 @@ func TestGenPorts(t *testing.T) {
 	// --------------------------------
 	mfSPs = []model.SrvPort{
 		{
-			Name:     &str,
+			Name:     str,
 			Port:     "80-81",
-			HostPort: nil,
-			Protocol: &str,
+			HostPort: "",
+			Protocol: str,
 		},
 	}
 	a2 = []module_lib.Port{
 		{
-			Name:     &str,
+			Name:     str,
 			Number:   80,
 			Protocol: str,
 			Bindings: nil,
 		},
 		{
-			Name:     &str,
+			Name:     str,
 			Number:   81,
 			Protocol: str,
 			Bindings: nil,
@@ -374,17 +375,17 @@ func TestGenPorts(t *testing.T) {
 	hp := model.Port("80")
 	mfSPs = []model.SrvPort{
 		{
-			Name:     nil,
+			Name:     "",
 			Port:     "80",
-			HostPort: &hp,
-			Protocol: nil,
+			HostPort: hp,
+			Protocol: "",
 		},
 	}
 	a = module_lib.Port{
-		Name:     nil,
+		Name:     "",
 		Number:   80,
 		Protocol: module_lib.TcpPort,
-		Bindings: []uint{80},
+		Bindings: []int{80},
 	}
 	if p, err := GenPorts(mfSPs); err != nil {
 		t.Error("err != nil")
@@ -397,17 +398,17 @@ func TestGenPorts(t *testing.T) {
 	hp2 := model.Port("80-81")
 	mfSPs = []model.SrvPort{
 		{
-			Name:     nil,
+			Name:     "",
 			Port:     "80",
-			HostPort: &hp2,
-			Protocol: nil,
+			HostPort: hp2,
+			Protocol: "",
 		},
 	}
 	a = module_lib.Port{
-		Name:     nil,
+		Name:     "",
 		Number:   80,
 		Protocol: module_lib.TcpPort,
-		Bindings: []uint{80, 81},
+		Bindings: []int{80, 81},
 	}
 	if p, err := GenPorts(mfSPs); err != nil {
 		t.Error("err != nil")
@@ -419,24 +420,24 @@ func TestGenPorts(t *testing.T) {
 	// --------------------------------
 	mfSPs = []model.SrvPort{
 		{
-			Name:     nil,
+			Name:     "",
 			Port:     "80-81",
-			HostPort: &hp2,
-			Protocol: nil,
+			HostPort: hp2,
+			Protocol: "",
 		},
 	}
 	a2 = []module_lib.Port{
 		{
-			Name:     nil,
+			Name:     "",
 			Number:   80,
 			Protocol: module_lib.TcpPort,
-			Bindings: []uint{80},
+			Bindings: []int{80},
 		},
 		{
-			Name:     nil,
+			Name:     "",
 			Number:   81,
 			Protocol: module_lib.TcpPort,
-			Bindings: []uint{81},
+			Bindings: []int{81},
 		},
 	}
 	if p, err := GenPorts(mfSPs); err != nil {
@@ -449,10 +450,10 @@ func TestGenPorts(t *testing.T) {
 	// --------------------------------
 	mfSPs = []model.SrvPort{
 		{
-			Name:     nil,
+			Name:     "",
 			Port:     "test",
-			HostPort: nil,
-			Protocol: nil,
+			HostPort: "",
+			Protocol: "",
 		},
 	}
 	if _, err := GenPorts(mfSPs); err == nil {
@@ -462,10 +463,10 @@ func TestGenPorts(t *testing.T) {
 	hp3 := model.Port("test")
 	mfSPs = []model.SrvPort{
 		{
-			Name:     nil,
+			Name:     "",
 			Port:     "80",
-			HostPort: &hp3,
-			Protocol: nil,
+			HostPort: hp3,
+			Protocol: "",
 		},
 	}
 	if _, err := GenPorts(mfSPs); err == nil {
@@ -475,10 +476,10 @@ func TestGenPorts(t *testing.T) {
 	hp4 := model.Port("80")
 	mfSPs = []model.SrvPort{
 		{
-			Name:     nil,
+			Name:     "",
 			Port:     "80-81",
-			HostPort: &hp4,
-			Protocol: nil,
+			HostPort: hp4,
+			Protocol: "",
 		},
 	}
 	if _, err := GenPorts(mfSPs); err == nil {
@@ -488,10 +489,10 @@ func TestGenPorts(t *testing.T) {
 	hp5 := model.Port("80-82")
 	mfSPs = []model.SrvPort{
 		{
-			Name:     nil,
+			Name:     "",
 			Port:     "80-81",
-			HostPort: &hp5,
-			Protocol: nil,
+			HostPort: hp5,
+			Protocol: "",
 		},
 	}
 	if _, err := GenPorts(mfSPs); err == nil {
@@ -530,18 +531,18 @@ func TestGenServices(t *testing.T) {
 		},
 		HttpEndpoints: []model.HttpEndpoint{
 			{
-				Name:    &str,
-				Path:    &str2,
-				Port:    nil,
+				Name:    str,
+				Path:    str2,
+				Port:    0,
 				ExtPath: str,
 			},
 		},
 		Ports: []model.SrvPort{
 			{
-				Name:     nil,
+				Name:     "",
 				Port:     "80",
-				HostPort: nil,
-				Protocol: nil,
+				HostPort: "",
+				Protocol: "",
 			},
 		},
 		RequiredServices: []string{str},
@@ -553,7 +554,7 @@ func TestGenServices(t *testing.T) {
 			MaxRetries:  5,
 			RunOnce:     false,
 			StopTimeout: 5 * time.Second,
-			StopSignal:  nil,
+			StopSignal:  "",
 			PseudoTTY:   false,
 		},
 		BindMounts: map[string]module_lib.BindMount{
@@ -575,9 +576,9 @@ func TestGenServices(t *testing.T) {
 		SrvReferences: nil,
 		HttpEndpoints: map[string]module_lib.HttpEndpoint{
 			str: {
-				Name: &str,
-				Port: nil,
-				Path: &str2,
+				Name: str,
+				Port: 0,
+				Path: str2,
 			},
 		},
 		RequiredSrv:     map[string]struct{}{str: {}},
@@ -585,7 +586,7 @@ func TestGenServices(t *testing.T) {
 		ExtDependencies: nil,
 		Ports: []module_lib.Port{
 			{
-				Name:     nil,
+				Name:     "",
 				Number:   80,
 				Protocol: module_lib.TcpPort,
 				Bindings: nil,
@@ -598,8 +599,8 @@ func TestGenServices(t *testing.T) {
 		t.Errorf("len(%v) != 1", sm)
 	} else if b, ok := sm[str]; !ok {
 		t.Errorf("b, ok := sm[%v]; !ok", str)
-	} else if reflect.DeepEqual(a, *b) == false {
-		t.Errorf("%+v != %+v", a, *b)
+	} else if reflect.DeepEqual(a, b) == false {
+		t.Errorf("%+v != %+v", a, b)
 	}
 	// --------------------------------
 	mfSs[str] = model.Service{
@@ -661,15 +662,15 @@ func TestGenServices(t *testing.T) {
 		Tmpfs:     nil,
 		HttpEndpoints: []model.HttpEndpoint{
 			{
-				Name:    &str,
-				Path:    &str2,
-				Port:    nil,
+				Name:    str,
+				Path:    str2,
+				Port:    0,
 				ExtPath: str,
 			},
 			{
-				Name:    &str,
-				Path:    &str2,
-				Port:    &i,
+				Name:    str,
+				Path:    str2,
+				Port:    i,
 				ExtPath: str,
 			},
 		},
@@ -689,10 +690,10 @@ func TestGenServices(t *testing.T) {
 		HttpEndpoints: nil,
 		Ports: []model.SrvPort{
 			{
-				Name:     nil,
+				Name:     "",
 				Port:     "",
-				HostPort: nil,
-				Protocol: nil,
+				HostPort: "",
+				Protocol: "",
 			},
 		},
 		RequiredServices: nil,
@@ -737,7 +738,7 @@ func TestGenAuxServices(t *testing.T) {
 			MaxRetries:  5,
 			RunOnce:     false,
 			StopTimeout: 5 * time.Second,
-			StopSignal:  nil,
+			StopSignal:  "",
 			PseudoTTY:   false,
 		},
 		BindMounts: map[string]module_lib.BindMount{
@@ -763,8 +764,8 @@ func TestGenAuxServices(t *testing.T) {
 		t.Errorf("len(%v) != 1", sm)
 	} else if b, ok := sm[str]; !ok {
 		t.Errorf("b, ok := sm[%v]; !ok", str)
-	} else if reflect.DeepEqual(a, *b) == false {
-		t.Errorf("%+v != %+v", a, *b)
+	} else if reflect.DeepEqual(a, b) == false {
+		t.Errorf("%+v != %+v", a, b)
 	}
 	// --------------------------------
 	mfAs[str] = model.AuxService{

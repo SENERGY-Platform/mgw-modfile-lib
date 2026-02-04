@@ -17,16 +17,17 @@
 package services
 
 import (
-	"github.com/SENERGY-Platform/mgw-modfile-lib/v1/model"
-	module_lib "github.com/SENERGY-Platform/mgw-module-lib/model"
 	"reflect"
 	"testing"
+
+	"github.com/SENERGY-Platform/mgw-modfile-lib/v1/model"
+	module_lib "github.com/SENERGY-Platform/mgw-module-lib/model"
 )
 
 func TestSetSrvReferences(t *testing.T) {
 	ref := "a"
 	var mfSRs map[string][]model.DependencyTarget
-	mSs := map[string]*module_lib.Service{ref: {}}
+	mSs := map[string]module_lib.Service{ref: {}}
 	if err := SetSrvReferences(mfSRs, mSs); err != nil {
 		t.Error("err != nil")
 	}
@@ -38,11 +39,11 @@ func TestSetSrvReferences(t *testing.T) {
 	mfSRs[dRef] = []model.DependencyTarget{
 		{
 			RefVar:   rVar,
-			Template: &tmp,
+			Template: tmp,
 			Services: []string{ref},
 		},
 	}
-	a := map[string]module_lib.SrvRefTarget{rVar: {Ref: dRef, Template: &tmp}}
+	a := map[string]module_lib.SrvRefTarget{rVar: {Ref: dRef, Template: tmp}}
 	if err := SetSrvReferences(mfSRs, mSs); err != nil {
 		t.Error("err != nil")
 	} else if ms := mSs[ref]; reflect.DeepEqual(a, ms.SrvReferences) == false {
@@ -95,7 +96,7 @@ func TestSetSrvReferences(t *testing.T) {
 func TestSetVolumes(t *testing.T) {
 	sRef := "a"
 	var mfVs map[string][]model.VolumeTarget
-	mSs := map[string]*module_lib.Service{sRef: {}}
+	mSs := map[string]module_lib.Service{sRef: {}}
 	if err := SetVolumes(mfVs, mSs); err != nil {
 		t.Error("err != nil")
 	}
@@ -162,7 +163,7 @@ func TestSetVolumes(t *testing.T) {
 func TestSetExtDependencies(t *testing.T) {
 	ref := "a"
 	var mfMDs map[string]model.ModuleDependency
-	mSs := map[string]*module_lib.Service{ref: {}}
+	mSs := map[string]module_lib.Service{ref: {}}
 	if err := SetExtDependencies(mfMDs, mSs); err != nil {
 		t.Error("err != nil")
 	}
@@ -179,7 +180,7 @@ func TestSetExtDependencies(t *testing.T) {
 			dRef: {
 				{
 					RefVar:   rVar,
-					Template: &tmp,
+					Template: tmp,
 					Services: []string{ref},
 				},
 			},
@@ -189,7 +190,7 @@ func TestSetExtDependencies(t *testing.T) {
 		rVar: {
 			ID:       mID,
 			Service:  dRef,
-			Template: &tmp,
+			Template: tmp,
 		},
 	}
 	if err := SetExtDependencies(mfMDs, mSs); err != nil {
@@ -285,7 +286,7 @@ func TestSetExtDependencies(t *testing.T) {
 func TestSetResources(t *testing.T) {
 	sRef := "a"
 	var mfRs map[string]model.HostResource
-	mSs := map[string]*module_lib.Service{sRef: {}}
+	mSs := map[string]module_lib.Service{sRef: {}}
 	if err := SetHostResources(mfRs, mSs); err != nil {
 		t.Error("err != nil")
 	}
@@ -391,7 +392,7 @@ func TestSetResources(t *testing.T) {
 func TestSetSecrets(t *testing.T) {
 	sRef := "a"
 	var mfSCTs map[string]model.Secret
-	mSs := map[string]*module_lib.Service{sRef: {}}
+	mSs := map[string]module_lib.Service{sRef: {}}
 	if err := SetSecrets(mfSCTs, mSs); err != nil {
 		t.Error("err != nil")
 	}
@@ -404,15 +405,15 @@ func TestSetSecrets(t *testing.T) {
 	mfSCTs[sec] = model.Secret{
 		Targets: []model.SecretTarget{
 			{
-				MountPoint: &mp,
-				RefVar:     &rv,
-				Item:       &si,
+				MountPoint: mp,
+				RefVar:     rv,
+				Item:       si,
 				Services:   []string{sRef},
 			},
 		},
 	}
-	a := map[string]module_lib.SecretTarget{mp: {Ref: sec, Item: &si}}
-	a2 := map[string]module_lib.SecretTarget{rv: {Ref: sec, Item: &si}}
+	a := map[string]module_lib.SecretTarget{mp: {Ref: sec, Item: si}}
+	a2 := map[string]module_lib.SecretTarget{rv: {Ref: sec, Item: si}}
 	if err := SetSecrets(mfSCTs, mSs); err != nil {
 		t.Error("err != nil")
 	} else if ms := mSs[sRef]; reflect.DeepEqual(a, ms.SecretMounts) == false {
@@ -424,11 +425,11 @@ func TestSetSecrets(t *testing.T) {
 	mfSCTs[sec] = model.Secret{
 		Targets: []model.SecretTarget{
 			{
-				MountPoint: &mp,
+				MountPoint: mp,
 				Services:   []string{sRef},
 			},
 			{
-				MountPoint: &mp,
+				MountPoint: mp,
 				Services:   []string{sRef},
 			},
 		},
@@ -442,7 +443,7 @@ func TestSetSecrets(t *testing.T) {
 	mfSCTs[sec] = model.Secret{
 		Targets: []model.SecretTarget{
 			{
-				MountPoint: &mp,
+				MountPoint: mp,
 				Services:   []string{"test"},
 			},
 		},
@@ -454,7 +455,7 @@ func TestSetSecrets(t *testing.T) {
 	mfSCTs[sec] = model.Secret{
 		Targets: []model.SecretTarget{
 			{
-				MountPoint: &mp,
+				MountPoint: mp,
 				Services:   []string{sRef},
 			},
 		},
@@ -462,7 +463,7 @@ func TestSetSecrets(t *testing.T) {
 	mfSCTs["test"] = model.Secret{
 		Targets: []model.SecretTarget{
 			{
-				MountPoint: &mp,
+				MountPoint: mp,
 				Services:   []string{sRef},
 			},
 		},
@@ -475,7 +476,7 @@ func TestSetSecrets(t *testing.T) {
 func TestSetConfigs(t *testing.T) {
 	sRef := "a"
 	var mfCVs map[string]model.ConfigValue
-	mSs := map[string]*module_lib.Service{sRef: {}}
+	mSs := map[string]module_lib.Service{sRef: {}}
 	if err := SetConfigs(mfCVs, mSs); err != nil {
 		t.Error("err != nil")
 	}

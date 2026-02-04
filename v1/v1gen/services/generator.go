@@ -19,15 +19,16 @@ package services
 import (
 	"errors"
 	"fmt"
+	"io/fs"
+	"time"
+
 	"github.com/SENERGY-Platform/mgw-modfile-lib/v1/model"
 	"github.com/SENERGY-Platform/mgw-modfile-lib/v1/v1gen/generic"
 	module_lib "github.com/SENERGY-Platform/mgw-module-lib/model"
-	"io/fs"
-	"time"
 )
 
-func GenServices(mfSs map[string]model.Service) (map[string]*module_lib.Service, error) {
-	mSs := make(map[string]*module_lib.Service)
+func GenServices(mfSs map[string]model.Service) (map[string]module_lib.Service, error) {
+	mSs := make(map[string]module_lib.Service)
 	for ref, mfS := range mfSs {
 		mBMs, err := GenBindMounts(mfS.Include)
 		if err != nil {
@@ -45,7 +46,7 @@ func GenServices(mfSs map[string]model.Service) (map[string]*module_lib.Service,
 		if err != nil {
 			return nil, fmt.Errorf("service '%s' invalid port mapping: %s", ref, err)
 		}
-		mSs[ref] = &module_lib.Service{
+		mSs[ref] = module_lib.Service{
 			Name:              mfS.Name,
 			Image:             mfS.Image,
 			RunConfig:         GenRunConfig(mfS.RunConfig),
@@ -60,8 +61,8 @@ func GenServices(mfSs map[string]model.Service) (map[string]*module_lib.Service,
 	return mSs, nil
 }
 
-func GenAuxServices(mfSs map[string]model.AuxService) (map[string]*module_lib.AuxService, error) {
-	mAs := make(map[string]*module_lib.AuxService)
+func GenAuxServices(mfSs map[string]model.AuxService) (map[string]module_lib.AuxService, error) {
+	mAs := make(map[string]module_lib.AuxService)
 	for ref, mfS := range mfSs {
 		mBMs, err := GenBindMounts(mfS.Include)
 		if err != nil {
@@ -71,7 +72,7 @@ func GenAuxServices(mfSs map[string]model.AuxService) (map[string]*module_lib.Au
 		if err != nil {
 			return nil, fmt.Errorf("aux service '%s' invalid tmpfsMount: %s", ref, err)
 		}
-		mAs[ref] = &module_lib.AuxService{
+		mAs[ref] = module_lib.AuxService{
 			Name:       mfS.Name,
 			RunConfig:  GenRunConfig(mfS.RunConfig),
 			BindMounts: mBMs,
@@ -93,7 +94,7 @@ func GenRunConfig(mfRC model.RunConfig) module_lib.RunConfig {
 		mRC.Command = mfRC.Command
 	}
 	if mfRC.MaxRetries != nil {
-		mRC.MaxRetries = uint(*mfRC.MaxRetries)
+		mRC.MaxRetries = *mfRC.MaxRetries
 	}
 	if mfRC.StopTimeout != nil {
 		mRC.StopTimeout = time.Duration(*mfRC.StopTimeout)
@@ -122,13 +123,13 @@ func GenTmpfsMounts(mfTMs []model.TmpfsMount) (map[string]module_lib.TmpfsMount,
 	mTMs := make(map[string]module_lib.TmpfsMount)
 	for _, mfTM := range mfTMs {
 		if v, ok := mTMs[mfTM.MountPoint]; ok {
-			if v.Size == uint64(mfTM.Size) && (mfTM.Mode == nil || v.Mode == fs.FileMode(*mfTM.Mode)) {
+			if v.Size == int64(mfTM.Size) && (mfTM.Mode == nil || v.Mode == fs.FileMode(*mfTM.Mode)) {
 				continue
 			}
 			return nil, fmt.Errorf("duplicate '%s'", mfTM.MountPoint)
 		}
 		mTM := module_lib.TmpfsMount{
-			Size: uint64(mfTM.Size),
+			Size: int64(mfTM.Size),
 			Mode: fs.FileMode(504),
 		}
 		if mfTM.Mode != nil {
@@ -171,15 +172,15 @@ func GenPorts(mfSPs []model.SrvPort) ([]module_lib.Port, error) {
 	var mPs []module_lib.Port
 	for _, mfSP := range mfSPs {
 		proto := module_lib.TcpPort
-		if mfSP.Protocol != nil {
-			proto = *mfSP.Protocol
+		if mfSP.Protocol != "" {
+			proto = mfSP.Protocol
 		}
 		ep, err := mfSP.Port.Parse()
 		if err != nil {
 			return nil, err
 		}
-		var hp []uint
-		if mfSP.HostPort != nil {
+		var hp []int
+		if mfSP.HostPort != "" {
 			hp, err = mfSP.HostPort.Parse()
 			if err != nil {
 				return nil, err
@@ -210,7 +211,7 @@ func GenPorts(mfSPs []model.SrvPort) ([]module_lib.Port, error) {
 					Protocol: proto,
 				}
 				if lhp > 0 {
-					mP.Bindings = []uint{hp[i]}
+					mP.Bindings = []int{hp[i]}
 				}
 				mPs = append(mPs, mP)
 			}

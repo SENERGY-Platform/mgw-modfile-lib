@@ -17,11 +17,12 @@
 package v1gen
 
 import (
-	"github.com/SENERGY-Platform/mgw-modfile-lib/v1/model"
-	module_lib "github.com/SENERGY-Platform/mgw-module-lib/model"
 	"reflect"
 	"testing"
 	"time"
+
+	"github.com/SENERGY-Platform/mgw-modfile-lib/v1/model"
+	module_lib "github.com/SENERGY-Platform/mgw-module-lib/model"
 )
 
 func TestGenerator(t *testing.T) {
@@ -93,7 +94,7 @@ func TestGenerator(t *testing.T) {
 				Resource: model.Resource{
 					Tags: []string{"tag"},
 					UserInput: &model.UserInput{
-						Group: &ig,
+						Group: ig,
 					},
 					Optional: false,
 				},
@@ -110,13 +111,13 @@ func TestGenerator(t *testing.T) {
 				Resource: model.Resource{
 					Tags: []string{"tag"},
 					UserInput: &model.UserInput{
-						Group: &ig,
+						Group: ig,
 					},
 					Optional: false,
 				},
 				Targets: []model.SecretTarget{
 					{
-						MountPoint: &sMnt,
+						MountPoint: sMnt,
 						Services:   []string{sA},
 					},
 				},
@@ -127,7 +128,7 @@ func TestGenerator(t *testing.T) {
 				DataType: &strType,
 				UserInput: &model.ConfigUserInput{
 					UserInput: model.UserInput{
-						Group: &ig,
+						Group: ig,
 					},
 				},
 				Optional: false,
@@ -157,13 +158,13 @@ func TestGenerator(t *testing.T) {
 		Type:           "typ",
 		DeploymentType: "dtp",
 		Architectures:  map[module_lib.CPUArch]struct{}{"arch": {}},
-		Services: map[string]*module_lib.Service{
+		Services: map[string]module_lib.Service{
 			sA: {
 				RunConfig: module_lib.RunConfig{
 					MaxRetries:  5,
 					RunOnce:     false,
 					StopTimeout: 5 * time.Second,
-					StopSignal:  nil,
+					StopSignal:  "",
 					PseudoTTY:   false,
 				},
 				BindMounts: map[string]module_lib.BindMount{},
@@ -196,7 +197,7 @@ func TestGenerator(t *testing.T) {
 					MaxRetries:  5,
 					RunOnce:     false,
 					StopTimeout: 5 * time.Second,
-					StopSignal:  nil,
+					StopSignal:  "",
 					PseudoTTY:   false,
 				},
 				BindMounts:    map[string]module_lib.BindMount{},
@@ -205,13 +206,13 @@ func TestGenerator(t *testing.T) {
 				RequiredSrv:   map[string]struct{}{},
 			},
 		},
-		AuxServices: map[string]*module_lib.AuxService{
+		AuxServices: map[string]module_lib.AuxService{
 			aA: {
 				RunConfig: module_lib.RunConfig{
 					MaxRetries:  5,
 					RunOnce:     false,
 					StopTimeout: 5 * time.Second,
-					StopSignal:  nil,
+					StopSignal:  "",
 					PseudoTTY:   false,
 				},
 				BindMounts: map[string]module_lib.BindMount{},
@@ -233,7 +234,7 @@ func TestGenerator(t *testing.T) {
 					MaxRetries:  5,
 					RunOnce:     false,
 					StopTimeout: 5 * time.Second,
-					StopSignal:  nil,
+					StopSignal:  "",
 					PseudoTTY:   false,
 				},
 				BindMounts:      map[string]module_lib.BindMount{},
@@ -275,17 +276,17 @@ func TestGenerator(t *testing.T) {
 		Inputs: module_lib.Inputs{
 			Resources: map[string]module_lib.Input{
 				"res": {
-					Group: &ig,
+					Group: ig,
 				},
 			},
 			Secrets: map[string]module_lib.Input{
 				"sec": {
-					Group: &ig,
+					Group: ig,
 				},
 			},
 			Configs: map[string]module_lib.Input{
 				"cfg": {
-					Group: &ig,
+					Group: ig,
 				},
 			},
 			Groups: map[string]module_lib.InputGroup{
@@ -313,10 +314,10 @@ func TestGenerator(t *testing.T) {
 			"": {
 				Ports: []model.SrvPort{
 					{
-						Name:     nil,
+						Name:     "",
 						Port:     "",
-						HostPort: nil,
-						Protocol: nil,
+						HostPort: "",
+						Protocol: "",
 					},
 				},
 			},
@@ -389,7 +390,7 @@ func TestGenerator(t *testing.T) {
 			"": {
 				Targets: []model.SecretTarget{
 					{
-						MountPoint: &sMnt,
+						MountPoint: sMnt,
 						Services:   []string{""},
 					},
 				},

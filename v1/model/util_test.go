@@ -17,10 +17,11 @@
 package model
 
 import (
-	"gopkg.in/yaml.v3"
 	"reflect"
 	"testing"
 	"time"
+
+	"gopkg.in/yaml.v3"
 )
 
 func TestByteFmt_UnmarshalYAML(t *testing.T) {
@@ -127,14 +128,14 @@ func TestPort_UnmarshalYAML(t *testing.T) {
 }
 
 func TestPort_Parse(t *testing.T) {
-	a := []uint{80}
+	a := []int{80}
 	if b, err := Port("80").Parse(); err != nil {
 		t.Error("err != nil")
 	} else if reflect.DeepEqual(a, b) == false {
 		t.Errorf("%v != %v", a, b)
 	}
 	// ---------------------------
-	a = []uint{80, 81}
+	a = []int{80, 81}
 	if b, err := Port("80-81").Parse(); err != nil {
 		t.Error("err != nil")
 	} else if reflect.DeepEqual(a, b) == false {

@@ -17,9 +17,10 @@
 package model
 
 import (
-	"github.com/SENERGY-Platform/mgw-modfile-lib/modfile"
 	"io/fs"
 	"time"
+
+	"github.com/SENERGY-Platform/mgw-modfile-lib/modfile"
 )
 
 type Port string
@@ -111,7 +112,7 @@ type RunConfig struct {
 	RunOnce    bool `yaml:"runOnce" json:"runOnce,omitempty"`
 	// defaults to 5s if nil
 	StopTimeout *Duration  `yaml:"stopTimeout" json:"stopTimeout,omitempty" jsonschema:"type=string"`
-	StopSignal  *string    `yaml:"stopSignal" json:"stopSignal,omitempty"`
+	StopSignal  string     `yaml:"stopSignal" json:"stopSignal,omitempty"`
 	PseudoTTY   bool       `yaml:"pseudoTTY" json:"pseudoTTY,omitempty"`
 	Command     StrOrSlice `yaml:"command" json:"command,omitempty" jsonschema:"oneof_type=string;array"`
 }
@@ -137,11 +138,11 @@ type TmpfsMount struct {
 
 type HttpEndpoint struct {
 	// endpoint name
-	Name *string `yaml:"name" json:"name"`
+	Name string `yaml:"name" json:"name"`
 	// internal endpoint path
-	Path *string `yaml:"path" json:"path,omitempty"`
+	Path string `yaml:"path" json:"path,omitempty"`
 	// port the service is listening on (set if not 80)
-	Port *int `yaml:"port" json:"port,omitempty"`
+	Port int `yaml:"port" json:"port,omitempty"`
 	// external path to be used by the api gateway
 	ExtPath string `yaml:"extPath" json:"extPath"`
 	// set reverse proxy config options
@@ -170,13 +171,13 @@ type HttpEndpointProxyConf struct {
 
 type SrvPort struct {
 	// port name
-	Name *string `yaml:"name" json:"name,omitempty"`
+	Name string `yaml:"name" json:"name,omitempty"`
 	// port number or port range (e.g. 8080-8081)
 	Port Port `yaml:"port" json:"port" jsonschema:"oneof_type=string;integer"`
 	// port number or port range (e.g. 8080-8081), can be overridden during deployment to avoid collisions (arbitrary ports are used if nil)
-	HostPort *Port `yaml:"hostPort" json:"hostPort,omitempty" jsonschema:"oneof_type=string;integer"`
+	HostPort Port `yaml:"hostPort" json:"hostPort,omitempty" jsonschema:"oneof_type=string;integer"`
 	// specify port protocol (defaults to tcp if nil)
-	Protocol *string `yaml:"protocol" json:"protocol,omitempty" jsonschema:"enum=tcp,enum=udp"`
+	Protocol string `yaml:"protocol" json:"protocol,omitempty" jsonschema:"enum=tcp,enum=udp"`
 }
 
 type VolumeTarget struct {
@@ -199,7 +200,7 @@ type DependencyTarget struct {
 	// container environment variable to hold the addressable reference of the service
 	RefVar string `yaml:"refVar" json:"refVar"`
 	// string with '{ref}' placeholder if additional information is required (e.g. http://{ref}/api)
-	Template *string `yaml:"template" json:"template,omitempty"`
+	Template string `yaml:"template" json:"template,omitempty"`
 	// service identifiers as used in ModFile.Services to map the reference variable to a number of services
 	Services []string `yaml:"services" json:"services,omitempty"`
 	// aux service identifiers as used in ModFile.AuxServices to map the reference variable to a number of services
@@ -231,11 +232,11 @@ type HostResource struct {
 
 type SecretTarget struct {
 	// absolute path in container
-	MountPoint *string `yaml:"mountPoint" json:"mountPoint,omitempty"`
+	MountPoint string `yaml:"mountPoint" json:"mountPoint,omitempty"`
 	// container environment variable to hold the secret value
-	RefVar *string `yaml:"refVar" json:"refVar,omitempty"`
+	RefVar string `yaml:"refVar" json:"refVar,omitempty"`
 	// optional item reference as defined by the secret type
-	Item *string `yaml:"item" json:"item,omitempty"`
+	Item string `yaml:"item" json:"item,omitempty"`
 	// service identifiers as used in ModFile.Services to map the mount point to a number of services
 	Services []string `yaml:"services" json:"services"`
 }
@@ -289,16 +290,16 @@ type UserInput struct {
 	// input name (e.g. used as a label for input field)
 	Name string `yaml:"name" json:"name"`
 	// short text describing the input
-	Description *string `yaml:"description" json:"description,omitempty"`
+	Description string `yaml:"description" json:"description,omitempty"`
 	// group identifier as used in ModFile.InputGroups to assign the user input to an input group
-	Group *string `yaml:"group" json:"group,omitempty"`
+	Group string `yaml:"group" json:"group,omitempty"`
 }
 
 type InputGroup struct {
 	// input group name
 	Name string `yaml:"name" json:"name"`
 	// short text describing the input group
-	Description *string `yaml:"description" json:"description,omitempty"`
+	Description string `yaml:"description" json:"description,omitempty"`
 	// group identifier as used in ModFile.InputGroups to assign the input group to a parent group
-	Group *string `yaml:"group" json:"group,omitempty"`
+	Group string `yaml:"group" json:"group,omitempty"`
 }
