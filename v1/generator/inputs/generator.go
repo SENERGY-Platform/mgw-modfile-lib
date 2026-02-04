@@ -21,13 +21,22 @@ import (
 	module_lib "github.com/SENERGY-Platform/mgw-module-lib/model"
 )
 
-func GenInputs[T model.Configurable](mfCs map[string]T) map[string]module_lib.Input {
+func GenOptInputs[T model.OptConfigurable](mfCs map[string]T) map[string]module_lib.Input {
 	mIs := make(map[string]module_lib.Input)
 	for ref, mfC := range mfCs {
 		mfUI := mfC.GetUserInput()
 		if mfUI != nil {
 			mIs[ref] = module_lib.Input(*mfUI)
 		}
+	}
+	return mIs
+}
+
+func GenReqInputs[T model.ReqConfigurable](mfCs map[string]T) map[string]module_lib.Input {
+	mIs := make(map[string]module_lib.Input)
+	for ref, mfC := range mfCs {
+		mfUI := mfC.GetUserInput()
+		mIs[ref] = module_lib.Input(mfUI)
 	}
 	return mIs
 }

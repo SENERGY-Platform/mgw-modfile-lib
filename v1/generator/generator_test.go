@@ -137,6 +137,37 @@ func TestGenerator(t *testing.T) {
 				},
 			},
 		},
+		Files: map[string]model.File{
+			"fle": {
+				Source: "src",
+				UserInput: model.FileUserInput{
+					UserInput: model.UserInput{
+						Group: ig,
+					},
+					Type: "typ",
+				},
+				Targets: []model.FileTarget{
+					{
+						MountPoint: "mnt4",
+						Services:   []string{sA},
+						ReadOnly:   false,
+					},
+				},
+			},
+		},
+		FileGroups: map[string]model.FileGroup{
+			"fgr": {
+				UserInput: model.UserInput{
+					Group: ig,
+				},
+				Targets: []model.FileGroupTarget{
+					{
+						BasePath: "bpt",
+						Services: []string{sA},
+					},
+				},
+			},
+		},
 		InputGroups: map[string]model.InputGroup{
 			ig: {},
 		},
@@ -174,8 +205,17 @@ func TestGenerator(t *testing.T) {
 						ReadOnly: false,
 					},
 				},
-				SecretMounts:  map[string]module_lib.SecretTarget{"mnt3": {Ref: "sec"}},
-				Configs:       map[string]string{"rVar3": "cfg"},
+				SecretMounts: map[string]module_lib.SecretTarget{"mnt3": {Ref: "sec"}},
+				Configs:      map[string]string{"rVar3": "cfg"},
+				Files: map[string]module_lib.FileTarget{
+					"mnt4": {
+						Ref:      "fle",
+						ReadOnly: false,
+					},
+				},
+				FileGroups: map[string]string{
+					"bpt": "fgr",
+				},
 				SrvReferences: map[string]module_lib.SrvRefTarget{"rVar1": {Ref: sB}},
 				HttpEndpoints: map[string]module_lib.HttpEndpoint{},
 				RequiredSrv:   map[string]struct{}{},
@@ -269,6 +309,12 @@ func TestGenerator(t *testing.T) {
 			},
 		},
 		Configs: mc,
+		Files: map[string]string{
+			"fle": "src",
+		},
+		FileGroups: map[string]struct{}{
+			"fgr": {},
+		},
 		Inputs: module_lib.Inputs{
 			Resources: map[string]module_lib.Input{
 				"res": {
@@ -282,6 +328,16 @@ func TestGenerator(t *testing.T) {
 			},
 			Configs: map[string]module_lib.Input{
 				"cfg": {
+					Group: ig,
+				},
+			},
+			Files: map[string]module_lib.Input{
+				"fle": {
+					Group: ig,
+				},
+			},
+			FileGroups: map[string]module_lib.Input{
+				"fgr": {
 					Group: ig,
 				},
 			},

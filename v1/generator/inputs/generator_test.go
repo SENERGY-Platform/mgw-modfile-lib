@@ -31,17 +31,17 @@ func (t test) GetUserInput() *model.UserInput {
 
 func TestGenInputs(t *testing.T) {
 	var mfCs map[string]test
-	if im := GenInputs(mfCs); len(im) != 0 {
+	if im := GenOptInputs(mfCs); len(im) != 0 {
 		t.Errorf("len(%v) != 0", im)
 	}
 	mfCs = make(map[string]test)
 	mfCs["a"] = test{}
-	if im := GenInputs(mfCs); len(im) != 0 {
+	if im := GenOptInputs(mfCs); len(im) != 0 {
 		t.Errorf("len(%v) != 0", im)
 	}
 	str := "test"
 	mfCs[str] = test{uInput: &model.UserInput{Name: str}}
-	if im := GenInputs(mfCs); len(im) != 1 {
+	if im := GenOptInputs(mfCs); len(im) != 1 {
 		t.Errorf("len(%v) != 1", im)
 	} else if ui, ok := im[str]; !ok {
 		t.Errorf("ui, ok := im[%s]; !ok", str)

@@ -77,6 +77,14 @@ func generateModule(mf model.ModFile) (module_lib.Module, error) {
 	if err != nil {
 		return module_lib.Module{}, err
 	}
+	err = services.SetFiles(mf.Files, mSs)
+	if err != nil {
+		return module_lib.Module{}, err
+	}
+	err = services.SetFileGroups(mf.FileGroups, mSs)
+	if err != nil {
+		return module_lib.Module{}, err
+	}
 	err = services.SetSecrets(mf.Secrets, mSs)
 	if err != nil {
 		return module_lib.Module{}, err
@@ -101,18 +109,22 @@ func generateModule(mf model.ModFile) (module_lib.Module, error) {
 		DeploymentType: mf.DeploymentType,
 		Architectures:  generic.GenStringSet(mf.Architectures),
 		Services:       mSs,
-		AuxServices:    mAs,
-		AuxImgSrc:      generic.GenStringSet(mf.AuxImageSources),
 		Volumes:        mounts.GenVolumes(mf.Volumes),
 		Dependencies:   mounts.GenDependencies(mf.Dependencies),
 		HostResources:  mounts.GenHostResources(mf.HostResources),
 		Secrets:        mounts.GenSecrets(mf.Secrets),
+		Files:          mounts.GenFiles(mf.Files),
+		FileGroups:     mounts.GenFileGroups(mf.FileGroups),
 		Configs:        mCs,
 		Inputs: module_lib.Inputs{
-			Resources: inputs.GenInputs(mf.HostResources),
-			Secrets:   inputs.GenInputs(mf.Secrets),
-			Configs:   inputs.GenInputs(mf.Configs),
-			Groups:    inputs.GenInputGroups(mf.InputGroups),
+			Resources:  inputs.GenOptInputs(mf.HostResources),
+			Secrets:    inputs.GenOptInputs(mf.Secrets),
+			Configs:    inputs.GenOptInputs(mf.Configs),
+			Files:      inputs.GenReqInputs(mf.Files),
+			FileGroups: inputs.GenReqInputs(mf.FileGroups),
+			Groups:     inputs.GenInputGroups(mf.InputGroups),
 		},
+		AuxServices: mAs,
+		AuxImgSrc:   generic.GenStringSet(mf.AuxImageSources),
 	}, nil
 }

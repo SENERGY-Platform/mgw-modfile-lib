@@ -64,3 +64,19 @@ func GenSecrets(mfSs map[string]model.Secret) map[string]module_lib.Secret {
 	}
 	return mSs
 }
+
+func GenFiles(mfFiles map[string]model.File) map[string]string {
+	mFiles := make(map[string]string)
+	for ref, file := range mfFiles {
+		mFiles[ref] = file.Source
+	}
+	return mFiles
+}
+
+func GenFileGroups(mfFileGroups map[string]model.FileGroup) map[string]struct{} {
+	mFileGroups := make(map[string]struct{})
+	for ref := range mfFileGroups {
+		mFileGroups[ref] = struct{}{}
+	}
+	return mFileGroups
+}

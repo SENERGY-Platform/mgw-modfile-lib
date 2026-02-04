@@ -16,6 +16,10 @@
 
 package model
 
-type Configurable interface {
+type OptConfigurable interface {
 	GetUserInput() *UserInput
+}
+
+type ReqConfigurable interface {
+	GetUserInput() UserInput
 }

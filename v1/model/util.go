@@ -140,6 +140,14 @@ func (c ConfigValue) GetUserInput() *UserInput {
 	return nil
 }
 
+func (f File) GetUserInput() UserInput {
+	return f.UserInput.UserInput
+}
+
+func (f FileGroup) GetUserInput() UserInput {
+	return f.UserInput
+}
+
 func (t *StrOrSlice) UnmarshalYAML(yn *yaml.Node) error {
 	var sl []string
 	if err := yn.Decode(&sl); err != nil {

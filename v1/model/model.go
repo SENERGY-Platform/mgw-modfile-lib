@@ -65,6 +65,10 @@ type ModFile struct {
 	Secrets map[string]Secret `yaml:"secrets" json:"secrets,omitempty"`
 	// configuration values required by services
 	Configs map[string]ConfigValue `yaml:"configs" json:"configs,omitempty"`
+	// files that can be edited by the user and mounted by services
+	Files map[string]File `yaml:"files" json:"files,omitempty"`
+	// group of arbitrary files that can be added by the user and mounted by services
+	FileGroups map[string]FileGroup `yaml:"fileGroups" json:"fileGroups,omitempty"`
 	// map of groups for categorising user inputs (keys serve as unique identifiers and can be reused elsewhere in the modfile to reference a group)
 	InputGroups map[string]InputGroup `yaml:"inputGroups" json:"inputGroups,omitempty"`
 }
@@ -300,4 +304,37 @@ type InputGroup struct {
 	Description string `yaml:"description" json:"description,omitempty"`
 	// group identifier as used in ModFile.InputGroups to assign the input group to a parent group
 	Group string `yaml:"group" json:"group,omitempty"`
+}
+
+type File struct {
+	// optional relative path in module repo to file with default content
+	Source    string        `yaml:"source" json:"source,omitempty"`
+	UserInput FileUserInput `yaml:"userInput" json:"userInput"`
+	Targets   []FileTarget  `yaml:"targets" json:"targets"`
+}
+
+type FileTarget struct {
+	// absolute path in container
+	MountPoint string `yaml:"mountPoint" json:"mountPoint"`
+	// service identifiers as used in ModFile.Services to map the mount point to a number of services
+	Services []string `yaml:"services" json:"services"`
+	// if true resource will be mounted as read only
+	ReadOnly bool `yaml:"readOnly" json:"readOnly,omitempty"`
+}
+
+type FileUserInput struct {
+	UserInput `yaml:",inline"`
+	// file content type (e.g. generic, json, yaml, ...)
+	Type string `yaml:"type" json:"type" jsonschema:"enum=text,enum=number"`
+}
+
+type FileGroup struct {
+	UserInput UserInput         `yaml:"userInput" json:"userInput"`
+	Targets   []FileGroupTarget `yaml:"targets" json:"targets"`
+}
+
+type FileGroupTarget struct {
+	// base path for mount points of files within this group, user must set relative path per file
+	BasePath string   `yaml:"basePath" json:"basePath"`
+	Services []string `yaml:"services" json:"services,omitempty"`
 }

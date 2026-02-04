@@ -219,6 +219,59 @@ func SetHostResources(mfRs map[string]model.HostResource, mSs map[string]module_
 	return nil
 }
 
+func SetFiles(mfFiles map[string]model.File, mSs map[string]module_lib.Service) error {
+	for fRef, file := range mfFiles {
+		for _, target := range file.Targets {
+			for _, sRef := range target.Services {
+				mS, ok := mSs[sRef]
+				if !ok {
+					return fmt.Errorf("invalid file: service '%s' not defined", sRef)
+				}
+				if mS.Files == nil {
+					mS.Files = make(map[string]module_lib.FileTarget)
+				}
+				if mFT, k := mS.Files[target.MountPoint]; k {
+					if mFT.Ref == fRef && mFT.ReadOnly == target.ReadOnly {
+						continue
+					}
+					return fmt.Errorf("'%s' & '%s' -> '%s' -> '%s'", mFT.Ref, fRef, sRef, target.MountPoint)
+				}
+				mS.Files[target.MountPoint] = module_lib.FileTarget{
+					Ref:      fRef,
+					ReadOnly: target.ReadOnly,
+				}
+				mSs[sRef] = mS
+			}
+		}
+	}
+	return nil
+}
+
+func SetFileGroups(mfFileGroups map[string]model.FileGroup, mSs map[string]module_lib.Service) error {
+	for gRef, fileGroup := range mfFileGroups {
+		for _, target := range fileGroup.Targets {
+			for _, sRef := range target.Services {
+				mS, ok := mSs[sRef]
+				if !ok {
+					return fmt.Errorf("invalid file group: service '%s' not defined", sRef)
+				}
+				if mS.FileGroups == nil {
+					mS.FileGroups = make(map[string]string)
+				}
+				if r, k := mS.FileGroups[target.BasePath]; k {
+					if r == gRef {
+						continue
+					}
+					return fmt.Errorf("'%s' & '%s' -> '%s' -> '%s'", r, gRef, sRef, target.BasePath)
+				}
+				mS.FileGroups[target.BasePath] = gRef
+				mSs[sRef] = mS
+			}
+		}
+	}
+	return nil
+}
+
 func SetSecrets(mfSecrets map[string]model.Secret, mServices map[string]module_lib.Service) error {
 	for secRef, mfSecret := range mfSecrets {
 		for _, mfSecretTarget := range mfSecret.Targets {
