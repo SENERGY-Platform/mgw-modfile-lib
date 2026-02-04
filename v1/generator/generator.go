@@ -14,77 +14,82 @@
  * limitations under the License.
  */
 
-package v1gen
+package generator
 
 import (
-	"errors"
+	"github.com/SENERGY-Platform/mgw-modfile-lib/v1/generator/configs"
+	"github.com/SENERGY-Platform/mgw-modfile-lib/v1/generator/generic"
+	"github.com/SENERGY-Platform/mgw-modfile-lib/v1/generator/inputs"
+	"github.com/SENERGY-Platform/mgw-modfile-lib/v1/generator/mounts"
+	"github.com/SENERGY-Platform/mgw-modfile-lib/v1/generator/services"
 	"github.com/SENERGY-Platform/mgw-modfile-lib/v1/model"
-	"github.com/SENERGY-Platform/mgw-modfile-lib/v1/v1gen/configs"
-	"github.com/SENERGY-Platform/mgw-modfile-lib/v1/v1gen/generic"
-	"github.com/SENERGY-Platform/mgw-modfile-lib/v1/v1gen/inputs"
-	"github.com/SENERGY-Platform/mgw-modfile-lib/v1/v1gen/mounts"
-	"github.com/SENERGY-Platform/mgw-modfile-lib/v1/v1gen/services"
 	module_lib "github.com/SENERGY-Platform/mgw-module-lib/model"
+	"gopkg.in/yaml.v3"
 )
 
-func generator(f any) (*module_lib.Module, error) {
-	mf, ok := f.(*model.ModFile)
-	if !ok {
-		return nil, errors.New("invalid type")
+func GetModule(yn *yaml.Node) (module_lib.Module, error) {
+	var mf model.ModFile
+	err := yn.Decode(&mf)
+	if err != nil {
+		return module_lib.Module{}, err
 	}
+	return generateModule(mf)
+}
+
+func generateModule(mf model.ModFile) (module_lib.Module, error) {
 	mCs, err := configs.GenConfigs(mf.Configs)
 	if err != nil {
-		return nil, err
+		return module_lib.Module{}, err
 	}
 	mSs, err := services.GenServices(mf.Services)
 	if err != nil {
-		return nil, err
+		return module_lib.Module{}, err
 	}
 	mAs, err := services.GenAuxServices(mf.AuxServices)
 	if err != nil {
-		return nil, err
+		return module_lib.Module{}, err
 	}
 	err = services.SetSrvReferences(mf.ServiceReferences, mSs)
 	if err != nil {
-		return nil, err
+		return module_lib.Module{}, err
 	}
 	err = services.SetAuxSrvReferences(mf.ServiceReferences, mAs)
 	if err != nil {
-		return nil, err
+		return module_lib.Module{}, err
 	}
 	err = services.SetVolumes(mf.Volumes, mSs)
 	if err != nil {
-		return nil, err
+		return module_lib.Module{}, err
 	}
 	err = services.SetAuxVolumes(mf.Volumes, mAs)
 	if err != nil {
-		return nil, err
+		return module_lib.Module{}, err
 	}
 	err = services.SetExtDependencies(mf.Dependencies, mSs)
 	if err != nil {
-		return nil, err
+		return module_lib.Module{}, err
 	}
 	err = services.SetAuxExtDependencies(mf.Dependencies, mAs)
 	if err != nil {
-		return nil, err
+		return module_lib.Module{}, err
 	}
 	err = services.SetHostResources(mf.HostResources, mSs)
 	if err != nil {
-		return nil, err
+		return module_lib.Module{}, err
 	}
 	err = services.SetSecrets(mf.Secrets, mSs)
 	if err != nil {
-		return nil, err
+		return module_lib.Module{}, err
 	}
 	err = services.SetConfigs(mf.Configs, mSs)
 	if err != nil {
-		return nil, err
+		return module_lib.Module{}, err
 	}
 	err = services.SetAuxConfigs(mf.Configs, mAs)
 	if err != nil {
-		return nil, err
+		return module_lib.Module{}, err
 	}
-	return &module_lib.Module{
+	return module_lib.Module{
 		ID:             mf.ID,
 		Name:           mf.Name,
 		Description:    mf.Description,
@@ -110,8 +115,4 @@ func generator(f any) (*module_lib.Module, error) {
 			Groups:    inputs.GenInputGroups(mf.InputGroups),
 		},
 	}, nil
-}
-
-func GetGenerator() (string, func(any) (*module_lib.Module, error)) {
-	return model.Version, generator
 }

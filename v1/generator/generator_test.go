@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package v1gen
+package generator
 
 import (
 	"reflect"
@@ -26,10 +26,6 @@ import (
 )
 
 func TestGenerator(t *testing.T) {
-	if _, err := generator(model.ModFile{}); err == nil {
-		t.Error("err == nil")
-	}
-	// --------------------------------
 	sA := "a"
 	sB := "b"
 	aA := "a"
@@ -294,10 +290,10 @@ func TestGenerator(t *testing.T) {
 			},
 		},
 	}
-	if b, err := generator(&mf); err != nil {
+	if b, err := generateModule(mf); err != nil {
 		t.Error("err != nil")
-	} else if reflect.DeepEqual(a, *b) == false {
-		t.Errorf("%+v != %+v", a, *b)
+	} else if reflect.DeepEqual(a, b) == false {
+		t.Errorf("%+v != %+v", a, b)
 	}
 	//--------------------------------
 	mf = model.ModFile{
@@ -305,7 +301,7 @@ func TestGenerator(t *testing.T) {
 			"cfg": {},
 		},
 	}
-	if _, err := generator(&mf); err != nil {
+	if _, err := generateModule(mf); err != nil {
 		t.Error("err != nil")
 	}
 	// --------------------------------
@@ -323,7 +319,7 @@ func TestGenerator(t *testing.T) {
 			},
 		},
 	}
-	if _, err := generator(&mf); err == nil {
+	if _, err := generateModule(mf); err == nil {
 		t.Error("err == nil")
 	}
 	// --------------------------------
@@ -336,7 +332,7 @@ func TestGenerator(t *testing.T) {
 			},
 		},
 	}
-	if _, err := generator(&mf); err == nil {
+	if _, err := generateModule(mf); err == nil {
 		t.Error("err == nil")
 	}
 	// --------------------------------
@@ -349,7 +345,7 @@ func TestGenerator(t *testing.T) {
 			},
 		},
 	}
-	if _, err := generator(&mf); err == nil {
+	if _, err := generateModule(mf); err == nil {
 		t.Error("err == nil")
 	}
 	// --------------------------------
@@ -366,7 +362,7 @@ func TestGenerator(t *testing.T) {
 			},
 		},
 	}
-	if _, err := generator(&mf); err == nil {
+	if _, err := generateModule(mf); err == nil {
 		t.Error("err == nil")
 	}
 	// --------------------------------
@@ -381,7 +377,7 @@ func TestGenerator(t *testing.T) {
 			},
 		},
 	}
-	if _, err := generator(&mf); err == nil {
+	if _, err := generateModule(mf); err == nil {
 		t.Error("err == nil")
 	}
 	// --------------------------------
@@ -397,7 +393,7 @@ func TestGenerator(t *testing.T) {
 			},
 		},
 	}
-	if _, err := generator(&mf); err == nil {
+	if _, err := generateModule(mf); err == nil {
 		t.Error("err == nil")
 	}
 	// --------------------------------
@@ -413,13 +409,7 @@ func TestGenerator(t *testing.T) {
 			},
 		},
 	}
-	if _, err := generator(&mf); err == nil {
+	if _, err := generateModule(mf); err == nil {
 		t.Error("err == nil")
-	}
-}
-
-func TestGetGenerator(t *testing.T) {
-	if s, _ := GetGenerator(); s != model.Version {
-		t.Errorf("%s != %s", s, model.Version)
 	}
 }

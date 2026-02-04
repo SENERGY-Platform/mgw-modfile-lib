@@ -19,8 +19,6 @@ package model
 import (
 	"io/fs"
 	"time"
-
-	"github.com/SENERGY-Platform/mgw-modfile-lib/modfile"
 )
 
 type Port string
@@ -28,7 +26,7 @@ type Port string
 type ByteFmt uint64
 
 type ModFile struct {
-	modfile.Base
+	ModfileVersion string `yaml:"modfileVersion" json:"modfileVersion"`
 	// url without schema (e.g. github.com/user/repo)
 	ID string `yaml:"id" json:"id"`
 	// module name
