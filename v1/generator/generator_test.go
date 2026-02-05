@@ -150,7 +150,6 @@ func TestGenerator(t *testing.T) {
 					{
 						MountPoint: "mnt4",
 						Services:   []string{sA},
-						ReadOnly:   false,
 					},
 				},
 			},
@@ -207,11 +206,8 @@ func TestGenerator(t *testing.T) {
 				},
 				SecretMounts: map[string]module_lib.SecretTarget{"mnt3": {Ref: "sec"}},
 				Configs:      map[string]string{"rVar3": "cfg"},
-				Files: map[string]module_lib.FileTarget{
-					"mnt4": {
-						Ref:      "fle",
-						ReadOnly: false,
-					},
+				Files: map[string]string{
+					"mnt4": "fle",
 				},
 				FileGroups: map[string]string{
 					"bpt": "fgr",

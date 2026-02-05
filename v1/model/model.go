@@ -318,8 +318,6 @@ type FileTarget struct {
 	MountPoint string `yaml:"mountPoint" json:"mountPoint"`
 	// service identifiers as used in ModFile.Services to map the mount point to a number of services
 	Services []string `yaml:"services" json:"services"`
-	// if true resource will be mounted as read only
-	ReadOnly bool `yaml:"readOnly" json:"readOnly,omitempty"`
 }
 
 type FileUserInput struct {

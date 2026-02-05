@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package mgw_modfile_lib
+package modfile_lib
 
 import (
 	"errors"

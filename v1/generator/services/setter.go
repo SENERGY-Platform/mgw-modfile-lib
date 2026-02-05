@@ -228,18 +228,15 @@ func SetFiles(mfFiles map[string]model.File, mSs map[string]module_lib.Service) 
 					return fmt.Errorf("invalid file: service '%s' not defined", sRef)
 				}
 				if mS.Files == nil {
-					mS.Files = make(map[string]module_lib.FileTarget)
+					mS.Files = make(map[string]string)
 				}
-				if mFT, k := mS.Files[target.MountPoint]; k {
-					if mFT.Ref == fRef && mFT.ReadOnly == target.ReadOnly {
+				if r, k := mS.Files[target.MountPoint]; k {
+					if r == fRef {
 						continue
 					}
-					return fmt.Errorf("'%s' & '%s' -> '%s' -> '%s'", mFT.Ref, fRef, sRef, target.MountPoint)
+					return fmt.Errorf("'%s' & '%s' -> '%s' -> '%s'", r, fRef, sRef, target.MountPoint)
 				}
-				mS.Files[target.MountPoint] = module_lib.FileTarget{
-					Ref:      fRef,
-					ReadOnly: target.ReadOnly,
-				}
+				mS.Files[target.MountPoint] = fRef
 				mSs[sRef] = mS
 			}
 		}
