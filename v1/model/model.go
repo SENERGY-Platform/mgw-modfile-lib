@@ -311,6 +311,8 @@ type File struct {
 	Source    string        `yaml:"source" json:"source,omitempty"`
 	UserInput FileUserInput `yaml:"userInput" json:"userInput"`
 	Targets   []FileTarget  `yaml:"targets" json:"targets"`
+	// set if user input is optional (= empty file)
+	Optional bool `yaml:"optional" json:"optional,omitempty"`
 }
 
 type FileTarget struct {

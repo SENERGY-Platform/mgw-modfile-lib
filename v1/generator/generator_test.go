@@ -305,8 +305,11 @@ func TestGenerator(t *testing.T) {
 			},
 		},
 		Configs: mc,
-		Files: map[string]string{
-			"fle": "src",
+		Files: map[string]module_lib.File{
+			"fle": {
+				Source:   "src",
+				Required: true,
+			},
 		},
 		FileGroups: map[string]struct{}{
 			"fgr": {},

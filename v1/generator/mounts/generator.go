@@ -65,10 +65,13 @@ func GenSecrets(mfSs map[string]model.Secret) map[string]module_lib.Secret {
 	return mSs
 }
 
-func GenFiles(mfFiles map[string]model.File) map[string]string {
-	mFiles := make(map[string]string)
+func GenFiles(mfFiles map[string]model.File) map[string]module_lib.File {
+	mFiles := make(map[string]module_lib.File)
 	for ref, file := range mfFiles {
-		mFiles[ref] = file.Source
+		mFiles[ref] = module_lib.File{
+			Source:   file.Source,
+			Required: !file.Optional,
+		}
 	}
 	return mFiles
 }

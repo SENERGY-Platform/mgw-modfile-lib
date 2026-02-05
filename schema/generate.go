@@ -17,10 +17,11 @@
 package main
 
 import (
-	"github.com/SENERGY-Platform/mgw-modfile-lib/v1/model"
-	"github.com/invopop/jsonschema"
 	"log"
 	"os"
+
+	"github.com/SENERGY-Platform/mgw-modfile-lib/v1/model"
+	"github.com/invopop/jsonschema"
 )
 
 func main() {
