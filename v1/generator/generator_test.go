@@ -308,6 +308,7 @@ func TestGenerator(t *testing.T) {
 		Files: map[string]module_lib.File{
 			"fle": {
 				Source:   "src",
+				Type:     "typ",
 				Required: true,
 			},
 		},

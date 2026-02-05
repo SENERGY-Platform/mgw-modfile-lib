@@ -311,7 +311,7 @@ type File struct {
 	Source    string        `yaml:"source" json:"source,omitempty"`
 	UserInput FileUserInput `yaml:"userInput" json:"userInput"`
 	Targets   []FileTarget  `yaml:"targets" json:"targets"`
-	// set if user input is optional (= empty file)
+	// set if file can be empty (= no input by user)
 	Optional bool `yaml:"optional" json:"optional,omitempty"`
 }
 
@@ -325,7 +325,7 @@ type FileTarget struct {
 type FileUserInput struct {
 	UserInput `yaml:",inline"`
 	// file content type (e.g. generic, json, yaml, ...)
-	Type string `yaml:"type" json:"type" jsonschema:"enum=text,enum=number"`
+	Type string `yaml:"type" json:"type" jsonschema:"enum=generic,enum=json,enum=yaml"`
 }
 
 type FileGroup struct {

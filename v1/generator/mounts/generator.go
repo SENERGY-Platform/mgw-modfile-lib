@@ -70,6 +70,7 @@ func GenFiles(mfFiles map[string]model.File) map[string]module_lib.File {
 	for ref, file := range mfFiles {
 		mFiles[ref] = module_lib.File{
 			Source:   file.Source,
+			Type:     file.UserInput.Type,
 			Required: !file.Optional,
 		}
 	}

@@ -228,7 +228,7 @@
         },
         "optional": {
           "type": "boolean",
-          "description": "set if user input is optional (= empty file)"
+          "description": "set if file can be empty (= no input by user)"
         }
       },
       "additionalProperties": false,
@@ -314,8 +314,9 @@
         "type": {
           "type": "string",
           "enum": [
-            "text",
-            "number"
+            "generic",
+            "json",
+            "yaml"
           ],
           "description": "file content type (e.g. generic, json, yaml, ...)"
         }
