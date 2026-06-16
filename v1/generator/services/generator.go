@@ -160,6 +160,9 @@ func GenHttpEndpoints(mfHEs []model.HttpEndpoint) (map[string]module_lib.HttpEnd
 				Filters:     mfHE.StringSub.Filters,
 			},
 		}
+		if mHE.Port == 0 {
+			mHE.Port = 80
+		}
 		if mfHE.ProxyConf.ReadTimeout != nil {
 			mHE.ProxyConf.ReadTimeout = time.Duration(*mfHE.ProxyConf.ReadTimeout)
 		}
