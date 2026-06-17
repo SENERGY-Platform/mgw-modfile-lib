@@ -577,7 +577,7 @@ func TestGenServices(t *testing.T) {
 		HttpEndpoints: map[string]module_lib.HttpEndpoint{
 			str: {
 				Name: str,
-				Port: 0,
+				Port: 80,
 				Path: str2,
 			},
 		},
