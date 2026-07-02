@@ -17,6 +17,9 @@
 package generic
 
 func GenStringSet(sl []string) map[string]struct{} {
+	if len(sl) == 0 {
+		return nil
+	}
 	set := make(map[string]struct{})
 	for _, s := range sl {
 		set[s] = struct{}{}

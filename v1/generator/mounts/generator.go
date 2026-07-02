@@ -23,6 +23,9 @@ import (
 )
 
 func GenVolumes(mfVs map[string][]model.VolumeTarget) map[string]struct{} {
+	if len(mfVs) == 0 {
+		return nil
+	}
 	set := make(map[string]struct{})
 	for mfV := range mfVs {
 		set[mfV] = struct{}{}
@@ -31,6 +34,9 @@ func GenVolumes(mfVs map[string][]model.VolumeTarget) map[string]struct{} {
 }
 
 func GenDependencies(mfMDs map[string]model.ModuleDependency) map[string]string {
+	if len(mfMDs) == 0 {
+		return nil
+	}
 	mDs := make(map[string]string)
 	for id, mfMD := range mfMDs {
 		mDs[id] = mfMD.Version
@@ -39,6 +45,9 @@ func GenDependencies(mfMDs map[string]model.ModuleDependency) map[string]string 
 }
 
 func GenHostResources(mfRs map[string]model.HostResource) map[string]module_lib.HostResource {
+	if len(mfRs) == 0 {
+		return nil
+	}
 	mRs := make(map[string]module_lib.HostResource)
 	for ref, mfR := range mfRs {
 		mRs[ref] = module_lib.HostResource{
@@ -52,6 +61,9 @@ func GenHostResources(mfRs map[string]model.HostResource) map[string]module_lib.
 }
 
 func GenSecrets(mfSs map[string]model.Secret) map[string]module_lib.Secret {
+	if len(mfSs) == 0 {
+		return nil
+	}
 	mSs := make(map[string]module_lib.Secret)
 	for ref, mfS := range mfSs {
 		mSs[ref] = module_lib.Secret{
@@ -66,6 +78,9 @@ func GenSecrets(mfSs map[string]model.Secret) map[string]module_lib.Secret {
 }
 
 func GenFiles(mfFiles map[string]model.File) map[string]module_lib.File {
+	if len(mfFiles) == 0 {
+		return nil
+	}
 	mFiles := make(map[string]module_lib.File)
 	for ref, file := range mfFiles {
 		mFiles[ref] = module_lib.File{
@@ -78,6 +93,9 @@ func GenFiles(mfFiles map[string]model.File) map[string]module_lib.File {
 }
 
 func GenFileGroups(mfFileGroups map[string]model.FileGroup) map[string]struct{} {
+	if len(mfFileGroups) == 0 {
+		return nil
+	}
 	mFileGroups := make(map[string]struct{})
 	for ref := range mfFileGroups {
 		mFileGroups[ref] = struct{}{}

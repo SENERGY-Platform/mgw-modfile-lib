@@ -22,6 +22,9 @@ import (
 )
 
 func GenConfigs(mfCVs map[string]model.ConfigValue) (module_lib.Configs, error) {
+	if len(mfCVs) == 0 {
+		return nil, nil
+	}
 	mCs := make(module_lib.Configs)
 	for ref, mfCV := range mfCVs {
 		if mfCV.IsList {

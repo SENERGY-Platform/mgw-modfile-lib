@@ -28,6 +28,9 @@ import (
 )
 
 func GenServices(mfSs map[string]model.Service) (map[string]module_lib.Service, error) {
+	if len(mfSs) == 0 {
+		return nil, nil
+	}
 	mSs := make(map[string]module_lib.Service)
 	for ref, mfS := range mfSs {
 		mBMs, err := GenBindMounts(mfS.Include)
@@ -62,6 +65,9 @@ func GenServices(mfSs map[string]model.Service) (map[string]module_lib.Service, 
 }
 
 func GenAuxServices(mfSs map[string]model.AuxService) (map[string]module_lib.AuxService, error) {
+	if len(mfSs) == 0 {
+		return nil, nil
+	}
 	mAs := make(map[string]module_lib.AuxService)
 	for ref, mfS := range mfSs {
 		mBMs, err := GenBindMounts(mfS.Include)
@@ -103,6 +109,9 @@ func GenRunConfig(mfRC model.RunConfig) module_lib.RunConfig {
 }
 
 func GenBindMounts(mfBMs []model.BindMount) (map[string]module_lib.BindMount, error) {
+	if len(mfBMs) == 0 {
+		return nil, nil
+	}
 	mBMs := make(map[string]module_lib.BindMount)
 	for _, mfBM := range mfBMs {
 		if v, ok := mBMs[mfBM.MountPoint]; ok {
@@ -120,6 +129,9 @@ func GenBindMounts(mfBMs []model.BindMount) (map[string]module_lib.BindMount, er
 }
 
 func GenTmpfsMounts(mfTMs []model.TmpfsMount) (map[string]module_lib.TmpfsMount, error) {
+	if len(mfTMs) == 0 {
+		return nil, nil
+	}
 	mTMs := make(map[string]module_lib.TmpfsMount)
 	for _, mfTM := range mfTMs {
 		if v, ok := mTMs[mfTM.MountPoint]; ok {
@@ -141,6 +153,9 @@ func GenTmpfsMounts(mfTMs []model.TmpfsMount) (map[string]module_lib.TmpfsMount,
 }
 
 func GenHttpEndpoints(mfHEs []model.HttpEndpoint) (map[string]module_lib.HttpEndpoint, error) {
+	if len(mfHEs) == 0 {
+		return nil, nil
+	}
 	mHEs := make(map[string]module_lib.HttpEndpoint)
 	for _, mfHE := range mfHEs {
 		if _, ok := mHEs[mfHE.ExtPath]; ok {

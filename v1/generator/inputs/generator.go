@@ -22,6 +22,9 @@ import (
 )
 
 func GenOptInputs[T model.OptConfigurable](mfCs map[string]T) map[string]module_lib.Input {
+	if len(mfCs) == 0 {
+		return nil
+	}
 	mIs := make(map[string]module_lib.Input)
 	for ref, mfC := range mfCs {
 		mfUI := mfC.GetUserInput()
@@ -33,6 +36,9 @@ func GenOptInputs[T model.OptConfigurable](mfCs map[string]T) map[string]module_
 }
 
 func GenReqInputs[T model.ReqConfigurable](mfCs map[string]T) map[string]module_lib.Input {
+	if len(mfCs) == 0 {
+		return nil
+	}
 	mIs := make(map[string]module_lib.Input)
 	for ref, mfC := range mfCs {
 		mfUI := mfC.GetUserInput()
@@ -42,6 +48,9 @@ func GenReqInputs[T model.ReqConfigurable](mfCs map[string]T) map[string]module_
 }
 
 func GenInputGroups(mfIGs map[string]model.InputGroup) map[string]module_lib.InputGroup {
+	if len(mfIGs) == 0 {
+		return nil
+	}
 	mIGs := make(map[string]module_lib.InputGroup)
 	for ref, mfIG := range mfIGs {
 		mIGs[ref] = module_lib.InputGroup(mfIG)
