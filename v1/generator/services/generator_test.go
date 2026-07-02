@@ -27,8 +27,6 @@ import (
 
 func TestGenRunConfig(t *testing.T) {
 	a := module_lib.RunConfig{
-		MaxRetries:  5,
-		RunOnce:     false,
 		StopTimeout: 5 * time.Second,
 		StopSignal:  "",
 		PseudoTTY:   false,
@@ -38,20 +36,15 @@ func TestGenRunConfig(t *testing.T) {
 		t.Errorf("%+v != %+v", a, b)
 	}
 	str := "test"
-	i := 1
 	d := model.Duration(1 * time.Second)
 	cmd := []string{str, str}
 	c := model.RunConfig{
-		MaxRetries:  &i,
-		RunOnce:     true,
 		StopTimeout: &d,
 		StopSignal:  str,
 		PseudoTTY:   true,
 		Command:     cmd,
 	}
 	a = module_lib.RunConfig{
-		MaxRetries:  1,
-		RunOnce:     true,
 		StopTimeout: 1 * time.Second,
 		StopSignal:  str,
 		PseudoTTY:   true,
@@ -545,14 +538,11 @@ func TestGenServices(t *testing.T) {
 				Protocol: "",
 			},
 		},
-		RequiredServices: []string{str},
 	}
 	a := module_lib.Service{
 		Name:  str,
 		Image: str2,
 		RunConfig: module_lib.RunConfig{
-			MaxRetries:  5,
-			RunOnce:     false,
 			StopTimeout: 5 * time.Second,
 			StopSignal:  "",
 			PseudoTTY:   false,
@@ -581,8 +571,6 @@ func TestGenServices(t *testing.T) {
 				Path: str2,
 			},
 		},
-		RequiredSrv:     map[string]struct{}{str: {}},
-		RequiredBySrv:   nil,
 		ExtDependencies: nil,
 		Ports: []module_lib.Port{
 			{
@@ -619,10 +607,9 @@ func TestGenServices(t *testing.T) {
 				ReadOnly:   true,
 			},
 		},
-		Tmpfs:            nil,
-		HttpEndpoints:    nil,
-		Ports:            nil,
-		RequiredServices: nil,
+		Tmpfs:         nil,
+		HttpEndpoints: nil,
+		Ports:         nil,
 	}
 	if _, err := GenServices(mfSs); err == nil {
 		t.Error("err == nil")
@@ -645,9 +632,8 @@ func TestGenServices(t *testing.T) {
 				Mode:       nil,
 			},
 		},
-		HttpEndpoints:    nil,
-		Ports:            nil,
-		RequiredServices: nil,
+		HttpEndpoints: nil,
+		Ports:         nil,
 	}
 	if _, err := GenServices(mfSs); err == nil {
 		t.Error("err == nil")
@@ -674,8 +660,7 @@ func TestGenServices(t *testing.T) {
 				ExtPath: str,
 			},
 		},
-		Ports:            nil,
-		RequiredServices: nil,
+		Ports: nil,
 	}
 	if _, err := GenServices(mfSs); err == nil {
 		t.Error("err == nil")
@@ -696,7 +681,6 @@ func TestGenServices(t *testing.T) {
 				Protocol: "",
 			},
 		},
-		RequiredServices: nil,
 	}
 	if _, err := GenServices(mfSs); err == nil {
 		t.Error("err == nil")
@@ -735,8 +719,6 @@ func TestGenAuxServices(t *testing.T) {
 	a := module_lib.AuxService{
 		Name: str,
 		RunConfig: module_lib.RunConfig{
-			MaxRetries:  5,
-			RunOnce:     false,
 			StopTimeout: 5 * time.Second,
 			StopSignal:  "",
 			PseudoTTY:   false,

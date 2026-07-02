@@ -41,10 +41,6 @@ type ModFile struct {
 	Author string `yaml:"author" json:"author,omitempty"`
 	// module version (must be prefixed with 'v' and adhere to the semantic versioning guidelines, see https://semver.org/ for details)
 	Version string `yaml:"version" json:"version"`
-	// module type (e.g. device-connector specifies a module for integrating devices)
-	Type string `yaml:"type" json:"type" jsonschema:"enum=add-on,enum=device-connector"`
-	// specifies whether a module can only be deployed once or multiple times
-	DeploymentType string `yaml:"deploymentType" json:"deploymentType" jsonschema:"enum=single,enum=multiple"`
 	// supported cpu architectures
 	Architectures []string `yaml:"architectures" json:"architectures,omitempty" jsonschema:"enum=x86,enum=i386,enum=x86_64,enum=amd64,enum=aarch32,enum=arm32v5,enum=arm32v6,enum=arm32v7,enum=aarch64,enum=arm64v8"`
 	// map depicting the services the module consists of (keys serve as unique identifiers and can be reused elsewhere in the modfile to reference a service)
@@ -89,7 +85,6 @@ type Service struct {
 	// service ports to be published on the host
 	Ports []SrvPort `yaml:"ports" json:"ports,omitempty"`
 	// identifiers of internal services that must be running before this service is started
-	RequiredServices  []string `yaml:"requiredServices" json:"requiredServices,omitempty"`
 	DeviceCGroupRules []string `yaml:"deviceCGroupRules" json:"deviceCGroupRules,omitempty"`
 }
 
@@ -109,9 +104,6 @@ type Duration time.Duration
 type StrOrSlice []string
 
 type RunConfig struct {
-	// defaults to 5 if nil
-	MaxRetries *int `yaml:"maxRetries" json:"maxRetries,omitempty"`
-	RunOnce    bool `yaml:"runOnce" json:"runOnce,omitempty"`
 	// defaults to 5s if nil
 	StopTimeout *Duration  `yaml:"stopTimeout" json:"stopTimeout,omitempty" jsonschema:"type=string"`
 	StopSignal  string     `yaml:"stopSignal" json:"stopSignal,omitempty"`

@@ -34,16 +34,14 @@ func TestGenerator(t *testing.T) {
 	sMnt := "mnt3"
 	strType := module_lib.StringType
 	mf := model.ModFile{
-		ID:             "id",
-		Name:           "nme",
-		Description:    "dsc",
-		Tags:           []string{"tag"},
-		License:        "lcs",
-		Author:         "ath",
-		Version:        "ver",
-		Type:           "typ",
-		DeploymentType: "dtp",
-		Architectures:  []string{"arch"},
+		ID:            "id",
+		Name:          "nme",
+		Description:   "dsc",
+		Tags:          []string{"tag"},
+		License:       "lcs",
+		Author:        "ath",
+		Version:       "ver",
+		Architectures: []string{"arch"},
 		Services: map[string]model.Service{
 			sA: {},
 			sB: {},
@@ -174,21 +172,17 @@ func TestGenerator(t *testing.T) {
 	mc := make(module_lib.Configs)
 	mc.SetString("cfg", nil, nil, false, "", nil, true)
 	a := module_lib.Module{
-		ID:             "id",
-		Name:           "nme",
-		Description:    "dsc",
-		Tags:           map[string]struct{}{"tag": {}},
-		License:        "lcs",
-		Author:         "ath",
-		Version:        "ver",
-		Type:           "typ",
-		DeploymentType: "dtp",
-		Architectures:  map[module_lib.CPUArch]struct{}{"arch": {}},
+		ID:            "id",
+		Name:          "nme",
+		Description:   "dsc",
+		Tags:          map[string]struct{}{"tag": {}},
+		License:       "lcs",
+		Author:        "ath",
+		Version:       "ver",
+		Architectures: map[module_lib.CPUArch]struct{}{"arch": {}},
 		Services: map[string]module_lib.Service{
 			sA: {
 				RunConfig: module_lib.RunConfig{
-					MaxRetries:  5,
-					RunOnce:     false,
 					StopTimeout: 5 * time.Second,
 					StopSignal:  "",
 					PseudoTTY:   false,
@@ -214,8 +208,6 @@ func TestGenerator(t *testing.T) {
 				},
 				SrvReferences: map[string]module_lib.SrvRefTarget{"rVar1": {Ref: sB}},
 				HttpEndpoints: nil,
-				RequiredSrv:   nil,
-				RequiredBySrv: nil,
 				ExtDependencies: map[string]module_lib.ExtDependencyTarget{
 					"rVar2": {
 						ID:      "ext",
@@ -226,8 +218,6 @@ func TestGenerator(t *testing.T) {
 			},
 			sB: {
 				RunConfig: module_lib.RunConfig{
-					MaxRetries:  5,
-					RunOnce:     false,
 					StopTimeout: 5 * time.Second,
 					StopSignal:  "",
 					PseudoTTY:   false,
@@ -235,14 +225,11 @@ func TestGenerator(t *testing.T) {
 				BindMounts:    nil,
 				Tmpfs:         nil,
 				HttpEndpoints: nil,
-				RequiredSrv:   nil,
 			},
 		},
 		AuxServices: map[string]module_lib.AuxService{
 			aA: {
 				RunConfig: module_lib.RunConfig{
-					MaxRetries:  5,
-					RunOnce:     false,
 					StopTimeout: 5 * time.Second,
 					StopSignal:  "",
 					PseudoTTY:   false,
@@ -263,8 +250,6 @@ func TestGenerator(t *testing.T) {
 			},
 			aB: {
 				RunConfig: module_lib.RunConfig{
-					MaxRetries:  5,
-					RunOnce:     false,
 					StopTimeout: 5 * time.Second,
 					StopSignal:  "",
 					PseudoTTY:   false,

@@ -22,7 +22,6 @@ import (
 	"io/fs"
 	"time"
 
-	"github.com/SENERGY-Platform/mgw-modfile-lib/v1/generator/generic"
 	"github.com/SENERGY-Platform/mgw-modfile-lib/v1/model"
 	module_lib "github.com/SENERGY-Platform/mgw-module-lib/model"
 )
@@ -56,7 +55,6 @@ func GenServices(mfSs map[string]model.Service) (map[string]module_lib.Service, 
 			BindMounts:        mBMs,
 			Tmpfs:             mTMs,
 			HttpEndpoints:     mHEs,
-			RequiredSrv:       generic.GenStringSet(mfS.RequiredServices),
 			Ports:             mPs,
 			DeviceCGroupRules: mfS.DeviceCGroupRules,
 		}
@@ -90,17 +88,12 @@ func GenAuxServices(mfSs map[string]model.AuxService) (map[string]module_lib.Aux
 
 func GenRunConfig(mfRC model.RunConfig) module_lib.RunConfig {
 	mRC := module_lib.RunConfig{
-		MaxRetries:  5,
-		RunOnce:     mfRC.RunOnce,
 		StopTimeout: 5 * time.Second,
 		StopSignal:  mfRC.StopSignal,
 		PseudoTTY:   mfRC.PseudoTTY,
 	}
 	if len(mfRC.Command) > 0 {
 		mRC.Command = mfRC.Command
-	}
-	if mfRC.MaxRetries != nil {
-		mRC.MaxRetries = *mfRC.MaxRetries
 	}
 	if mfRC.StopTimeout != nil {
 		mRC.StopTimeout = time.Duration(*mfRC.StopTimeout)
