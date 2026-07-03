@@ -519,22 +519,6 @@
           "type": "string",
           "description": "module version (must be prefixed with 'v' and adhere to the semantic versioning guidelines, see https://semver.org/ for details)"
         },
-        "type": {
-          "type": "string",
-          "enum": [
-            "add-on",
-            "device-connector"
-          ],
-          "description": "module type (e.g. device-connector specifies a module for integrating devices)"
-        },
-        "deploymentType": {
-          "type": "string",
-          "enum": [
-            "single",
-            "multiple"
-          ],
-          "description": "specifies whether a module can only be deployed once or multiple times"
-        },
         "architectures": {
           "items": {
             "type": "string",
@@ -652,8 +636,6 @@
         "id",
         "name",
         "version",
-        "type",
-        "deploymentType",
         "services"
       ]
     },
@@ -683,13 +665,6 @@
     },
     "RunConfig": {
       "properties": {
-        "maxRetries": {
-          "type": "integer",
-          "description": "defaults to 5 if nil"
-        },
-        "runOnce": {
-          "type": "boolean"
-        },
         "stopTimeout": {
           "type": "string",
           "description": "defaults to 5s if nil"
@@ -827,18 +802,12 @@
           "type": "array",
           "description": "service ports to be published on the host"
         },
-        "requiredServices": {
+        "deviceCGroupRules": {
           "items": {
             "type": "string"
           },
           "type": "array",
           "description": "identifiers of internal services that must be running before this service is started"
-        },
-        "deviceCGroupRules": {
-          "items": {
-            "type": "string"
-          },
-          "type": "array"
         }
       },
       "additionalProperties": false,
